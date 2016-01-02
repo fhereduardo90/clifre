@@ -4,7 +4,7 @@ var CreateUserService   = require('../services/users/create_user');
 
 userController.route('/users')
   .get(function(req, res){
-    User.findAll()
+    User.findAll({attributes: ['id', 'name', 'email', 'identifier', 'birthdate']})
       .then(function(users){
         res.json(users);
       })
