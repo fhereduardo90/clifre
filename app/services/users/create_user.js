@@ -5,7 +5,7 @@ module.exports.call = function(params, cb) {
     .then(function(user){
       cb({result: user, success: true, errors: []});
     })
-    .catch(function(errors){
-      cb({result: null, success: false, errors: errors})
+    .catch(function(err){
+      cb({result: null, success: false, errors: err.errors})
     });
 };
