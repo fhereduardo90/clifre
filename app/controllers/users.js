@@ -17,7 +17,6 @@ userController.route('/users')
     var userParams = {
       name:         req.body.name,
       email:        req.body.email,
-      identifier:   req.body.identifier,
       birthdate:    req.body.birthdate
     };
 
