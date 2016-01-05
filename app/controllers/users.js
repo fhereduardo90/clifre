@@ -1,6 +1,7 @@
 var userController      = require('express').Router();
 var User                = require('../models/user');
 var CreateUserService   = require('../services/users/create_user');
+var UpdateUserService   = require('../services/users/update_user');
 
 userController.route('/users')
   .get(function(req, res){
@@ -10,7 +11,7 @@ userController.route('/users')
       })
       .catch(function(err){
         res.status(422).json({error: err.message});
-      })
+      });
   })
 
   .post(function(req, res){
@@ -24,12 +25,13 @@ userController.route('/users')
       if(response.success){
         res.json(response.result);
       }else{
-        res.status(422).json({error: response.errors});
+        res.status(response.status).json({error: response.errors, message: response.message});
       }
-    })
+    });
   });
 
-userController.get('/users/:id', function(req, res){
+userController.route('/users/:id')
+  .get(function(req, res){
     User.findById(req.params.id)
       .then(function(user){
         if(user){
@@ -39,8 +41,25 @@ userController.get('/users/:id', function(req, res){
         }
       })
       .catch(function(err){
-        res.status(422).json({error: err.message});
-      })
+        res.status(422).json({error: err.message, message: 'User not found.'});
+      });
+  })
+
+  .put(function(req, res){
+    var userParams = {
+      name:         req.body.name,
+      email:        req.body.email,
+      birthdate:    req.body.birthdate,
+      id:           req.params.id
+    };
+
+    UpdateUserService.call(userParams, function(response){
+      if(response.success){
+        res.json(response.result);
+      }else{
+        res.status(response.status).json({error: response.errors, message: response.message});
+      }
+    });
   });
 
 module.exports = userController;
