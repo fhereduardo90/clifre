@@ -21,7 +21,7 @@ function generateIdentifier(user, cb){
           })
           .catch(function(err){
             cb({result: null, status: 422, success: false,
-               message: 'Use cannot be created.', errors: err.errors});
+               message: 'User cannot be created.', errors: err.errors});
           });
       }
     });
