@@ -1,12 +1,12 @@
-var Company     = require('../../models/company');
+var sequelize     = require('../../models');
 var _           = require('lodash');
 
 module.exports.call = function(companyId, cb) {
-  if(_.isEmpty(companyId) || !_.isNumber(companyId)){
+  if(_.isEmpty(companyId)){
     companyId = 0;
   }
 
-  return Company.findById(companyId, {attributes: ['id', 'name', 'about', 'address', 'phone', 'avatar_path']})
+  return sequelize.Company.findById(parseInt(companyId), {attributes: ['id', 'name', 'about', 'address', 'phone', 'avatar_path']})
     .then(function(company){
       if(company){
         return cb({result: company, status: 200, success: true, message: '', errors: []});
