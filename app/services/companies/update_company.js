@@ -1,5 +1,5 @@
-var Company    = require('../../models/company');
-var _       = require('lodash');
+var sequelize    = require('../../models');
+var _            = require('lodash');
 
 module.exports.call = function(params, cb) {
   if(_.isEmpty(params) || !_.isPlainObject(params)){
@@ -7,7 +7,7 @@ module.exports.call = function(params, cb) {
       message: 'Params do not have a correct format.', errors: []})
   }
 
-  Company.findById(params.id)
+  sequelize.Company.findById(params.id)
     .then(function(company){
       if(company){
         company.update(_.omit(params, 'id'))

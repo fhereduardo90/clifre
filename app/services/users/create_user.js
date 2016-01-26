@@ -1,15 +1,15 @@
-var User    = require('../../models/user');
-var nid     = require('nid');
+var sequelize    = require('../../models');
+var nid          = require('nid');
 
 module.exports.call = function(params, cb) {
-  var user = User.build(params);
+  var user = sequelize.User.build(params);
   generateIdentifier(user, cb);
 };
 
 function generateIdentifier(user, cb){
   var newIdentifier = nid({hex: 6}).call();
 
-  User.count({where: {identifier: newIdentifier}})
+  sequelize.User.count({where: {identifier: newIdentifier}})
     .then(function(c){
       if(c >  0){
         generateIdentifier(user, cb);

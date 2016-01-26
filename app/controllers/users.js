@@ -1,11 +1,11 @@
 var userController      = require('express').Router();
-var User                = require('../models/user');
+var sequelize                = require('../models');
 var CreateUserService   = require('../services/users/create_user');
 var UpdateUserService   = require('../services/users/update_user');
 
 userController.route('/users')
   .get(function(req, res){
-    User.findAll({attributes: ['id', 'name', 'email', 'identifier', 'birthdate']})
+    sequelize.User.findAll({attributes: ['id', 'name', 'email', 'identifier', 'birthdate']})
       .then(function(users){
         res.json(users);
       })
@@ -32,7 +32,7 @@ userController.route('/users')
 
 userController.route('/users/:id')
   .get(function(req, res){
-    User.findById(req.params.id)
+    sequelize.User.findById(req.params.id)
       .then(function(user){
         if(user){
           res.json(user);

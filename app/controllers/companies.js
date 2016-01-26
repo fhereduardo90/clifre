@@ -1,5 +1,5 @@
 var companyController       = require('express').Router();
-var Company                 = require('../models/company');
+var sequelize               = require('../models');
 var _                       = require('lodash');
 
 // Services
@@ -9,7 +9,7 @@ var UpdateCompanyService    = require('../services/companies/update_company');
 
 companyController.route('/companies')
   .get(function(req, res){
-    Company.findAll(
+    sequelize.Company.findAll(
       {attributes: ['id', 'name', 'email', 'about', 'address', 'phone', 'avatar_path']}
     ).then(function(companies){
       res.json(companies);

@@ -1,8 +1,8 @@
-var User    = require('../../models/user');
-var _       = require('lodash');
+var sequelize    = require('../../models');
+var _            = require('lodash');
 
 module.exports.call = function(params, cb) {
-  User.findById(params.id)
+  sequelize.User.findById(params.id)
     .then(function(user){
       if(user){
         user.update(_.omit(params, 'id'))

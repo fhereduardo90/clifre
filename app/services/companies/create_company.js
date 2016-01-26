@@ -1,4 +1,4 @@
-var Company    = require('../../models/company');
+var sequelize    = require('../../models');
 var _          = require('lodash');
 
 module.exports.call = function(params, cb) {
@@ -7,7 +7,7 @@ module.exports.call = function(params, cb) {
       message: 'Params do not have a correct format.', errors: []})
   }
 
-  return Company.create(params)
+  return sequelize.Company.create(params)
     .then(function(company){
       return cb({result: company, status: 200, success: true,
          message: 'Company has been created.', errors: []});
