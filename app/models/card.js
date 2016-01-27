@@ -7,7 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       validate: {
         isInt: true,
-        notNull: true,
         min: 0
       }
     },
@@ -16,35 +15,22 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
-        notEmpty: true,
-        notNull: true
+        notEmpty: true
       }
     },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
-        notNull: true
+        notEmpty: true
       }
     },
     color: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
-        notNull: true
+        notEmpty: true
       }
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      field: 'created_at'
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      field: 'updated_at'
     }
   }, {
     underscored: true,
