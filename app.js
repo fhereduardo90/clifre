@@ -9,6 +9,7 @@ var router          = express.Router();
 // Controllers
 var UserController      = require('./app/controllers/users');
 var CompanyController   = require('./app/controllers/companies');
+var CardController      = require('./app/controllers/cards');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -17,6 +18,6 @@ router.get('/', function(req, res){
   res.json({ message: 'CLIFRE API :)' });
 });
 
-app.use([router, UserController, CompanyController]);
+app.use([router, UserController, CompanyController, CardController]);
 
 app.listen(port);
