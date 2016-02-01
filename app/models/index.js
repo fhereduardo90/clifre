@@ -11,6 +11,10 @@ var db        = {};
 //if (process.env.NODE_ENV === "production") {
   var sequelize = new Sequelize("postgres://tyrylxupygcsfg:KZ3gIWVqRjCAVmCeW4eN5LDEST@ec2-54-83-52-144.compute-1.amazonaws.com:5432/d1iu9k6m0fhqr7", {
     dialectOptions: {
+      dialect:  'postgres',
+      protocol: 'postgres',
+      port:     match[4],
+      host:     match[3],
       ssl: true,
       logging: true
     }
