@@ -1,4 +1,4 @@
-require('dotenv').load();
+//require('dotenv').load();
 
 var config = {
   username: process.env.DB_USER,
