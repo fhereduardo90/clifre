@@ -1,4 +1,4 @@
-require('dotenv').load();
+//require('dotenv').load();
 
 var express         = require('express');
 var app             = express();
