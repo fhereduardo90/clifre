@@ -9,8 +9,10 @@ var config    = require(__dirname + '/../../config/config.js')[env];
 var db        = {};
 
 if (config.use_env_variable) {
+  console.log('here');
   var sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
+  console.log('here 2');
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
