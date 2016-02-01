@@ -11,7 +11,7 @@ var db        = {};
 if (process.env.NODE_ENV === "production") {
   var sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_OLIVE_URL, {
     dialect:  'postgres',
-    protocol: 'postgres',
+    protocol: 'postgres', 
     logging:  true //false
   });
 } else {
