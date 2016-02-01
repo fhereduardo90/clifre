@@ -8,8 +8,15 @@ var env       = process.env.NODE_ENV || 'development';
 var config    = require(__dirname + '/../../config/config.js')[env];
 var db        = {};
 
-
-var sequelize = new Sequelize(config.database, config.username, config.password, config);
+if (process.env.NODE_ENV === "production") {
+  var sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+      ssl: true
+    }
+  });
+} else {
+  var sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
 
 
 fs
