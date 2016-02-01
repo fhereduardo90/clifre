@@ -14,7 +14,7 @@ module.exports.call = function(companyId, id, cb) {
 
       return sequelize.Card.findOne({
         where: {id: parseInt(id), company_id: company.id},
-        attributes: ['title', 'seals', 'description', 'color', 'company_id']
+        attributes: ['id', 'title', 'seals', 'description', 'color', 'company_id']
       })
         .then(function(card) {
           if (card) {
