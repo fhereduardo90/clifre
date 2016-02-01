@@ -5,6 +5,7 @@ var app             = express();
 var bodyParser      = require('body-parser');
 var port            = process.env.PORT;
 var router          = express.Router();
+var models          = require('./app/models');
 
 // Controllers
 var UserController      = require('./app/controllers/users');
@@ -20,4 +21,12 @@ router.get('/', function(req, res){
 
 app.use([router, UserController, CompanyController, CardController]);
 
-app.listen(port);
+models
+  .sequelize
+  .sync()
+  .then(function() {
+    app.listen(port);
+  })
+.catch(function(err) {
+  throw err;
+});
