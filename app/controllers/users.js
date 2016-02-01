@@ -23,7 +23,7 @@ userController.route('/users')
 
     CreateUserService.call(userParams, function(response){
       if(response.success){
-        res.json(response.result);
+        res.json({result: response.result, message: "ok"});
       }else{
         res.status(response.status).json({error: response.errors, message: response.message});
       }
