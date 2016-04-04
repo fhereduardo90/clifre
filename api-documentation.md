@@ -53,3 +53,11 @@
   "avatar": "data:image/[png or jpeg];base64,ad4sad4a..."
 }
 ```
+
+>####Response
+
+```
+{
+  "access_token": "[oauth access token]"
+}
+```
