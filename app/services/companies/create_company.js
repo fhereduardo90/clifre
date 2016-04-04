@@ -1,5 +1,5 @@
 var sequelize    = require('../../models');
-var _          = require('lodash');
+var _            = require('lodash');
 
 module.exports.call = function(params, cb) {
   if(_.isEmpty(params) || !_.isPlainObject(params)){
