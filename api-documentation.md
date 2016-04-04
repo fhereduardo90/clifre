@@ -4,12 +4,12 @@
 --
 `GET /users`
 
-*Retrieve all users*
+*Retrieve all users.* ***Authorization token is required***.
 >#### Headers
 
 ```
 {
-  'Authorization': 'Bearer eyJ0eXAiOiJKV1Q...'
+  'Authorization': 'Bearer [access token]'
 }
 ```
 
@@ -59,5 +59,40 @@
 ```
 {
   "access_token": "[oauth access token]"
+}
+```
+
+`PUT /users`
+
+*Update user. all fields are optional.* ***Authorization token is required***. *Only are allow jpeg or png images.*
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Request
+
+```
+{
+  "name": "new test name",
+  "email": "test@test.com",
+  "password": "12345678",
+  "birthdate": "10/13/1990",
+  "avatar": "data:image/[png or jpeg];base64,ad4sad4a..."
+}
+```
+
+>####Response
+
+```
+{
+  "id": 3,
+  "name": "new test name",
+  "avatar": "[S3 URL IMAGE]",
+  "birthdate": "1990-10-13T00:00:00.000Z",
+  "email": "test@test.com"
 }
 ```
