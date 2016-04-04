@@ -4,6 +4,7 @@ var jwt             = require('jsonwebtoken');
 var ApiError        = require('../errors/api_error');
 
 module.exports =  function(req, res, next) {
+  if (!req.headers['authorization']) return res.status(401).json(new ApiError('No token provided.', 401));
   var token = req.headers['authorization'].split(' ')[1];
   if (!token) return res.status(401).json(new ApiError('No token provided.', 401));
   return jwt.verify(token, app.get('jwtKey'), function(err, decoded) {
