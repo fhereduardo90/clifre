@@ -2,6 +2,7 @@
 
 ###USERS
 --
+##### Get All Users
 `GET /users`
 
 *Retrieve all users.* ***Authorization token is required***.
@@ -39,6 +40,7 @@
 }
 ```
 
+#####Create User
 `POST /users`
 
 *Create new user. name, email, password are required. Only are allow jpeg or png images.*
@@ -62,6 +64,7 @@
 }
 ```
 
+#####Update User
 `PUT /users`
 
 *Update user. all fields are optional.* ***Authorization token is required***. *Only are allow jpeg or png images.*
@@ -92,6 +95,32 @@
   "id": 3,
   "name": "new test name",
   "avatar": "[S3 URL IMAGE]",
+  "identifier": "6957e1",
+  "birthdate": "1990-10-13T00:00:00.000Z",
+  "email": "test@test.com"
+}
+```
+
+#####User Profile
+`GET /users/profile`
+
+*User detail.* ***Authorization token is required.***
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Response
+
+```
+{
+  "id": 3,
+  "name": "new test name",
+  "avatar": "[S3 URL IMAGE]",
+  "identifier": "6957e1",
   "birthdate": "1990-10-13T00:00:00.000Z",
   "email": "test@test.com"
 }
