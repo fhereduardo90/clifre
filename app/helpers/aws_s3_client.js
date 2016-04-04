@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config({silent: true});
 var AWS = require('aws-sdk');
 
 function S3Client () {

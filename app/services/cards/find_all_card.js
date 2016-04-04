@@ -13,7 +13,7 @@ module.exports.call = function(companyId, cb) {
           message: 'Company not found.', errors: []});
       }
 
-      return company.getCards({attributes: ['title', 'seals', 'description', 'color', 'company_id']})
+      return company.getCards({attributes: ['id', 'title', 'seals', 'description', 'color', 'company_id']})
         .then(function(cards) {
           return cb({result: cards, status: 200, success: true, message: '', errors: []});
         })
