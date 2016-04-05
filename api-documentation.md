@@ -156,6 +156,30 @@
 ]
 ```
 
+##### Company Detail
+`GET /companies/:id`
+
+>####Request
+
+```
+{
+    "id": 1
+}
+```
+
+>####Response
+
+```
+{
+  "id": 1,
+  "name": "starbucks",
+  "about": "we have the best coffee in the whole world :)",
+  "address": "Galerias, San Salvador",
+  "phone": "22577777",
+  "avatar_path": null
+}
+```
+
 ##### Create Companie
 `POST /companies`
 
