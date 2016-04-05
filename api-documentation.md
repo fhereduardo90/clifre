@@ -125,3 +125,33 @@
   "email": "test@test.com"
 }
 ```
+
+###COMPANIES
+--
+##### Get All Users
+`GET //companies`
+
+>####Response
+
+```
+[
+  {
+    "id": 1,
+    "name": "starbucks",
+    "email": "starbucks@gmail.com",
+    "about": "we have the best coffee in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777",
+    "avatar_path": null
+  },
+  {
+    "id": 2,
+    "name": "The donut place",
+    "email": "thedonutplace@gmail.com",
+    "about": "we have the best donuts in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777",
+    "avatar_path": null
+  }
+]
+```
