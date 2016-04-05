@@ -211,3 +211,35 @@
   "avatar_path": null
 }
 ```
+
+##### Update Companie
+`PUT /companies/:id`
+
+>####Request
+
+```
+{
+    "name": "The donut place",
+    "email": "thedonutplace@gmail.com",
+    "about": "we have the best donuts in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777"
+}
+```
+
+>####Response
+
+```
+{
+  "id": 2,
+  "name": "starbucks santa elena",
+  "email": "thedonutplace@gmail.com",
+  "about": "we have the best coffee in the whole world :)",
+  "address": "Galerias, San Salvador",
+  "phone": "22948899",
+  "avatar_name": null,
+  "avatar_path": null,
+  "created_at": "2016-04-05T19:18:14.804Z",
+  "updated_at": "2016-04-05T19:25:11.916Z"
+}
+```
