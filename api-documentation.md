@@ -129,7 +129,7 @@
 ###COMPANIES
 --
 ##### Get All Users
-`GET //companies`
+`GET /companies`
 
 >####Response
 
