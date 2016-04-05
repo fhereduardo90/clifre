@@ -128,7 +128,7 @@
 
 ###COMPANIES
 --
-##### Get All Users
+##### Get All Companies
 `GET /companies`
 
 >####Response
@@ -154,4 +154,36 @@
     "avatar_path": null
   }
 ]
+```
+
+##### Create Companie
+`POST /companies`
+
+>####Request
+
+```
+{
+    "name": "The donut place",
+    "email": "thedonutplace@gmail.com",
+    "about": "we have the best donuts in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777"
+}
+```
+
+>####Response
+
+```
+{
+  "id": 2,
+  "name": "The donut place",
+  "email": "thedonutplace@gmail.com",
+  "about": "we have the best donuts in the whole world :)",
+  "address": "Galerias, San Salvador",
+  "phone": "22577777",
+  "updated_at": "2016-04-05T19:18:14.804Z",
+  "created_at": "2016-04-05T19:18:14.804Z",
+  "avatar_name": null,
+  "avatar_path": null
+}
 ```
