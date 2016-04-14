@@ -125,3 +125,121 @@
   "email": "test@test.com"
 }
 ```
+
+###COMPANIES
+--
+##### Get All Companies
+`GET /companies`
+
+>####Response
+
+```
+[
+  {
+    "id": 1,
+    "name": "starbucks",
+    "email": "starbucks@gmail.com",
+    "about": "we have the best coffee in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777",
+    "avatar_path": null
+  },
+  {
+    "id": 2,
+    "name": "The donut place",
+    "email": "thedonutplace@gmail.com",
+    "about": "we have the best donuts in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777",
+    "avatar_path": null
+  }
+]
+```
+
+##### Company Detail
+`GET /companies/:id`
+
+>####Request
+
+```
+{
+    "id": 1
+}
+```
+
+>####Response
+
+```
+{
+  "id": 1,
+  "name": "starbucks",
+  "about": "we have the best coffee in the whole world :)",
+  "address": "Galerias, San Salvador",
+  "phone": "22577777",
+  "avatar_path": null
+}
+```
+
+##### Create Companie
+`POST /companies`
+
+>####Request
+
+```
+{
+    "name": "The donut place",
+    "email": "thedonutplace@gmail.com",
+    "about": "we have the best donuts in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777"
+}
+```
+
+>####Response
+
+```
+{
+  "id": 2,
+  "name": "The donut place",
+  "email": "thedonutplace@gmail.com",
+  "about": "we have the best donuts in the whole world :)",
+  "address": "Galerias, San Salvador",
+  "phone": "22577777",
+  "updated_at": "2016-04-05T19:18:14.804Z",
+  "created_at": "2016-04-05T19:18:14.804Z",
+  "avatar_name": null,
+  "avatar_path": null
+}
+```
+
+##### Update Companie
+`PUT /companies/:id`
+
+>####Request
+
+```
+{
+    "name": "The donut place",
+    "email": "thedonutplace@gmail.com",
+    "about": "we have the best donuts in the whole world :)",
+    "address": "Galerias, San Salvador",
+    "phone": "22577777"
+}
+```
+
+>####Response
+
+```
+{
+  "id": 2,
+  "name": "starbucks santa elena",
+  "email": "thedonutplace@gmail.com",
+  "about": "we have the best coffee in the whole world :)",
+  "address": "Galerias, San Salvador",
+  "phone": "22948899",
+  "avatar_name": null,
+  "avatar_path": null,
+  "created_at": "2016-04-05T19:18:14.804Z",
+  "updated_at": "2016-04-05T19:25:11.916Z"
+}
+```
