@@ -36,6 +36,10 @@ module.exports = function(sequelize, DataTypes) {
     avatar: {
       type: DataTypes.STRING
     },
+    avatarName: {
+      type: DataTypes.STRING,
+      field: 'avatar_name'
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
