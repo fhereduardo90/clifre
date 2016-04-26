@@ -1,69 +1,70 @@
-var cardController      = require('express').Router();
-var sequelize           = require('../models');
-
+var cardController          = require('express').Router();
+var sequelize               = require('../models');
+// Middlewares
+var companyAuthenticator    = require('../middlewares/company_authenticator');
+// Helpers
+var ApiResponse             = require('../helpers/api_response');
 // Services
-var FindCardService     = require('../services/cards/find_card');
-var CreateCardService   = require('../services/cards/create_card');
-var FindAllCardService  = require('../services/cards/find_all_card');
-var UpdateCardService   = require('../services/cards/update_card');
+var FindCardService         = require('../services/cards/find_card');
+var CreateCardService       = require('../services/cards/create_card');
+var AllCardsService         = require('../services/cards/all_cards');
+var UpdateCardService       = require('../services/cards/update_card');
 
-cardController.route('/companies/:company_id/cards')
-  .get(function(req, res) {
-    FindAllCardService.call(req.params.company_id, function(response){
-      if(response.success){
-        res.status(response.status).json(response.result);
-      }else{
-        res.status(response.status).json({error: response.errors, message: response.message});
-      }
-    });
+cardController.route('/companies/cards')
+  .get(companyAuthenticator, function (req, res) {
+    return AllCardsService.call(req.company)
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
+      });
   })
 
-  .post(function(req, res) {
+  .post(companyAuthenticator, function (req, res) {
     var cardParams = {
       title:          req.body.title,
-      seals:          req.body.seals,
+      stamps:         req.body.stamps,
       description:    req.body.description,
-      color:          req.body.color,
-      company_id:     req.params.company_id
+      color:          req.body.color
     };
 
-    CreateCardService.call(cardParams, function(response){
-      if(response.success){
-        res.json(response.result);
-      }else{
-        res.status(response.status).json({error: response.errors, message: response.message});
-      }
-    });
-  });
-
-cardController.route('/companies/:company_id/cards/:id')
-  .get(function(req, res){
-    FindCardService.call(req.params.company_id, req.params.id, function(response){
-      if(response.success){
-        res.json(response.result);
-      }else{
-        res.status(response.status).json({error: response.errors, message: response.message});
-      }
-    });
+    return CreateCardService.call(req.company, cardParams)
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
+      });
   })
 
-  .put(function(req, res){
+cardController.route('/companies/cards/:id')
+  .get(companyAuthenticator, function (req, res) {
+    return FindCardService.call(req.company, req.params)
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
+      });
+  })
+
+  .put(companyAuthenticator, function (req, res) {
     var cardParams = {
       title:          req.body.title,
-      seals:          req.body.seals,
+      stamps:         req.body.stamps,
       description:    req.body.description,
-      color:          req.body.color,
-      company_id:     req.params.company_id,
-      id:             req.params.id
+      color:          req.body.color
     };
+    cardParams.id = req.params.id;
 
-    UpdateCardService.call(cardParams, function(response){
-      if(response.success){
-        res.json(response.result);
-      }else{
-        res.status(response.status).json({error: response.errors, message: response.message});
-      }
-    });
+    return UpdateCardService.call(req.company, cardParams)
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
+      });
   });
 
 module.exports = cardController;

@@ -2,12 +2,12 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Card = sequelize.define('Card', {
-    seals: {
+    stamps: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        isInt: true,
-        min: 0
+        isInt: {msg: 'stamps must be a positve integer.'},
+        min: {args: true, msg: 'stamps must be greater or equal than 0.'}
       }
     },
     title: {
@@ -15,21 +15,21 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
-        notEmpty: true
+        notEmpty: {msg: 'title can\'t be blank'}
       }
     },
     description: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: {msg: 'description can\'t be blank'}
       }
     },
     color: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: {msg: 'color can\'t be blank'}
       }
     }
   }, {

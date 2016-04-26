@@ -1,42 +1,31 @@
-var sequelize     = require('../../models');
+// Libs
 var _             = require('lodash');
+var Promise       = require('bluebird');
+// Helpers
+var errorParse    = require('../../helpers/error_parse');
+// Others
+var ApiError      = require('../../errors/api_error');
+var sequelize     = require('../../models');
 
-module.exports.call = function(params, cb) {
-  if (_.isEmpty(params.company_id)) params.company_id = 0;
-  if (_.isEmpty(params.id)) params.id = 0;
-
-  return sequelize.Company.findById(parseInt(params.company_id), {attributes: ['id']})
-    .then(function(company) {
-      if (_.isEmpty(company)) {
-        return cb({result: null, status: 404, success: false,
-          message: 'Company not found.', errors: []});
-      }
-
-      return sequelize.Card.findOne({
-        where: {id: parseInt(params.id), company_id: company.id}
-      })
-        .then(function(card) {
-          if (card) {
-            card.update(_.omit(params, ['id', 'company_id']))
-              .then(function(updatedCard) {
-                return cb({result: updatedCard, status: 200, success: true, message: 'Card has been updated', errors: []});
-              })
-              .catch(function(err) {
-                return cb({result: null, status: 422, success: false,
-                  message: 'Card cannot be updated.', errors: err.errors});
-              });
-          } else {
-            return cb({result: null, status: 404, success: false,
-              message: 'Card not found.', errors: []});
-          }
+module.exports.call = function(company, params) {
+  return new Promise.try(function () {
+    try {
+      var attrs = ['id', 'title', 'stamps', 'description', 'color'];
+      return company.getCards({where: {id: params.id}, attributes: attrs})
+        .then(function (cards) {
+          if (_.isEmpty(cards)) throw new Error('Card not found.');
+          var card = cards[0];
+          return card.update(_.omit(params, ['id']))
         })
-        .catch(function(err) {
-          return cb({result: null, status: 404, success: false,
-            message: 'Card not found.', errors: err.errors});
+        .then(function (card) {
+          return {result: card, status: 200, success: true,
+            message: 'Card has been updated.', errors: []};
+        })
+        .catch(function (err) {
+          throw new ApiError('Card could not be updated.', 422, errorParse(err));
         });
-    })
-    .catch(function(err) {
-      return cb({result: null, status: 404, success: false,
-        message: 'Company not found.', errors: err.errors});
-    });
+    } catch (err) {
+      throw new ApiError('Card could not be updated.', 422, errorParse(err));
+    }
+  });
 };

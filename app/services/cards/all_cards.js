@@ -7,21 +7,20 @@ var errorParse    = require('../../helpers/error_parse');
 var ApiError      = require('../../errors/api_error');
 var sequelize     = require('../../models');
 
-module.exports.call = function(company, params) {
+module.exports.call = function(company) {
   return new Promise.try(function () {
     try {
       var attrs = ['id', 'title', 'stamps', 'description', 'color'];
-      return company.getCards({where: {id: params.id}, attributes: attrs})
+      return company.getCards({attributes: attrs})
         .then(function (cards) {
-          if (_.isEmpty(cards)) throw new Error('Card not found.');
-          return {result: cards[0], status: 200, success: true,
+          return {result: cards, status: 200, success: true,
             message: '', errors: []};
         })
         .catch(function (err) {
-          throw new ApiError('Card not found.', 422, errorParse(err));
+          throw new ApiError('Card could not be found.', 422, errorParse(err));
         });
     } catch (err) {
-      throw new ApiError('Card not found.', 422, errorParse(err));
+      throw new ApiError('Cards could not be found.', 422, errorParse(err));
     }
   });
 };

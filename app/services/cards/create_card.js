@@ -1,38 +1,27 @@
-var sequelize     = require('../../models');
+// Libs
 var _             = require('lodash');
+// Helpers
+var errorParse    = require('../../helpers/error_parse');
+// Others
+var ApiError      = require('../../errors/api_error');
+var sequelize     = require('../../models');
+var Promise       = require('bluebird');
 
-module.exports.call = function(params, cb) {
-  if(_.isEmpty(params) || !_.isPlainObject(params)){
-    return cb({result: null, status: 422, success: false,
-      message: 'Params do not have a correct format.', errors: []})
-  }
-
-  if (_.isEmpty(params.company_id)) {
-    params.company_id = 0;
-  }
-
-  return sequelize.Company.findById(parseInt(params.company_id), {attributes: ['id']})
-    .then(function(company) {
-
-      if (_.isEmpty(company)) {
-        return cb({result: null, status: 404, success: false,
-          message: 'Company not found.', errors: []});
-      }
-
-      var cardInstance = sequelize.Card.build(params);
-
-      return sequelize.Card.create(params)
-          .then(function(card) {
-            return cb({result: card, status: 200, success: true,
-              message: 'Card has been created.', errors: []});
-          })
-          .catch(function(err) {
-            return cb({result: null, status: 422, success: false,
-              message: 'Card cannot be created.', errors: err.errors});
-          });
-    })
-    .catch(function(err) {
-      return cb({result: null, status: 404, success: false,
-        message: 'Company not found.', errors: err.errors});
-    });
+module.exports.call = function(company, params) {
+  return new Promise.try(function () {
+    try {
+      var _card = sequelize.Card.build(params);
+      return company.createCard(params)
+        .then(function (card) {
+          var response = _.pick(card, ['id', 'title', 'stamps', 'description', 'color']);
+          return {result: response, status: 200, success: true,
+            message: 'Card has been created.', errors: []};
+        })
+        .catch(function (err) {
+          throw new ApiError('Card could not be created.', 422, errorParse(err));
+        })
+    } catch (err) {
+      throw new ApiError('Card could not be created.', 422, errorParse(err));
+    }
+  });
 };
