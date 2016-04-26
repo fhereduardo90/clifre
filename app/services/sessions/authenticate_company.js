@@ -14,7 +14,7 @@ module.exports.call = function(email, password) {
           try {
             var token = jwtTokenGenerator.call({identifier: company.identifier},
               app.get('jwtKey'), '100d');
-            return {result: token, status: 200, success: true,
+            return {result: {access_token: token}, status: 200, success: true,
               message: 'Company has been logged in.', errors: []};
           } catch (e) {throw e;}
         })

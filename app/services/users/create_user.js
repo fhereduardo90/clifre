@@ -41,7 +41,7 @@ module.exports.call = function (params) {
       return user;
     })
     .then(function () {
-      return {result: token, status: 200, success: true,
+      return {result: {access_token: token}, status: 200, success: true,
         message: 'User has been created.', errors: []};
     })
     .catch(function (err) {

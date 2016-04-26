@@ -42,7 +42,7 @@ module.exports.call = function (params) {
       return company;
     })
     .then(function () {
-      return {result: token, status: 200, success: true,
+      return {result: {access_token: token}, status: 200, success: true,
         message: 'Company has been created.', errors: []};
     })
     .catch(function (err) {
