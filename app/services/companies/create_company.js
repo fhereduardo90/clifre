@@ -28,8 +28,10 @@ module.exports.call = function (params) {
   // return new Promise(function (resolve, reject) {
   params.identifier = shortid.generate().toLowerCase();
   var token = null;
+  var companyInstance = sequelize.Company.build(_.omit(params, ['avatar']));
+  companyInstance.temporalPassword = params.password;
   // Create Company without avatar
-  return sequelize.Company.create(_.omit(params, ['avatar']))
+  return companyInstance.save()
     .then(function (company) {
       try {
         token = JwtTokenGenerator.call({identifier: company.identifier}, app.get('jwtKey'), '100d');

@@ -52,9 +52,22 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     underscored: true,
     tableName: 'users',
+    setterMethods: {
+      temporalPassword: function(value) {
+        this.setDataValue('_temporalPassword', value);
+      }
+    },
+    getterMethods: {
+      temporalPassword: function() {
+        return this.getDataValue('_temporalPassword');
+      }
+    },
     hooks: {
       afterValidate: function(user, options) {
-        if (user.password) user.password = bcrypt.hashSync(user.password, 10);
+        if (user.temporalPassword) {
+          user.password = bcrypt.hashSync(user.password, 10);
+          user.temporalPassword = null;
+        }
       }
     },
     classMethods: {

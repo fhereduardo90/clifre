@@ -34,6 +34,7 @@ function uploadAvatar (avatar, path, user) {
 module.exports.call = function(user, params) {
   return Promise.try(function () {
     try {
+      user.temporalPassword = params.password;
       return user.update(_.omit(params, ['avatar']))
         .then(function (u) {
           var path = 'users/' + u.identifier + '/avatar';

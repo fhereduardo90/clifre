@@ -27,8 +27,10 @@ function uploadAvatar (avatar, path, user) {
 module.exports.call = function (params) {
   params.identifier = shortid.generate().toLowerCase();
   var token = null;
+  var userInstance = sequelize.User.build(_.omit(params, ['avatar']));
+  userInstance.temporalPassword = params.password;
   // Create User without avatar
-  return sequelize.User.create(_.omit(params, ['avatar']))
+  return userInstance.save()
     .then(function (user) {
       try {
         token = JwtTokenGenerator.call({identifier: user.identifier}, app.get('jwtKey'), '100d');
