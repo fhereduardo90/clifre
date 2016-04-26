@@ -239,3 +239,45 @@
   "avatar": "[aws url]"
 }
 ```
+
+###SESSION
+--
+##### Sign In Users
+`POST /authorization`
+
+>#### Request
+
+```
+{
+  'email': 'xyz@xyz.com',
+  'password': '12345678'
+}
+```
+
+>####Response
+
+```
+{
+  "access_token": "[access token]"
+}
+```
+
+##### Sign In Companies
+`POST /authorization-company`
+
+>#### Request
+
+```
+{
+  'email': 'xyz@xyz.com',
+  'password': '12345678'
+}
+```
+
+>####Response
+
+```
+{
+  "access_token": "[access token]"
+}
+```
