@@ -1,4 +1,5 @@
-var bcrypt = require('bcrypt');
+var bcrypt     = require('bcrypt');
+var Promise    = require('bluebird');
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
@@ -57,11 +58,13 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     classMethods: {
-      authenticate: function(password, password_hash, done) {
-        bcrypt.compare(password, password_hash, function(err, res) {
-          if (err) return done(err, null);
-          if (!res) return done(new Error('Authentication failed. Wrong email or password.'), false);
-          return done(null, true);
+      authenticate: function(password, password_hash) {
+        return new Promise(function (resolve, reject) {
+          bcrypt.compare(password, password_hash, function(err, res) {
+            if (err) return reject(err);
+            if (!res) return reject(new Error('Authentication failed. Wrong email or password.'));
+            return resolve(true);
+          });
         });
       }
     }

@@ -1,22 +1,20 @@
 var sequelize     = require('../../models');
-var _             = require('lodash');
+var ApiError      = require('../../errors/api_error');
+var errorParse    = require('../../helpers/error_parse');
 
-module.exports.call = function(companyId, cb) {
-  if(_.isEmpty(companyId)){
-    companyId = 0;
-  }
-
-  return sequelize.Company.findById(parseInt(companyId), {attributes: ['id', 'name', 'about', 'address', 'phone', 'avatar_path']})
-    .then(function(company){
-      if(company){
-        return cb({result: company, status: 200, success: true, message: '', errors: []});
-      }else{
-        return cb({result: null, status: 404, success: false,
-          message: 'Company not found.', errors: []});
+module.exports.call = function (id) {
+  var attrs = ['id', 'name', 'email', 'identifier', 'about', 'address',
+    'phone', 'avatar'];
+  return sequelize.Company.findById(id, {attributes: attrs})
+    .then(function (company) {
+      if (company) {
+        return {result: company, status: 200, success: true,
+          message: '', errors: []};
+      } else {
+        throw new Error('Company not found.');
       }
     })
-    .catch(function(err){
-      return cb({result: null, status: 404, success: false,
-        message: 'Company not found.', errors: err.errors});
+    .catch(function (err) {
+       throw ApiError('Copampany not found.', 404, errorParse(err));
     });
 };

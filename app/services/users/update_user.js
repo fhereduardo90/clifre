@@ -1,54 +1,56 @@
 var sequelize           = require('../../models');
+var JwtTokenGenerator   = require('../sessions/jwt_token_generator');
+var app                 = require('../../../app');
+var _                   = require('lodash');
 var UploaderAvatar      = require('../../helpers/uploader_avatar');
+var shortid             = require('shortid');
+var ApiError            = require('../../errors/api_error');
+var errorParse          = require('../../helpers/error_parse');
+var Promise             = require('bluebird');
 
-// function updateUser (user, params, done) {
-//   return user.update(params)
-//     .success(function() { return done(false, user); })
-//       // return done({result: {id: user.id, name: user.name, avatar: user.avatar, birthdate: user.birthdate,
-//       //    email: user.email}, status: 200, success: true, message: 'User has been updated.'});
-//     .error(function (err) { return done(err, null); });
-// }
+function uploadAvatar (avatar, path, user) {
+  // Initializer UploaderAvatar instance and upload user avatar
+  var UploaderUserAvatar = new UploaderAvatar(path);
+  // deprecated avatarName
+  var oldAvatarName = user.avatarName;
+  return UploaderUserAvatar.putImage(avatar, user.identifier)
+    .then(function (data) {
+      // update the current user with two new fields avatar and avatarName
+      user.avatar = data.url;
+      user.avatarName = data.name;
+      return user.save();
+    })
+    .then(function (u) {
+      UploaderUserAvatar.deleteImage(oldAvatarName);
+      return u;
+    })
+    .catch(function (err) {
+      user.destroy();
+      UploaderUserAvatar.deleteImage(user.avatarName);
+      throw err;
+    });
+}
 
-module.exports.call = function (user, params, done) {
-  try {
-    if (params.avatar) {
-      UploaderUserAvatar =  new UploaderAvatar('users/' + user.identifier + '/avatar');
-      return UploaderUserAvatar.putImage(params.avatar, user.identifier, function (err, data) {
-        if (err) {
-          return done({result: null, status: 404, success: false,
-             message: 'User could not be updated.', errors: [err.message]});
-        }
-        params.avatar = data.url;
-        params.avatarName = data.name;
-
-        var previousAvatarName = user.avatarName;
-
-        return user.update(params)
-          .then(function (usr) {
-            if (usr.avatar) UploaderUserAvatar.deleteImage(previousAvatarName, function(err, data) {});
-            return done({result: {id: usr.id, name: usr.name, avatar: usr.avatar, birthdate: usr.birthdate,
-              email: usr.email}, status: 200, success: true, message: 'User has been updated.'});
-          })
-          .catch(function (e) {
-            UploaderUserAvatar.deleteImage(params.avatarName, function (err, data) {});
-            return done({result: null, status: 422, success: false,
-                message: 'User could not be updated', errors: [e.message]});
-          })
-      });
+module.exports.call = function(user, params) {
+  return Promise.try(function () {
+    try {
+      return user.update(_.omit(params, ['avatar']))
+        .then(function (u) {
+          var path = 'users/' + u.identifier + '/avatar';
+          if (params.avatar) return uploadAvatar(params.avatar, path, u);
+          return u;
+        })
+        .then(function (u) {
+          var response = _.pick(u, ['id', 'name', 'email', 'identifier',
+            'birthdate', 'avatar']);
+          return {result: response, status: 200, success: true,
+            message: 'User has been updated.', errors: []};
+        })
+        .catch(function (err) {
+          throw new ApiError('User could not be updated.', 422, errorParse(err));
+        });
+    } catch (e) {
+      throw new ApiError('User could not be updated.', 422, errorParse(e));
     }
-
-    return user.update(params)
-      .then(function (usr) {
-        return done({result: {id: usr.id, name: usr.name, avatar: usr.avatar, birthdate: usr.birthdate,
-          email: usr.email}, status: 200, success: true, message: 'User has been updated.'});
-      })
-      .catch(function (err) {
-        return done({result: null, status: 422, success: false,
-          message: 'User could not be updated', errors: err.message});
-      });
-
-  } catch (e) {
-    return done({result: null, status: 422, success: false,
-      message: 'User could not be updated', errors: [e.message]});
-  }
+  });
 };

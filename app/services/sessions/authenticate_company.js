@@ -6,16 +6,16 @@ var errorParse          = require('../../helpers/error_parse');
 var ApiError            = require('../../errors/api_error');
 
 module.exports.call = function(email, password) {
-  return sequelize.User.findOne({where: {email: email}})
-    .then(function (user) {
-      if (!user) throw new Error('Authentication failed. Wrong email or password.');
-      return sequelize.User.authenticate(password, user.password)
+  return sequelize.Company.findOne({where: {email: email}})
+    .then(function (company) {
+      if (!company) throw new Error('Authentication failed. Wrong email or password.');
+      return sequelize.Company.authenticate(password, company.password)
         .then(function () {
           try {
-            var token = jwtTokenGenerator.call({identifier: user.identifier},
+            var token = jwtTokenGenerator.call({identifier: company.identifier},
               app.get('jwtKey'), '100d');
             return {result: token, status: 200, success: true,
-              message: 'User has been logged in.', errors: []};
+              message: 'Company has been logged in.', errors: []};
           } catch (e) {throw e;}
         })
         .catch(function (err) {throw err;});

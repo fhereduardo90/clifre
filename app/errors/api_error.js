@@ -1,6 +1,5 @@
 function ApiError (message, status, errors) {
   Error.captureStackTrace(this, this.constructor);
-  this.name = 'ApiError';
   this.message = message;
   this.status = status;
   this.errors = errors || [];

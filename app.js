@@ -14,7 +14,7 @@ var CardController      = require('./app/controllers/cards');
 var SessionController   = require('./app/controllers/sessions');
 
 // Middlewares
-var authenticator       = require('./app/middlewares/authenticator');
+var userAuthenticator       = require('./app/middlewares/user_authenticator');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({limit: '50mb'}));

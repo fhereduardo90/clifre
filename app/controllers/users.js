@@ -1,46 +1,56 @@
-var userController      = require('express').Router();
-var sequelize           = require('../models');
+// Middlewares
+var userAuthenticator   = require('../middlewares/user_authenticator');
+// Helpers
+var ApiResponse         = require('../helpers/api_response');
+// User Services
 var CreateUserService   = require('../services/users/create_user');
 var UpdateUserService   = require('../services/users/update_user');
-var ApiError            = require('../errors/api_error');
-var authenticator       = require('../middlewares/authenticator');
+var AllUsersService     = require('../services/users/all_users');
+// Libs
 var _                   = require('lodash');
+// Others
+var userController      = require('express').Router();
+var sequelize           = require('../models');
 
 userController.route('/users')
-  .get(authenticator, function(req, res) {
-    return sequelize.User.findAll({attributes: ['id', 'name', 'email', 'identifier', 'birthdate', 'avatar']})
-      .then(function(users) {return res.json(users)})
-      .catch(function(err) {
-        return res.status(422).json(new ApiError(err.message, 422))
+  .get(function (req, res) {
+    return AllUsersService.call()
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
       });
   })
 
-  .post(function(req, res){
-    var userParams = {
-      name:         req.body.name,
-      email:        req.body.email,
-      birthdate:    req.body.birthdate,
-      password:     req.body.password,
-      avatar:       req.body.avatar
-    };
-
-    return CreateUserService.call(userParams, function(response) {
-      if(response.success) return res.json(response.result);
-      return res.status(response.status)
-        .json(new ApiError(response.message, response.status, response.errors));
-    });
+  .post(function (req, res) {
+    var userParams = _.pick(req.body, ['name', 'email', 'birthdate',
+      'password', 'avatar']);
+    return CreateUserService.call(userParams)
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
+      });
   })
 
-  .put(authenticator, function(req, res){
-    var userParams = _.pick(req.body, ['name', 'email', 'birthdate', 'password', 'avatar']);
-    return UpdateUserService.call(req.user, userParams, function(response){
-      if (response.success) return res.status(200).json(response.result);
-      return res.status(response.status)
-        .json(new ApiError(response.message, response.status, response.errors));
-    });
+  .put(userAuthenticator, function (req, res) {
+    var userParams = _.pick(req.body, ['name', 'email', 'birthdate',
+      'password', 'avatar']);
+    return UpdateUserService.call(req.user, userParams)
+      .then(function (response) {
+        return ApiResponse.success(res, response);
+      })
+      .catch(function (err) {
+        return ApiResponse.error(res, err);
+      });
   });
 
 userController.route('/users/profile')
-  .get(authenticator, function(req, res) {return res.json(req.user)});
+  .get(userAuthenticator, function (req, res) {
+    var attrs = ['id', 'name', 'identifier', 'email', 'birthdate', 'avatar'];
+    return res.json(_.pick(req.user, attrs));
+  });
 
 module.exports = userController;
