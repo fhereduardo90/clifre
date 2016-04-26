@@ -240,6 +240,138 @@
 }
 ```
 
+###CARDS
+--
+##### Get All Company's Cards
+`GET /companies/cards`
+
+*Company's Cards.* ***Authorization token is required.***
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Response
+
+```
+[
+  {
+    "id": 11,
+    "title": "card title",
+    "stamps": 6,
+    "description": "card description ",
+    "color": "blue"
+  },
+  ...
+]
+```
+
+##### Company's Card Detail
+`GET /companies/cards/:id`
+
+*Company's Card Detail.* ***Authorization token is required.***
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Request
+
+```
+{
+  id: 11
+}
+```
+
+>####Response
+
+```
+{
+  "id": 11,
+  "title": "card title",
+  "stamps": 6,
+  "description": "card description ",
+  "color": "blue"
+}
+```
+
+##### Create Card
+`POST /companies/cards`
+
+*Create Card.* ***Authorization token is required.***
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Request
+
+```
+{
+  "title": "card title",
+  "stamps": 6,
+  "description": "card description ",
+  "color": "blue"
+}
+```
+
+>####Response
+
+```
+{
+  "id": 11,
+  "title": "card title",
+  "stamps": 6,
+  "description": "card description ",
+  "color": "blue"
+}
+```
+
+##### Update Companie's Card
+`PUT /companies/cards/:id`
+
+*Update Company's Card. all fields are optional.* ***Authorization token is required***.
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Request
+
+```
+{
+  "id": 11,
+  "title": "card title",
+  "stamps": 6,
+  "description": "card description ",
+  "color": "blue"
+}
+```
+
+>####Response
+
+```
+{
+  "id": 11,
+  "title": "card title",
+  "stamps": 6,
+  "description": "card description ",
+  "color": "blue"
+}
+```
+
 ###SESSION
 --
 ##### Sign In Users
