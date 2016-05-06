@@ -8,11 +8,15 @@
     "start": "node app"
   },
   "engines": {
-    "node": "5.3"
+    "node": "6.1.0"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb-base": "^2.0.0",
+    "eslint-plugin-import": "^1.7.0"
+  },
   "dependencies": {
     "aws-sdk": "^2.3.0",
     "bcrypt": "^0.8.5",

@@ -1,68 +1,68 @@
-var cardController          = require('express').Router();
-var sequelize               = require('../models');
+var express = require('express');
+var cardController = new express.Router();
 // Middlewares
-var companyAuthenticator    = require('../middlewares/company_authenticator');
+var companyAuthenticator = require('../middlewares/company_authenticator');
 // Helpers
-var ApiResponse             = require('../helpers/api_response');
+var ApiResponse = require('../helpers/api_response');
 // Services
-var FindCardService         = require('../services/cards/find_card');
-var CreateCardService       = require('../services/cards/create_card');
-var AllCardsService         = require('../services/cards/all_cards');
-var UpdateCardService       = require('../services/cards/update_card');
+var FindCardService = require('../services/cards/find_card');
+var CreateCardService = require('../services/cards/create_card');
+var AllCardsService = require('../services/cards/all_cards');
+var UpdateCardService = require('../services/cards/update_card');
 
 cardController.route('/companies/cards')
-  .get(companyAuthenticator, function (req, res) {
+  .get(companyAuthenticator, function getCards(req, res) {
     return AllCardsService.call(req.company)
-      .then(function (response) {
+      .then(function getCardsResponse(response) {
         return ApiResponse.success(res, response);
       })
-      .catch(function (err) {
+      .catch(function getCardsError(err) {
         return ApiResponse.error(res, err);
       });
   })
 
-  .post(companyAuthenticator, function (req, res) {
+  .post(companyAuthenticator, function postCard(req, res) {
     var cardParams = {
-      title:          req.body.title,
-      stamps:         req.body.stamps,
-      description:    req.body.description,
-      color:          req.body.color
+      title: req.body.title,
+      stamps: req.body.stamps,
+      description: req.body.description,
+      color: req.body.color
     };
 
     return CreateCardService.call(req.company, cardParams)
-      .then(function (response) {
+      .then(function postCardResponse(response) {
         return ApiResponse.success(res, response);
       })
-      .catch(function (err) {
+      .catch(function postCardError(err) {
         return ApiResponse.error(res, err);
       });
-  })
+  });
 
 cardController.route('/companies/cards/:id')
-  .get(companyAuthenticator, function (req, res) {
+  .get(companyAuthenticator, function getCard(req, res) {
     return FindCardService.call(req.company, req.params)
-      .then(function (response) {
+      .then(function getCardResponse(response) {
         return ApiResponse.success(res, response);
       })
-      .catch(function (err) {
+      .catch(function getCardError(err) {
         return ApiResponse.error(res, err);
       });
   })
 
-  .put(companyAuthenticator, function (req, res) {
+  .put(companyAuthenticator, function putCompany(req, res) {
     var cardParams = {
-      title:          req.body.title,
-      stamps:         req.body.stamps,
-      description:    req.body.description,
-      color:          req.body.color
+      title: req.body.title,
+      stamps: req.body.stamps,
+      description: req.body.description,
+      color: req.body.color,
+      id: req.params.id
     };
-    cardParams.id = req.params.id;
 
     return UpdateCardService.call(req.company, cardParams)
-      .then(function (response) {
+      .then(function putCardResponse(response) {
         return ApiResponse.success(res, response);
       })
-      .catch(function (err) {
+      .catch(function putCardError(err) {
         return ApiResponse.error(res, err);
       });
   });
