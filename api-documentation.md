@@ -375,7 +375,7 @@
 ###SESSION
 --
 ##### Sign In Users
-`POST /authorization`
+`POST /authenticate`
 
 >#### Request
 
@@ -395,7 +395,7 @@
 ```
 
 ##### Sign In Companies
-`POST /authorization-company`
+`POST /authenticate-company`
 
 >#### Request
 
