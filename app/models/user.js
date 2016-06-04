@@ -1,6 +1,11 @@
 'use strict';
 var bcrypt = require('bcrypt');
 var Promise = require('bluebird');
+var shortid = require('shortid');
+
+function generateEncryptPassword(password) {
+  return bcrypt.hashSync(password, 10);
+}
 
 module.exports = function userModel(sequelize, DataTypes) {
   var User = sequelize.define('User', {
@@ -13,12 +18,24 @@ module.exports = function userModel(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
-        isEmail: true,
-        notEmpty: true,
+        isEmail: { msg: 'email format is not correct.' },
+        notEmpty: function notEmpty(value, next) {
+          if (this.isNewRecord) {
+            if (this.facebookId && !value) return next();
+            if (value) return next();
+            else return next('email can\'t be blank.');
+          } else {
+            if (!this.email && !value) return next();
+            if (!value) return next('email can\'t be blank.');
+            else return next();
+          }
+        },
         isUnique: function isUnique(value, next) {
-          return User.find({where: {email: value}, attributes: ['id']})
+          if (!value) return next();
+          var params = {email: value};
+          if (!this.isNewRecord && this.email === value) return next();
+          return User.find({where: params, attributes: ['id']})
             .then(function success(user) {
               if (user) return next('email has been already taken.');
               else next();
@@ -63,9 +80,10 @@ module.exports = function userModel(sequelize, DataTypes) {
       field: 'facebook_id',
       validate: {
         isUnique: function isUnique(value, next) {
+          if (!value) return next();
           return User.find({where: {facebookId: value}, attributes: ['id']})
             .then(function success(user) {
-              if (user) return next('facebook_id has been already taken.');
+              if (user) return next('facebookId has been already taken.');
               else next();
             })
             .catch(function error(err) {
@@ -78,23 +96,28 @@ module.exports = function userModel(sequelize, DataTypes) {
     underscored: true,
     tableName: 'users',
     setterMethods: {
-      temporalPassword: function temporalPassword(value) {
-        this.setDataValue('_temporalPassword', value);
+      isPasswordEncrypted: function temporalPassword(value) {
+        this.setDataValue('_isPasswordEncrypted', value);
       }
     },
     getterMethods: {
-      temporalPassword: function temporalPassword() {
-        return this.getDataValue('_temporalPassword');
+      isPasswordEncrypted: function temporalPassword() {
+        return this.getDataValue('_isPasswordEncrypted') || false;
       }
     },
     hooks: {
-      beforeCreate: function checkPassword(user) {
-        if (user.temporalPassword) {
-          /* eslint-disable no-param-reassign */
-          user.password = bcrypt.hashSync(user.temporalPassword, 10);
-          user.temporalPassword = null;
-          /* eslint-enable no-param-reassign */
+      beforeValidate: function beforeCreate(user) {
+        if (user.facebookId && !user.password) {
+          user.password = shortid.generate().toLowerCase();
         }
+      },
+      afterValidate: function beforeUpdate(user) {
+        /* eslint-disable no-param-reassign */
+        if (user.password && !user.isPasswordEncrypted) {
+          user.password = generateEncryptPassword(user.password);
+          user.isPasswordEncrypted = true;
+        }
+        /* eslint-enable no-param-reassign */
       }
     },
     classMethods: {
