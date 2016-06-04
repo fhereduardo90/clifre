@@ -14,10 +14,19 @@ module.exports = function userModel(sequelize, DataTypes) {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         isEmail: true,
-        notEmpty: true
+        notEmpty: true,
+        isUnique: function isUnique(value, next) {
+          return User.find({where: {email: value}, attributes: ['id']})
+            .then(function success(user) {
+              if (user) return next('email has been already taken.');
+              else next();
+            })
+            .catch(function error(err) {
+              return next(err.message);
+            });
+        }
       }
     },
     identifier: {
@@ -48,6 +57,22 @@ module.exports = function userModel(sequelize, DataTypes) {
         notEmpty: { msg: 'password can\'t be blank' },
         len: { args: [8, 25], msg: 'password only accepts min 8 and max 25 characters.' }
       }
+    },
+    facebookId: {
+      type: DataTypes.STRING,
+      field: 'facebook_id',
+      validate: {
+        isUnique: function isUnique(value, next) {
+          return User.find({where: {facebookId: value}, attributes: ['id']})
+            .then(function success(user) {
+              if (user) return next('facebook_id has been already taken.');
+              else next();
+            })
+            .catch(function error(err) {
+              return next(err.message);
+            });
+        }
+      }
     }
   }, {
     underscored: true,
@@ -63,7 +88,7 @@ module.exports = function userModel(sequelize, DataTypes) {
       }
     },
     hooks: {
-      afterValidate: function checkPassword(user) {
+      beforeCreate: function checkPassword(user) {
         if (user.temporalPassword) {
           /* eslint-disable no-param-reassign */
           user.password = bcrypt.hashSync(user.temporalPassword, 10);

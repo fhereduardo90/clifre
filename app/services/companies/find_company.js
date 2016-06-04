@@ -15,6 +15,6 @@ module.exports.call = function (id) {
       }
     })
     .catch(function (err) {
-       throw ApiError('Copampany not found.', 404, errorParse(err));
+       throw ApiError('Company not found.', 404, errorParse(err));
     });
 };
