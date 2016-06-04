@@ -6,7 +6,7 @@ var bodyParser      = require('body-parser');
 var port            = process.env.PORT;
 var router          = express.Router();
 var jwt             = require('jsonwebtoken');
-var cors	    = require('cors');
+var cors	          = require('cors');
 
 // Controllers
 var UserController      = require('./app/controllers/users');

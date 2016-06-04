@@ -27,10 +27,27 @@ function uploadAvatar (avatar, path, user) {
 module.exports.call = function (params) {
   params.identifier = shortid.generate().toLowerCase();
   var token = null;
+  var skipValidations = [];
   var userInstance = sequelize.User.build(_.omit(params, ['avatar']));
-  userInstance.temporalPassword = params.password;
+
+  // Skip email validation if there is a facebookId and email is blank.
+  // Skip facebookId validation if it's blank.
+  if (userInstance.facebookId) {
+    if (!userInstance.email) skipValidations.push('email');
+    userInstance.password = shortid.generate().toLowerCase();
+  } else {
+    skipValidations.push('facebookId');
+  }
+
+  userInstance.temporalPassword = userInstance.password;
+
   // Create User without avatar
-  return userInstance.save()
+
+  return userInstance.validate({skip: skipValidations})
+    .then(function (err) {
+      if (err) throw err;
+      else return userInstance.save({validate: false})
+    })
     .then(function (user) {
       try {
         token = JwtTokenGenerator.call({identifier: user.identifier}, app.get('jwtKey'), '100d');
