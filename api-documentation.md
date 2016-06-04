@@ -413,3 +413,22 @@
   "access_token": "[access token]"
 }
 ```
+
+##### Sign In Users by Facebook
+`POST /authenticate-facebook-user`
+
+>#### Request
+
+```
+{
+  'accessToken': '[facebook access token]'
+}
+```
+
+>####Response
+
+```
+{
+  "access_token": "[access token]"
+}
+```
