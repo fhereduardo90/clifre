@@ -6,6 +6,7 @@ var UploaderAvatar = require('../../helpers/uploader_avatar');
 var shortid = require('shortid');
 var ApiError = require('../../errors/api_error');
 var errorParse = require('../../helpers/error_parse');
+var UserMailer = require('../../mailers/user_mailer');
 
 /**
 * Upload user avatar to S3 and saving it in a specefic path.
@@ -51,7 +52,8 @@ module.exports.call = function (params) {
       if (params.avatar) return uploadAvatar(params.avatar, path, user);
       return user;
     })
-    .then(function success() {
+    .then(function success(user) {
+      UserMailer.welcomeMail(user.id);
       return {result: {access_token: token}, status: 200, success: true,
         message: 'User has been created.', errors: []};
     })
