@@ -437,6 +437,7 @@
 --
 ##### Recovery User Password
 `POST /passwords/user/reset`
+
 *If the parameters are correct, you will receive a new email with the reset token.*
 
 >#### Request
