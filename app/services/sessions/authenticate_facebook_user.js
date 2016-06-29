@@ -12,7 +12,7 @@ module.exports.call = function(facebookId) {
       // Generate jwt token.
       var token = jwtTokenGenerator.call({identifier: user.identifier},
         app.get('jwtKey'), '100d');
-      return {result: {access_token: token}, status: 200, success: true,
+      return {result: {accessToken: token}, status: 200, success: true,
         message: 'User has been logged in.', errors: []};
     })
     .catch(function error(err) {
