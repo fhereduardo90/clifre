@@ -189,6 +189,7 @@
     "about": "we have the best donuts in the whole world :)",
     "address": "Galerias, San Salvador",
     "phone": "22577777",
+    "password": "testpassword",
     "avatar": "data:image/[png or jpeg];base64,ad4sad4a..."
 }
 ```
@@ -222,6 +223,7 @@
     "about": "we have the best donuts in the whole world :)",
     "address": "Galerias, San Salvador",
     "phone": "22577777",
+    "password": "testpassword",
     "avatar": "data:image/[png or jpeg];base64,ad4sad4a..."
 }
 ```
