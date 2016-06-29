@@ -435,14 +435,33 @@
 
 ###PASSWORDS
 --
-##### Reset User Password
+##### Recovery User Password
 `POST /passwords/user/reset`
+*If the parameters are correct, you will receive a new email with the reset token.*
 
 >#### Request
 
 ```
 {
   'email': 'xyz@xyz.com',
+}
+```
+
+>####Response
+
+```
+{}
+```
+
+##### Reset User Password
+`PUT /passwords/user/reset`
+
+>#### Request
+
+```
+{
+  'resetToken': '[reset token]',
+  'password': 'xyz@xyz.com',
 }
 ```
 
