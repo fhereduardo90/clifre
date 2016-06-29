@@ -6,13 +6,14 @@ var ApiError = require('../../errors/api_error');
 var JwtTokenGenerator = require('../sessions/jwt_token_generator');
 var shortid = require('shortid');
 var app = require('../../../app');
+var CompanyMailer = require('../../mailers/company_mailer');
 
 /**
 * Upload company avatar to S3 and saving it in a specefic path.
 *
 * @param {string} avatar, the base64 that will be uploaded to S3.
 * @param {string} path, the place where the avatar will be located.
-* @param {Object} company, the instance of the current user.
+* @param {Object} company, the instance of the current company.
 * @returns {Promise} Returns an UploaderAvatar promise.
 */
 function uploadAvatar (avatar, path, company) {
@@ -51,7 +52,9 @@ module.exports.call = function (params) {
       if (params.avatar) return uploadAvatar(params.avatar, path, company);
       return company;
     })
-    .then(function () {
+    .then(function (company) {
+      // Send welcome email to new company.
+      CompanyMailer.welcomeMail(company.id);
       return {result: {accessToken: token}, status: 200};
     })
     .catch(function (err) {
