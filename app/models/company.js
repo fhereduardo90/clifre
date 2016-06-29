@@ -76,6 +76,14 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: {msg: 'password can\'t be blank'},
         len: {args: [8,25], msg: 'password only accepts min 8 and max 25 characters.'}
       }
+    },
+    resetPasswordToken: {
+      type: DataTypes.STRING,
+      field: 'reset_password_token'
+    },
+    resetPasswordExpires: {
+      type: DataTypes.DATE,
+      field: 'reset_password_expires'
     }
   }, {
     underscored: true,
