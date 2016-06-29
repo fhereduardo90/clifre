@@ -1,18 +1,26 @@
-var sequelize             = require('../../models');
-var _                     = require('lodash');
-var UploaderAvatar        = require('../../helpers/uploader_avatar');
-var errorParse            = require('../../helpers/error_parse');
-var ApiError              = require('../../errors/api_error');
-var JwtTokenGenerator     = require('../sessions/jwt_token_generator');
-var shortid               = require('shortid');
-var app                   = require('../../../app');
+var sequelize = require('../../models');
+var _ = require('lodash');
+var UploaderAvatar = require('../../helpers/uploader_avatar');
+var errorParse = require('../../helpers/error_parse');
+var ApiError = require('../../errors/api_error');
+var JwtTokenGenerator = require('../sessions/jwt_token_generator');
+var shortid = require('shortid');
+var app = require('../../../app');
 
+/**
+* Upload company avatar to S3 and saving it in a specefic path.
+*
+* @param {string} avatar, the base64 that will be uploaded to S3.
+* @param {string} path, the place where the avatar will be located.
+* @param {Object} company, the instance of the current user.
+* @returns {Promise} Returns an UploaderAvatar promise.
+*/
 function uploadAvatar (avatar, path, company) {
   // Initializer UploaderAvatar instance and upload company avatar
   var UploaderCompanyAvatar = new UploaderAvatar(path);
   return UploaderCompanyAvatar.putImage(avatar, company.identifier)
     .then(function (data) {
-      // update the current company with two new fields avatar and avatarName
+      // Update the current company with two new fields avatar and avatarName
       company.avatar = data.url;
       company.avatarName = data.name;
       return company.save();
@@ -25,11 +33,11 @@ function uploadAvatar (avatar, path, company) {
 }
 
 module.exports.call = function (params) {
-  // return new Promise(function (resolve, reject) {
+  // Generate a random identifier.
   params.identifier = shortid.generate().toLowerCase();
   var token = null;
   var companyInstance = sequelize.Company.build(_.omit(params, ['avatar']));
-  companyInstance.temporalPassword = params.password;
+
   // Create Company without avatar
   return companyInstance.save()
     .then(function (company) {
@@ -44,8 +52,7 @@ module.exports.call = function (params) {
       return company;
     })
     .then(function () {
-      return {result: {access_token: token}, status: 200, success: true,
-        message: 'Company has been created.', errors: []};
+      return {result: {accessToken: token}, status: 200};
     })
     .catch(function (err) {
       throw new ApiError('Company could not be created.', 422, errorParse(err));

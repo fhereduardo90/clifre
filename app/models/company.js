@@ -1,6 +1,11 @@
+'use strict';
 var bcrypt     = require('bcrypt');
 var Promise    = require('bluebird');
-'use strict';
+var shortid = require('shortid');
+
+function generateEncryptPassword(password) {
+  return bcrypt.hashSync(password, 10);
+}
 
 module.exports = function(sequelize, DataTypes) {
   var Company = sequelize.define('Company', {
@@ -13,11 +18,31 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
       validate: {
-        isEmail: {msg: 'email is not valid.'},
-        notEmpty: {msg: 'email can\'t be blank.'}
+        isEmail: { msg: 'email format is not correct.' },
+        notEmpty: function notEmpty(value, next) {
+          if (this.isNewRecord) {
+            if (value) return next();
+            else return next('email can\'t be blank.');
+          } else {
+            if (!this.email && !value) return next();
+            if (!value) return next('email can\'t be blank.');
+            else return next();
+          }
+        },
+        isUnique: function isUnique(value, next) {
+          if (!value) return next();
+          var params = {email: value};
+          if (!this.isNewRecord && this.email === value) return next();
+          return Company.find({where: params, attributes: ['id']})
+            .then(function success(company) {
+              if (company) return next('email has been already taken.');
+              else next();
+            })
+            .catch(function error(err) {
+              return next(err.message);
+            });
+        }
       }
     },
     about: {
@@ -56,30 +81,32 @@ module.exports = function(sequelize, DataTypes) {
     underscored: true,
     tableName: 'companies',
     setterMethods: {
-      temporalPassword: function(value) {
-        this.setDataValue('_temporalPassword', value);
+      isPasswordEncrypted: function temporalPassword(value) {
+        this.setDataValue('_isPasswordEncrypted', value);
       }
     },
     getterMethods: {
-      temporalPassword: function() {
-        return this.getDataValue('_temporalPassword');
+      isPasswordEncrypted: function temporalPassword() {
+        return this.getDataValue('_isPasswordEncrypted') || false;
       }
     },
     hooks: {
-      afterValidate: function(company, options) {
-        if (company.temporalPassword) {
-          company.password = bcrypt.hashSync(company.password, 10);
-          company.temporalPassword = null;
+      afterValidate: function beforeUpdate(company) {
+        /* eslint-disable no-param-reassign */
+        if (company.password && !company.isPasswordEncrypted) {
+          company.password = generateEncryptPassword(company.password);
+          company.isPasswordEncrypted = true;
         }
+        /* eslint-enable no-param-reassign */
       }
     },
     classMethods: {
       associate: function(models) {
         Company.hasMany(models.Card, {as: 'Cards'});
       },
-      authenticate: function(password, password_hash) {
-        return new Promise(function (resolve, reject) {
-          bcrypt.compare(password, password_hash, function(err, res) {
+      authenticate: function authenticate(password, passwordHash) {
+        return new Promise(function promise(resolve, reject) {
+          bcrypt.compare(password, passwordHash, function compare(err, res) {
             if (err) return reject(err);
             if (!res) return reject(new Error('Authentication failed. Wrong email or password.'));
             return resolve(true);
