@@ -189,6 +189,7 @@
     "about": "we have the best donuts in the whole world :)",
     "address": "Galerias, San Salvador",
     "phone": "22577777",
+    "password": "testpassword",
     "avatar": "data:image/[png or jpeg];base64,ad4sad4a..."
 }
 ```
@@ -222,6 +223,7 @@
     "about": "we have the best donuts in the whole world :)",
     "address": "Galerias, San Salvador",
     "phone": "22577777",
+    "password": "testpassword",
     "avatar": "data:image/[png or jpeg];base64,ad4sad4a..."
 }
 ```
@@ -431,4 +433,43 @@
 {
   "access_token": "[access token]"
 }
+```
+
+###PASSWORDS
+--
+##### Recovery User Password
+`POST /passwords/user/reset`
+
+*If the parameters are correct, you will receive a new email with the reset token.*
+
+>#### Request
+
+```
+{
+  'email': 'xyz@xyz.com',
+}
+```
+
+>####Response
+
+```
+{}
+```
+
+##### Reset User Password
+`PUT /passwords/user/reset`
+
+>#### Request
+
+```
+{
+  'resetToken': '[reset token]',
+  'password': 'xyz@xyz.com',
+}
+```
+
+>####Response
+
+```
+{}
 ```
