@@ -36,7 +36,7 @@
 #####Create User
 `POST /users`
 
-*Create new user. name, email, password are required. Only are allow jpeg or png images.*
+*Create new user. name, email, password are required. Only are allowed jpeg or png images.*
 >####Request
 
 ```
@@ -60,7 +60,7 @@
 #####Update User
 `PUT /users`
 
-*Update user. all fields are optional.* ***Authorization token is required***. *Only are allow jpeg or png images.*
+*Update user. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
 >#### Headers
 
 ```
@@ -205,7 +205,7 @@
 ##### Update Companie
 `PUT /companies`
 
-*Update company. all fields are optional.* ***Authorization token is required***. *Only are allow jpeg or png images.*
+*Update company. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
 >#### Headers
 
 ```
