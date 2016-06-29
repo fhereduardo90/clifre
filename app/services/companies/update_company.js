@@ -10,7 +10,7 @@ var Promise = require('bluebird');
 *
 * @param {string} avatar, the base64 that will be uploaded to S3.
 * @param {string} path, the place where the avatar will be located.
-* @param {Object} company, the instance of the current user.
+* @param {Object} company, the instance of the current company.
 * @returns {Promise} Returns an UploaderAvatar promise.
 */
 function uploadAvatar (avatar, path, company) {
