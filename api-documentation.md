@@ -432,3 +432,22 @@
   "access_token": "[access token]"
 }
 ```
+
+###PASSWORDS
+--
+##### Reset User Password
+`POST /passwords/user/reset`
+
+>#### Request
+
+```
+{
+  'email': 'xyz@xyz.com',
+}
+```
+
+>####Response
+
+```
+{}
+```
