@@ -473,3 +473,40 @@
 ```
 {}
 ```
+
+##### Recovery Company Password
+`POST /passwords/company/reset`
+
+*If the parameters are correct, you will receive a new email with the reset token.*
+
+>#### Request
+
+```
+{
+  'email': 'xyz@xyz.com',
+}
+```
+
+>####Response
+
+```
+{}
+```
+
+##### Reset Company Password
+`PUT /passwords/company/reset`
+
+>#### Request
+
+```
+{
+  'resetToken': '[reset token]',
+  'password': 'xyz@xyz.com',
+}
+```
+
+>####Response
+
+```
+{}
+```
