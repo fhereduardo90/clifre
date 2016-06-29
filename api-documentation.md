@@ -53,7 +53,7 @@
 
 ```
 {
-  "access_token": "[access token]"
+  "accessToken": "[access token]"
 }
 ```
 
@@ -198,7 +198,7 @@
 
 ```
 {
-  "access_token": "[access token]"
+  "accessToken": "[access token]"
 }
 ```
 
@@ -392,7 +392,7 @@
 
 ```
 {
-  "access_token": "[access token]"
+  "accessToken": "[access token]"
 }
 ```
 
@@ -412,7 +412,7 @@
 
 ```
 {
-  "access_token": "[access token]"
+  "accessToken": "[access token]"
 }
 ```
 
@@ -431,7 +431,7 @@
 
 ```
 {
-  "access_token": "[access token]"
+  "accessToken": "[access token]"
 }
 ```
 
