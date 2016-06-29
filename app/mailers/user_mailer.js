@@ -22,5 +22,22 @@ module.exports = {
       .catch(function error(err) {
         throw err;
       })
+  },
+
+  resetUserPassword: function resetUserPassword(token) {
+    sequelize.User.findOne({where: {resetPasswordToken: token}, attributes: ['id', 'email']})
+      .then(function success(user) {
+        if (!user) throw new Error('User not found.');
+        var data = {
+          from: 'Clifre <'+ fromEmail +'>',
+          to: user.email,
+          subject: 'Reset Password Clifre',
+          text: 'token: ' + token
+        };
+        return MailgunApi.send(data);
+      })
+      .catch(function error(err) {
+        throw err;
+      })
   }
 }
