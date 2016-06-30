@@ -55,7 +55,7 @@ module.exports.call = function (params) {
     .then(function success(user) {
       // Send welcome email to new user.
       UserMailer.welcomeMail(user.id);
-      return {result: {accessToken: token}, status: 200, success: true,
+      return {result: {accessToken: token}, status: 201, success: true,
         message: 'User has been created.', errors: []};
     })
     .catch(function error(err) {

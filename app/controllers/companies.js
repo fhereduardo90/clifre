@@ -40,8 +40,8 @@ companyController.route('/companies')
     var companyParams = _.pick(req.body, ['name', 'email', 'about', 'address',
       'phone', 'password', 'avatar']);
     return UpdateCompanyService.call(req.company, companyParams)
-      .then(function putCompanyResponse(response) {
-        return ApiResponse.success(res, response);
+      .then(function putCompanyResponse() {
+        return ApiResponse.ok(res);
       })
       .catch(function putCompanyError(err) {
         return ApiResponse.error(res, err);

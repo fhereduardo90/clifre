@@ -39,8 +39,8 @@ userController.route('/users')
     var userParams = _.pick(req.body, ['name', 'email', 'birthdate',
       'password', 'avatar']);
     return UpdateUserService.call(req.user, userParams)
-      .then(function putUserResponse(response) {
-        return ApiResponse.success(res, response);
+      .then(function putUserResponse() {
+        return ApiResponse.ok(res);
       })
       .catch(function putUserError(err) {
         return ApiResponse.error(res, err);

@@ -54,7 +54,7 @@ passwordController.route('/passwords/user/reset')
       return UpdateCompanyPasswordService.call(
         {resetToken: req.body.resetToken, password: req.body.password}
       )
-        .then(function success(response) {
+        .then(function success() {
           return ApiResponse.ok(res);
         })
         .catch(function error(err) {

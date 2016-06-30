@@ -55,7 +55,7 @@ module.exports.call = function (params) {
     .then(function (company) {
       // Send welcome email to new company.
       CompanyMailer.welcomeMail(company.id);
-      return {result: {accessToken: token}, status: 200};
+      return {result: {accessToken: token}, status: 201};
     })
     .catch(function (err) {
       throw new ApiError('Company could not be created.', 422, errorParse(err));
