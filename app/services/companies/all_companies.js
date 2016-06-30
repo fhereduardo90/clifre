@@ -7,7 +7,7 @@ module.exports.call = function () {
     {attributes: ['id', 'name', 'identifier', 'email', 'about',
       'address', 'phone', 'avatar']}
   ).then(function (companies) {
-    return {result: companies, status: 200, message: '', success: true, errors: []};
+    return {result: companies, status: 200};
   }).catch(function (err) {
     throw new ApiError('Companies not found.', 404, errorParse(err));
   });

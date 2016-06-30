@@ -59,8 +59,8 @@ cardController.route('/companies/cards/:id')
     };
 
     return UpdateCardService.call(req.company, cardParams)
-      .then(function putCardResponse(response) {
-        return ApiResponse.success(res, response);
+      .then(function putCardResponse() {
+        return ApiResponse.ok(res);
       })
       .catch(function putCardError(err) {
         return ApiResponse.error(res, err);

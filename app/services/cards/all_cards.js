@@ -1,22 +1,20 @@
 // Libs
-var _             = require('lodash');
-var Promise       = require('bluebird');
+var _ = require('lodash');
+var Promise = require('bluebird');
 // Helpers
-var errorParse    = require('../../helpers/error_parse');
+var errorParse = require('../../helpers/error_parse');
 // Others
-var ApiError      = require('../../errors/api_error');
-var sequelize     = require('../../models');
+var ApiError = require('../../errors/api_error');
+var sequelize= require('../../models');
 
 module.exports.call = function(company) {
-  return new Promise.try(function () {
+  return new Promise.try(function promise() {
     try {
-      var attrs = ['id', 'title', 'stamps', 'description', 'color'];
-      return company.getCards({attributes: attrs})
-        .then(function (cards) {
-          return {result: cards, status: 200, success: true,
-            message: '', errors: []};
+      return company.getCards({attributes: ['id', 'title', 'stamps', 'description', 'color']})
+        .then(function success(cards) {
+          return {result: cards, status: 200};
         })
-        .catch(function (err) {
+        .catch(function error(err) {
           throw new ApiError('Card could not be found.', 422, errorParse(err));
         });
     } catch (err) {
