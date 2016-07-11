@@ -143,14 +143,20 @@
       "2016-07-11T06:17:22.252Z",
       "2016-07-11T06:17:25.093Z"
     ],
-    "stamps": 7
+    "stamps": 7,
+    "title": "test card",
+    "description": "test card description",
+    "color": "#000000"
   },
   {
     "id": 21,
     "userId": 76,
     "cardId": 1,
     "sealedDates": [],
-    "stamps": 7
+    "stamps": 7,
+    "title": "test card",
+    "description": "test card description",
+    "color": "#000000"
   }
 ]
 ```
@@ -187,7 +193,10 @@
     "2016-07-11T06:17:25.093Z"
   ],
   "createdAt": "2016-07-11T05:37:49.144Z",
-  "stamps": 7
+  "stamps": 7,
+  "title": "test card",
+  "description": "test card description",
+  "color": "#000000"
 }
 ```
 
