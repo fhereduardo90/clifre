@@ -62,7 +62,7 @@ companyController.route('/companies/users')
     return CompanyUsersService.call(req.company)
       .then(function success(response) {
         return ApiResponse.success(res, response);
-      })
+      }) 
       .catch(function error(err) {
         return ApiResponse.error(res, err);
       });
