@@ -14,7 +14,7 @@ module.exports.call = function(company, userId) {
       return sequelize.UserCard.findAll({
         where: {userId: userId, companyId: company.id},
         attributes: ['id', 'userId', 'cardId', 'companyId', 'sealedDates'],
-        include: [{model: sequelize.Card, attributes: ['stamps']}]
+        include: [{model: sequelize.Card, attributes: ['stamps', 'title', 'description', 'color']}]
       })
         .then(function success(userCards) {
           if (!userCards) throw new Error('User Cards not found');
@@ -22,6 +22,9 @@ module.exports.call = function(company, userId) {
           var userCardsResult = userCards.map(function map(userCard) {
             result = _.pick(userCard, ['id', 'userId', 'cardId', 'sealedDates', 'createdAt']);
             result.stamps = userCard.Card.stamps;
+            result.title = userCard.Card.title;
+            result.description = userCard.Card.description;
+            result.color = userCard.Card.color;
             return result;
           });
           return {result: userCardsResult, status: 200};
