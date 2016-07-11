@@ -119,6 +119,78 @@
 }
 ```
 
+#####User Cards
+`GET /users/me/cards`
+
+*User Cards.* ***Authorization token is required.***
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Response
+
+```
+[
+  {
+    "id": 22,
+    "userId": 76,
+    "cardId": 1,
+    "sealedDates": [
+      "2016-07-11T06:17:22.252Z",
+      "2016-07-11T06:17:25.093Z"
+    ],
+    "stamps": 7
+  },
+  {
+    "id": 21,
+    "userId": 76,
+    "cardId": 1,
+    "sealedDates": [],
+    "stamps": 7
+  }
+]
+```
+
+#####User Card Detail
+`GET /users/me/cards/:id`
+
+*User Card Detail.* ***Authorization token is required.***
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>####Request
+```
+{
+  id: 22
+}
+```
+
+
+>####Response
+
+```
+{
+  "id": 22,
+  "userId": 76,
+  "cardId": 1,
+  "sealedDates": [
+    "2016-07-11T06:17:22.252Z",
+    "2016-07-11T06:17:25.093Z"
+  ],
+  "createdAt": "2016-07-11T05:37:49.144Z",
+  "stamps": 7
+}
+```
+
 ###COMPANIES
 --
 ##### Get All Companies
