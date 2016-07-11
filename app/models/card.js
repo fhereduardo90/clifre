@@ -36,11 +36,15 @@ module.exports = function card(sequelize, DataTypes) {
     underscored: true,
     tableName: 'cards',
     classMethods: {
-      associate: function association(models) {
+      associate: function(models) {
+        Card.hasMany(models.UserCard, {as: 'UserCards'});
+        Card.belongsToMany(models.User, {through: models.UserCard});
         Card.belongsTo(models.Company, {
           onDelete: 'CASCADE',
           foreignKey: {
-            allowNull: false
+            allowNull: false,
+            name: 'companyId',
+            field: 'company_id'
           }
         });
       }

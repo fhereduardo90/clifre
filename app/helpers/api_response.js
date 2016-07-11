@@ -12,4 +12,4 @@ module.exports.success = function (res, params) {
   return res.status(params.status).json(params.result).end();
 };
 
-module.exports.ok = function ok(res) {return res.status(200).end();}
+module.exports.ok = function ok(res) {return res.status(204).end();}

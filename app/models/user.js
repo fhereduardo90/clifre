@@ -129,6 +129,13 @@ module.exports = function userModel(sequelize, DataTypes) {
       }
     },
     classMethods: {
+      associate: function(models) {
+        User.hasMany(models.UserCard, {as: 'UserCards'});
+        User.belongsToMany(models.Card, {through: models.UserCard});
+        User.belongsToMany(models.User,
+          {as: 'Companies', through: 'user_cards', foreignKey: 'user_id'}
+        );
+      },
       authenticate: function authenticate(password, passwordHash) {
         return new Promise(function promise(resolve, reject) {
           bcrypt.compare(password, passwordHash, function compare(err, res) {

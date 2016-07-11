@@ -14,6 +14,7 @@ var CompanyController   = require('./app/controllers/companies');
 var CardController      = require('./app/controllers/cards');
 var SessionController   = require('./app/controllers/sessions');
 var PasswordController   = require('./app/controllers/passwords');
+var UserCardController   = require('./app/controllers/user_cards');
 
 // Middlewares
 var userAuthenticator       = require('./app/middlewares/user_authenticator');
@@ -34,6 +35,7 @@ app.use(CompanyController);
 app.use(CardController);
 app.use(SessionController);
 app.use(PasswordController);
+app.use(UserCardController);
 
 /*app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

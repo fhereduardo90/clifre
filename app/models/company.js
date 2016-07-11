@@ -111,6 +111,10 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Company.hasMany(models.Card, {as: 'Cards'});
+        Company.hasMany(models.UserCard, {as: 'UserCards'});
+        Company.belongsToMany(models.User,
+          {as: 'Users', through: 'user_cards', foreignKey: 'company_id'}
+        );
       },
       authenticate: function authenticate(password, passwordHash) {
         return new Promise(function promise(resolve, reject) {
