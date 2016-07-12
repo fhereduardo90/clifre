@@ -122,7 +122,9 @@
 #####User Cards
 `GET /users/me/cards`
 
-*User Cards.* ***Authorization token is required.***
+*User Cards.* ***Authorization token is required.*** *This endpoint is responsible to
+retrieve all cards related to the logged user.*
+
 >#### Headers
 
 ```
@@ -164,7 +166,9 @@
 #####User Card Detail
 `GET /users/me/cards/:id`
 
-*User Card Detail.* ***Authorization token is required.***
+*User Card Detail.* ***Authorization token is required.*** *This endpoint is responsible to
+show the logged user's card's detail. You must pass the logged user's card's id.*
+
 >#### Headers
 
 ```
