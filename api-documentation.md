@@ -555,7 +555,59 @@ user's card specified by the card's id. You must pass the user's id and the user
 
 *STATUS 204*
 
+#### Add a new stamp to the user's card
+`PUT /users/:userId/cards/:id/add-stamp`
 
+***Authorization token is required.*** *This endpoint is responsible to add a new stamp
+to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'userId': 76,
+  'id': 22
+}
+```
+
+>#### Response
+
+*STATUS 204*
+
+#### Remove one new stamp to the user's card
+`PUT /users/:userId/cards/:id/remove-stamp`
+
+***Authorization token is required.*** *This endpoint is responsible to remove one stamp
+to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'userId': 76,
+  'id': 22
+}
+```
+
+>#### Response
+
+*STATUS 204*
 
 ###CARDS
 --
