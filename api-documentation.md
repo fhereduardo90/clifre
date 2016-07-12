@@ -324,7 +324,7 @@
 ```
 
 #### Get all company's users
-` GET /companies/users`
+` GET /companies/me/users`
 
 *Company's Users.* ***Authorization token is required.*** *This endpoint
 retrieve all users related with the company through any card created by the
@@ -359,6 +359,41 @@ company.*
     "avatar": null
   }
 ]
+```
+
+#### Find company's users by user's identifier
+` GET /companies/me/users/:identifier`
+
+***Authorization token is required.*** *This endpoint allow you to get any user related
+to the logged company by its identifier.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'identifier': 'rjgqnkqv'
+}
+```
+
+>#### Response
+
+```
+{
+  "id": 76,
+  "name": "fernando juarez",
+  "email": "fhereduardo90@gmail.com",
+  "identifier": "rjgqnkqv",
+  "birthdate": "1990-10-13T04:00:00.000Z",
+  "avatar": null
+}
 ```
 
 ###CARDS

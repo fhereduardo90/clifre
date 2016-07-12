@@ -57,18 +57,18 @@ companyController.route('/companies/profile')
     return res.json(_.pick(req.company, attrs));
   });
 
-companyController.route('/companies/users')
+companyController.route('/companies/me/users')
   .get(companyAuthenticator, function done(req, res) {
     return CompanyUsersService.call(req.company)
       .then(function success(response) {
         return ApiResponse.success(res, response);
-      }) 
+      })
       .catch(function error(err) {
         return ApiResponse.error(res, err);
       });
   });
 
-companyController.route('/companies/users/:identifier')
+companyController.route('/companies/me/users/:identifier')
   .get(companyAuthenticator, function done(req, res) {
     return FindUserByIdentifierService.call(req.company, req.params.identifier)
     .then(function success(response) {
