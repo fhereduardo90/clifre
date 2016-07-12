@@ -325,7 +325,7 @@
 ```
 
 #### Get all company's users
-` GET /companies/me/users`
+`GET /companies/me/users`
 
 *Company's Users.* ***Authorization token is required.*** *This endpoint
 retrieve all users related with the company through any card created by the
@@ -363,7 +363,7 @@ company.*
 ```
 
 #### Find company's users by user's identifier
-` GET /companies/me/users/:identifier`
+`GET /companies/me/users/:identifier`
 
 ***Authorization token is required.*** *This endpoint allow you to get any user related
 to the logged company by its identifier.*
@@ -434,7 +434,7 @@ a new card. You must pass the user's id and the current company's card's id.*
 ```
 
 #### Get all cards that belongs to any user related to the logged company
-` GET /users/:userId/cards`
+`GET /users/:userId/cards`
 
 ***Authorization token is required.*** *This endpoint retrieve all cards that belongs
 to any user related to the logged company. You must pass the id of the user that
@@ -487,10 +487,10 @@ you want to get all cards related with him.*
 ```
 
 #### Get user's card detail (by company)
-` GET /users/:userId/cards/:id`
+`GET /users/:userId/cards/:id`
 
 ***Authorization token is required.*** *This endpoint shows the user's card detail.
-You must pass the user's id and the card's id.*
+You must pass the user's id and the user's card's id.*
 
 >#### Headers
 
@@ -527,6 +527,35 @@ You must pass the user's id and the card's id.*
   "color": "#000000"
 }
 ```
+
+#### Delete user's card (by company)
+`DELETE /users/:userId/cards/:id`
+
+***Authorization token is required.*** *This endpoint is responsible to delete the
+user's card specified by the card's id. You must pass the user's id and the user's card's id*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'userId': 76,
+  'id': 22
+}
+```
+
+>#### Response
+
+***STATUS 204***
+
+
 
 ###CARDS
 --
