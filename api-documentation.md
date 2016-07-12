@@ -553,7 +553,7 @@ user's card specified by the card's id. You must pass the user's id and the user
 
 >#### Response
 
-***STATUS 204***
+####STATUS 204
 
 
 
