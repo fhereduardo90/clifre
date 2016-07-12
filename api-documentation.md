@@ -258,7 +258,7 @@
 }
 ```
 
-##### Create Companie
+##### Create Company
 `POST /companies`
 
 >####Request
@@ -283,7 +283,7 @@
 }
 ```
 
-##### Update Companie
+##### Update Company
 `PUT /companies`
 
 *Update company. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
