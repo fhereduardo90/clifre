@@ -13,10 +13,21 @@ module.exports.call = function(company, params) {
       if (!company || (!params || !_.isObject(params))) throw new Error('Params are incorrect.');
       params.companyId = company.id;
       params.sealedDates = [];
-      return sequelize.UserCard.create(params)
+      var cardFound = {};
+      return sequelize.Card.findOne({
+        where: {companyId: company.id, id: params.cardId},
+        attributes: ['id', 'stamps']
+      })
+        .then(function success(card) {
+          if (!card) throw new Error('Card not found.');
+          cardFound = card;
+          return card.createUserCard(params);
+        })
         .then(function success(userCard) {
           if (!userCard) throw new Error('User Card could not be created');
-          return {result: _.pick(userCard, ['id', 'userId', 'cardId', 'companyId', 'sealedDates']), status: 201};
+          var result = _.pick(userCard, ['id', 'userId', 'cardId', 'companyId', 'sealedDates']);
+          result.stamps = cardFound.stamps;
+          return {result: result, status: 201};
         })
         .catch(function error(err) {
           throw new ApiError('User Card could not be created.', 422, errorParse(err));

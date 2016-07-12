@@ -287,6 +287,7 @@
 `PUT /companies`
 
 *Update company. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
+
 >#### Headers
 
 ```
@@ -393,6 +394,137 @@ to the logged company by its identifier.*
   "identifier": "rjgqnkqv",
   "birthdate": "1990-10-13T04:00:00.000Z",
   "avatar": null
+}
+```
+
+#### Create to the user a card
+`POST /users/:userId/cards`
+
+***Authorization token is required.*** *This endpoint is responsible to create to the user
+a new card. You must pass the user's id and the current company's card's id.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'userId': 76,
+  'cardId': 1
+}
+```
+
+>#### Response
+
+```
+{
+  "id": 28,
+  "userId": 76,
+  "cardId": 1,
+  "companyId": 9,
+  "sealedDates": [],
+  "stamps": 7
+}
+```
+
+#### Get all cards that belongs to any user related to the logged company
+` GET /users/:userId/cards`
+
+***Authorization token is required.*** *This endpoint retrieve all cards that belongs
+to any user related to the logged company. You must pass the id of the user that
+you want to get all cards related with him.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'userId': 76
+}
+```
+
+>#### Response
+
+```
+[
+  {
+    "id": 22,
+    "userId": 76,
+    "cardId": 1,
+    "sealedDates": [
+      "2016-07-11T06:17:22.252Z",
+      "2016-07-11T06:17:25.093Z"
+    ],
+    "stamps": 7,
+    "title": "test card",
+    "description": "test card description",
+    "color": "#000000"
+  },
+  {
+    "id": 21,
+    "userId": 76,
+    "cardId": 1,
+    "sealedDates": [],
+    "stamps": 7,
+    "title": "test card",
+    "description": "test card description",
+    "color": "#000000"
+  }
+]
+```
+
+#### Get user's card detail (by company)
+` GET /users/:userId/cards/:id`
+
+***Authorization token is required.*** *This endpoint shows the user's card detail.
+You must pass the user's id and the card's id.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Request
+
+```
+{
+  'userId': 76,
+  'id': 22
+}
+```
+
+>#### Response
+
+```
+{
+  "id": 22,
+  "userId": 76,
+  "cardId": 1,
+  "sealedDates": [
+    "2016-07-11T06:17:22.252Z",
+    "2016-07-11T06:17:25.093Z"
+  ],
+  "createdAt": "2016-07-11T05:37:49.144Z",
+  "stamps": 7,
+  "title": "test card",
+  "description": "test card description",
+  "color": "#000000"
 }
 ```
 
