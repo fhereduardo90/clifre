@@ -323,6 +323,44 @@
 }
 ```
 
+#### Get all company's users
+` GET /companies/users`
+
+*Company's Users.* ***Authorization token is required.*** *This endpoint
+retrieve all users related with the company through any card created by the
+company.*
+
+>#### Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+
+>#### Response
+
+```
+[
+  {
+    "id": 75,
+    "name": "fernando juarez",
+    "email": "fher.unity@hotmail.com",
+    "identifier": "hj234k9v",
+    "birthdate": "1990-10-13T04:00:00.000Z",
+    "avatar": null
+  },
+  {
+    "id": 76,
+    "name": "fernando juarez",
+    "email": "fhereduardo90@gmail.com",
+    "identifier": "rjgqnkqv",
+    "birthdate": "1990-10-13T04:00:00.000Z",
+    "avatar": null
+  }
+]
+```
+
 ###CARDS
 --
 ##### Get All Company's Cards
