@@ -10,6 +10,7 @@ var Promise = require('bluebird');
 module.exports.call = function(company, params) {
   return new Promise.try(function promise() {
     try {
+      params.companyId = company.id;
       return company.createCard(params)
         .then(function success(card) {
           var response = _.pick(card, ['id', 'title', 'stamps', 'description', 'color']);
