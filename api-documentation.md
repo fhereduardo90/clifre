@@ -407,7 +407,7 @@ to the logged company by its id.*
 ```
 
 #### Create to the user a card
-`POST /users/:userId/cards`
+`POST /users/:userId/user-cards`
 
 ***Authorization token is required.*** *This endpoint is responsible to create to the user
 a new card. You must pass the user's id and the current company's card's id.*
@@ -443,7 +443,7 @@ a new card. You must pass the user's id and the current company's card's id.*
 ```
 
 #### Get all cards that belongs to any user related to the logged company
-`GET /users/:userId/cards`
+`GET /users/:userId/user-cards`
 
 ***Authorization token is required.*** *This endpoint retrieve all cards that belongs
 to any user related to the logged company. You must pass the id of the user that
@@ -477,6 +477,7 @@ you want to get all cards related with him.*
       "2016-07-11T06:17:22.252Z",
       "2016-07-11T06:17:25.093Z"
     ],
+    "createdAt": "2016-07-11T06:17:25.093Z",
     "stamps": 7,
     "title": "test card",
     "description": "test card description",
@@ -487,6 +488,7 @@ you want to get all cards related with him.*
     "userId": 76,
     "cardId": 1,
     "sealedDates": [],
+    "createdAt": "2016-07-11T06:17:25.093Z",
     "stamps": 7,
     "title": "test card",
     "description": "test card description",
@@ -496,7 +498,7 @@ you want to get all cards related with him.*
 ```
 
 #### Get user's card detail (by company)
-`GET /users/:userId/cards/:id`
+`GET /users/:userId/user-cards/:id`
 
 ***Authorization token is required.*** *This endpoint shows the user's card detail.
 You must pass the user's id and the user's card's id.*
@@ -538,7 +540,7 @@ You must pass the user's id and the user's card's id.*
 ```
 
 #### Delete user's card (by company)
-`DELETE /users/:userId/cards/:id`
+`DELETE /users/:userId/user-cards/:id`
 
 ***Authorization token is required.*** *This endpoint is responsible to delete the
 user's card specified by the card's id. You must pass the user's id and the user's card's id*
@@ -565,7 +567,7 @@ user's card specified by the card's id. You must pass the user's id and the user
 *STATUS 204*
 
 #### Add a new stamp to the user's card
-`PUT /users/:userId/cards/:id/add-stamp`
+`PUT /users/:userId/user-cards/:id/add-stamp`
 
 ***Authorization token is required.*** *This endpoint is responsible to add a new stamp
 to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
@@ -592,7 +594,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 *STATUS 204*
 
 #### Remove one new stamp to the user's card
-`PUT /users/:userId/cards/:id/remove-stamp`
+`PUT /users/:userId/user-cards/:id/remove-stamp`
 
 ***Authorization token is required.*** *This endpoint is responsible to remove one stamp
 to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
