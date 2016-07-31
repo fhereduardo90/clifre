@@ -33,7 +33,7 @@
 }
 ```
 
-#####Create User
+#####Sign Up User
 `POST /users`
 
 *Create new user. name, email, password are required. Only are allowed jpeg or png images.*
@@ -58,7 +58,7 @@
 ```
 
 #####Update User
-`PUT /users`
+`PUT /users/me`
 
 *Update user. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
 >#### Headers
@@ -95,7 +95,7 @@
 ```
 
 #####User Profile
-`GET /users/profile`
+`GET /users/me`
 
 *User detail.* ***Authorization token is required.***
 >#### Headers
