@@ -623,7 +623,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 ###CARDS
 --
 ##### Get All Company's Cards
-`GET /companies/cards`
+`GET /companies/me/cards`
 
 *Company's Cards.* ***Authorization token is required.***
 >#### Headers
@@ -650,7 +650,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 ```
 
 ##### Company's Card Detail
-`GET /companies/cards/:id`
+`GET /companies/me/cards/:id`
 
 *Company's Card Detail.* ***Authorization token is required.***
 >#### Headers
@@ -682,7 +682,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 ```
 
 ##### Create Card
-`POST /companies/cards`
+`POST /companies/me/cards`
 
 *Create Card.* ***Authorization token is required.***
 >#### Headers
@@ -717,7 +717,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 ```
 
 ##### Update Companie's Card
-`PUT /companies/cards/:id`
+`PUT /companies/me/cards/:id`
 
 *Update Company's Card. all fields are optional.* ***Authorization token is required***.
 >#### Headers
