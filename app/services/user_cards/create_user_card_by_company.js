@@ -16,7 +16,7 @@ module.exports.call = function(company, params) {
       var cardFound = {};
       return sequelize.Card.findOne({
         where: {companyId: company.id, id: params.cardId},
-        attributes: ['id', 'stamps']
+        attributes: ['id', 'stamps', 'color', 'description', 'title']
       })
         .then(function success(card) {
           if (!card) throw new Error('Card not found.');
@@ -25,8 +25,11 @@ module.exports.call = function(company, params) {
         })
         .then(function success(userCard) {
           if (!userCard) throw new Error('User Card could not be created');
-          var result = _.pick(userCard, ['id', 'userId', 'cardId', 'companyId', 'sealedDates']);
+          var result = _.pick(userCard, ['id', 'userId', 'cardId', 'companyId', 'sealedDates', 'createdAt']);
           result.stamps = cardFound.stamps;
+          result.color = cardFound.color;
+          result.title = cardFound.title;
+          result.description = cardFound.description;
           return {result: result, status: 201};
         })
         .catch(function error(err) {

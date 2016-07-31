@@ -14,7 +14,9 @@ module.exports.call = function (params) {
       )
         .then(function (user) {
           if (!user) throw new Error('User not found.')
-          return {result: user, status: 200};
+          var params = ['id', 'name', 'email', 'identifier',
+            'birthdate', 'avatar'];
+          return {result: _.pick(user, params), status: 200};
         })
         .catch(function error(err) {
           throw new ApiError('User not found.', 422, errorParse(err));

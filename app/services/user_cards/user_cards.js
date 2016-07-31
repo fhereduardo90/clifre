@@ -20,7 +20,7 @@ module.exports.call = function(user) {
           if (!userCards) throw new Error('User Cards not found');
           var result = {};
           var userCardsResult = userCards.map(function map(userCard) {
-            result = _.pick(userCard, ['id', 'userId', 'cardId', 'sealedDates', 'createdAt']);
+            result = _.pick(userCard, ['id', 'userId', 'cardId', 'companyId', 'sealedDates', 'createdAt']);
             result.stamps = userCard.Card.stamps;
             result.title = userCard.Card.title;
             result.description = userCard.Card.description;

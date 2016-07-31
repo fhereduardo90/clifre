@@ -6,6 +6,7 @@ var ApiResponse = require('../helpers/api_response');
 var CreateUserService = require('../services/users/create_user');
 var UpdateUserService = require('../services/users/update_user');
 var AllUsersService = require('../services/users/all_users');
+var FindUserService = require('../services/users/find_user');
 // Libs
 var _ = require('lodash');
 // Others
@@ -33,6 +34,12 @@ userController.route('/users')
       .catch(function postUserError(err) {
         return ApiResponse.error(res, err);
       });
+  });
+
+userController.route('/users/me')
+  .get(userAuthenticator, function getUserProfile(req, res) {
+    var attrs = ['id', 'name', 'identifier', 'email', 'birthdate', 'avatar'];
+    return res.json(_.pick(req.user, attrs));
   })
 
   .put(userAuthenticator, function putUser(req, res) {
@@ -47,10 +54,15 @@ userController.route('/users')
       });
   });
 
-userController.route('/users/profile')
-  .get(userAuthenticator, function getUserProfile(req, res) {
-    var attrs = ['id', 'name', 'identifier', 'email', 'birthdate', 'avatar'];
-    return res.json(_.pick(req.user, attrs));
-  });
+  userController.route('/users/:identifier')
+    .get(function done(req, res) {
+      return FindUserService.call({identifier: req.params.identifier})
+        .then(function success(response) {
+          return ApiResponse.success(res, response);
+        })
+        .catch(function error(err) {
+          return ApiResponse.error(res, err);
+        });
+    });
 
 module.exports = userController;

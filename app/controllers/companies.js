@@ -8,7 +8,7 @@ var CreateCompanyService = require('../services/companies/create_company');
 var UpdateCompanyService = require('../services/companies/update_company');
 var AllCompaniesService = require('../services/companies/all_companies');
 var CompanyUsersService = require('../services/companies/company_users');
-var FindUserByIdentifierService = require('../services/companies/find_user_by_identifier');
+var FindUserService = require('../services/companies/find_user');
 // Libs
 var _ = require('lodash');
 // Others
@@ -36,6 +36,13 @@ companyController.route('/companies')
       .catch(function postCompanyError(err) {
         return ApiResponse.error(res, err);
       });
+  });
+
+companyController.route('/companies/me')
+  .get(companyAuthenticator, function getCompanyProfile(req, res) {
+    var attrs = ['id', 'name', 'email', 'identifier', 'about', 'address',
+      'phone', 'avatar'];
+    return res.json(_.pick(req.company, attrs));
   })
 
   .put(companyAuthenticator, function putCompany(req, res) {
@@ -50,13 +57,6 @@ companyController.route('/companies')
       });
   });
 
-companyController.route('/companies/profile')
-  .get(companyAuthenticator, function getCompanyProfile(req, res) {
-    var attrs = ['id', 'name', 'email', 'identifier', 'about', 'address',
-      'phone', 'avatar'];
-    return res.json(_.pick(req.company, attrs));
-  });
-
 companyController.route('/companies/me/users')
   .get(companyAuthenticator, function done(req, res) {
     return CompanyUsersService.call(req.company)
@@ -68,9 +68,9 @@ companyController.route('/companies/me/users')
       });
   });
 
-companyController.route('/companies/me/users/:identifier')
+companyController.route('/companies/me/users/:id')
   .get(companyAuthenticator, function done(req, res) {
-    return FindUserByIdentifierService.call(req.company, req.params.identifier)
+    return FindUserService.call(req.company, req.params.id)
     .then(function success(response) {
       return ApiResponse.success(res, response);
     })

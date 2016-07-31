@@ -18,7 +18,7 @@ var FindUserCardByUser = require('../services/user_cards/find_user_card_by_user'
 **************************** COMPANY ENDPOINTS *********************************
 *******************************************************************************/
 
-userCardController.route('/users/me/cards')
+userCardController.route('/users/me/user-cards')
   .get(userAuthenticator, function done(req, res) {
     return UserCardsService.call(req.user)
       .then(function success(response) {
@@ -29,7 +29,7 @@ userCardController.route('/users/me/cards')
       });
   });
 
-  userCardController.route('/users/me/cards/:id')
+  userCardController.route('/users/me/user-cards/:id')
     .get(userAuthenticator, function done(req, res) {
       return FindUserCardByUser.call(req.user, parseInt(req.params.id))
         .then(function success(response) {
@@ -40,7 +40,7 @@ userCardController.route('/users/me/cards')
         });
     });
 
-userCardController.route('/users/:userId/cards')
+userCardController.route('/users/:userId/user-cards')
   .get(companyAuthenticator, function done(req, res) {
     return UserCardsByCompanyService.call(req.company, parseInt(req.params.userId))
       .then(function success(response) {
@@ -64,7 +64,7 @@ userCardController.route('/users/:userId/cards')
       });
   });
 
-userCardController.route('/users/:userId/cards/:id/add-stamp')
+userCardController.route('/users/:userId/user-cards/:id/add-stamp')
   .put(companyAuthenticator, function done(req, res) {
     return AddStampByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
       .then(function success() {
@@ -75,7 +75,7 @@ userCardController.route('/users/:userId/cards/:id/add-stamp')
       });
   });
 
-userCardController.route('/users/:userId/cards/:id/remove-stamp')
+userCardController.route('/users/:userId/user-cards/:id/remove-stamp')
   .put(companyAuthenticator, function done(req, res) {
     return RemoveStampByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
       .then(function success() {
@@ -86,7 +86,7 @@ userCardController.route('/users/:userId/cards/:id/remove-stamp')
       });
   });
 
-userCardController.route('/users/:userId/cards/:id')
+userCardController.route('/users/:userId/user-cards/:id')
   .get(companyAuthenticator, function done(req, res) {
     return FindUserCardService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
       .then(function success(response) {

@@ -15,12 +15,12 @@ module.exports.call = function(user, id) {
       }
       return sequelize.UserCard.findOne({
         where: {userId: user.id, id: id},
-        attributes: ['id', 'userId', 'cardId', 'sealedDates', 'createdAt'],
+        attributes: ['id', 'userId', 'cardId', 'companyId', 'sealedDates', 'createdAt'],
         include: [{model: sequelize.Card, attributes: ['stamps', 'title', 'description', 'color']}]
       })
         .then(function success(userCard) {
           if (!userCard) throw new Error('User Card not found');
-          var result = _.pick(userCard, ['id', 'userId', 'cardId', 'sealedDates', 'createdAt']);
+          var result = _.pick(userCard, ['id', 'userId', 'cardId', 'companyId', 'sealedDates', 'createdAt']);
           result.stamps = userCard.Card.stamps;
           result.title = userCard.Card.title;
           result.description = userCard.Card.description;

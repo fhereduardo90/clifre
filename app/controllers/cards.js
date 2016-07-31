@@ -10,7 +10,7 @@ var CreateCardService = require('../services/cards/create_card');
 var AllCardsService = require('../services/cards/all_cards');
 var UpdateCardService = require('../services/cards/update_card');
 
-cardController.route('/companies/cards')
+cardController.route('/companies/me/cards')
   .get(companyAuthenticator, function getCards(req, res) {
     return AllCardsService.call(req.company)
       .then(function getCardsResponse(response) {
@@ -38,7 +38,7 @@ cardController.route('/companies/cards')
       });
   });
 
-cardController.route('/companies/cards/:id')
+cardController.route('/companies/me/cards/:id')
   .get(companyAuthenticator, function getCard(req, res) {
     return FindCardService.call(req.company, req.params)
       .then(function getCardResponse(response) {

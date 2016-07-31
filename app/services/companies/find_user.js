@@ -7,18 +7,18 @@ var errorParse = require('../../helpers/error_parse');
 var ApiError = require('../../errors/api_error');
 var sequelize= require('../../models');
 
-module.exports.call = function(company, identifier) {
+module.exports.call = function(company, id) {
   return new Promise.try(function promise() {
     try {
-      if (!company || !_.isObject(company) || !identifier) {
+      if (!company || !_.isObject(company) || !id) {
         throw new Error('Parameters are not correct.');
       }
       // TODO: try to by this raw query sequelize properties
       var sql = 'SELECT u.id, u.name, u.email, u.identifier, \
       u.birthdate, u.avatar from users as u LEFT JOIN user_cards as uc \
       on u.id = uc.user_id WHERE uc.company_id = ? \
-      and u.identifier = ? LIMIT 1';
-      return sequelize.sequelize.query(sql, {model: sequelize.User, replacements: [company.id, identifier]})
+      and u.id = ? LIMIT 1';
+      return sequelize.sequelize.query(sql, {model: sequelize.User, replacements: [company.id, id]})
         .then(function success(users) {
           if (!users || !users.length) throw new Error('User not found.');
           // TODO: do not include isPasswordEncrypted from user model
