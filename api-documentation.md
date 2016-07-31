@@ -241,8 +241,8 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 ]
 ```
 
-##### Company Detail
-`GET /companies/profile`
+##### Company Profile
+`GET /companies/me`
 
 *Company detail.* ***Authorization token is required.***
 >#### Headers
@@ -267,7 +267,7 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 }
 ```
 
-##### Create Company
+##### Sign Up Create Company
 `POST /companies`
 
 >####Request
@@ -293,7 +293,7 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 ```
 
 ##### Update Company
-`PUT /companies`
+`PUT /companies/me`
 
 *Update company. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
 
@@ -371,11 +371,11 @@ company.*
 ]
 ```
 
-#### Find company's users by user's identifier
-`GET /companies/me/users/:identifier`
+#### Find company's users by user's id
+`GET /companies/me/users/:id`
 
 ***Authorization token is required.*** *This endpoint allow you to get any user related
-to the logged company by its identifier.*
+to the logged company by its id.*
 
 >#### Headers
 
@@ -389,7 +389,7 @@ to the logged company by its identifier.*
 
 ```
 {
-  'identifier': 'rjgqnkqv'
+  'id': 1
 }
 ```
 
