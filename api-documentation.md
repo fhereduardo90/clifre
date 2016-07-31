@@ -120,7 +120,7 @@
 ```
 
 #####User Cards
-`GET /users/me/cards`
+`GET /users/me/user-cards`
 
 *User Cards.* ***Authorization token is required.*** *This endpoint is responsible to
 retrieve all cards related to the logged user.*
@@ -141,6 +141,7 @@ retrieve all cards related to the logged user.*
     "id": 22,
     "userId": 76,
     "cardId": 1,
+    "companyId", 1,
     "sealedDates": [
       "2016-07-11T06:17:22.252Z",
       "2016-07-11T06:17:25.093Z"
@@ -154,6 +155,7 @@ retrieve all cards related to the logged user.*
     "id": 21,
     "userId": 76,
     "cardId": 1,
+    "companyId": 1,
     "sealedDates": [],
     "stamps": 7,
     "title": "test card",
@@ -164,7 +166,7 @@ retrieve all cards related to the logged user.*
 ```
 
 #####User Card Detail
-`GET /users/me/cards/:id`
+`GET /users/me/user-cards/:id`
 
 *User Card Detail.* ***Authorization token is required.*** *This endpoint is responsible to
 show the logged user's card's detail. You must pass the logged user's card's id.*
@@ -192,6 +194,7 @@ show the logged user's card's detail. You must pass the logged user's card's id.
   "id": 22,
   "userId": 76,
   "cardId": 1,
+  "companyId": 1,
   "sealedDates": [
     "2016-07-11T06:17:22.252Z",
     "2016-07-11T06:17:25.093Z"
