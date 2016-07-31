@@ -147,6 +147,7 @@ retrieve all cards related to the logged user.*
       "2016-07-11T06:17:25.093Z"
     ],
     "stamps": 7,
+    "createdAt": "2016-07-11T05:37:49.144Z",
     "title": "test card",
     "description": "test card description",
     "color": "#000000"
@@ -158,6 +159,7 @@ retrieve all cards related to the logged user.*
     "companyId": 1,
     "sealedDates": [],
     "stamps": 7,
+    "createdAt": "2016-07-11T05:37:49.144Z",
     "title": "test card",
     "description": "test card description",
     "color": "#000000"
