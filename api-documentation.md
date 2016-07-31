@@ -119,6 +119,32 @@
 }
 ```
 
+#####Search User by Identifier
+`GET /users/:identifier`
+
+*Search User Detail by its identifier.*
+
+>####Request
+
+```
+{
+  identifier: '6957e1'
+}
+```
+
+>####Response
+
+```
+{
+  "id": 3,
+  "name": "new test name",
+  "avatar": "[S3 URL IMAGE]",
+  "identifier": "6957e1",
+  "birthdate": "1990-10-13T00:00:00.000Z",
+  "email": "test@test.com"
+}
+```
+
 #####User Cards
 `GET /users/me/user-cards`
 
