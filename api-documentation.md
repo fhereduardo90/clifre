@@ -5,9 +5,9 @@
 ##### Get All Users
 `GET /users`
 
-*Retrieve all users.*.
+*Retrieve all users. Does not require Authorization Token*.
 
->#### Response
+>####Response
 
 ```
 {
@@ -33,10 +33,16 @@
 }
 ```
 
+>####Status
+
+*200*
+
 #####Sign Up User
 `POST /users`
 
-*Create new user. name, email, password are required. Only are allowed jpeg or png images.*
+*Create new user. name, email, password are required. Only are allowed jpeg or png images.
+Does not require Authorization Token.*
+
 >####Request
 
 ```
@@ -57,11 +63,16 @@
 }
 ```
 
+>####Status
+
+*201*
+
 #####Update User
 `PUT /users/me`
 
-*Update user. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
->#### Headers
+*Update user. all fields are optional.* ***Authorization token as user is required***. *Only are allowed jpeg or png images.*
+
+>####Headers
 
 ```
 {
@@ -94,11 +105,17 @@
 }
 ```
 
+>####Status
+
+*200*
+
+
 #####User Profile
 `GET /users/me`
 
-*User detail.* ***Authorization token is required.***
->#### Headers
+*User detail.* ***Authorization token as user is required.***
+
+>####Headers
 
 ```
 {
@@ -119,10 +136,14 @@
 }
 ```
 
+>####Status
+
+*200*
+
 #####Search User by Identifier
 `GET /users/:identifier`
 
-*Search User Detail by its identifier.*
+*Search User Detail by its identifier. Does not require Authorization Token.*
 
 >####Request
 
@@ -145,13 +166,17 @@
 }
 ```
 
+>####Status
+
+*200*
+
 #####User Cards
 `GET /users/me/user-cards`
 
-*User Cards.* ***Authorization token is required.*** *This endpoint is responsible to
+*User Cards.* ***Authorization token as user is required.*** *This endpoint is responsible to
 retrieve all cards related to the logged user.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -204,13 +229,17 @@ retrieve all cards related to the logged user.*
 ]
 ```
 
+>####Status
+
+*200*
+
 #####User Card Detail
 `GET /users/me/user-cards/:id`
 
-*User Card Detail.* ***Authorization token is required.*** *This endpoint is responsible to
+*User Card Detail.* ***Authorization token as user is required.*** *This endpoint is responsible to
 show the logged user's card's detail. You must pass the logged user's card's id.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -268,10 +297,16 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 }
 ```
 
+>####Status
+
+*200*
+
 ###COMPANIES
 --
 ##### Get All Companies
 `GET /companies`
+
+*Retrieve all companies. Does not require Authorization Token*.
 
 >####Response
 
@@ -300,11 +335,16 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 ]
 ```
 
+>####Status
+
+*200*
+
 ##### Company Profile
 `GET /companies/me`
 
-*Company detail.* ***Authorization token is required.***
->#### Headers
+*Company detail.* ***Authorization token as company is required.***
+
+>####Headers
 
 ```
 {
@@ -326,8 +366,15 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 }
 ```
 
+>####Status
+
+*200*
+
 ##### Sign Up Create Company
 `POST /companies`
+
+*Create new company. Only are allowed jpeg or png images. Does not require
+Authorization Token.*
 
 >####Request
 
@@ -351,12 +398,17 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 }
 ```
 
+>####Status
+
+*201*
+
 ##### Update Company
 `PUT /companies/me`
 
-*Update company. all fields are optional.* ***Authorization token is required***. *Only are allowed jpeg or png images.*
+*Update company. all fields are optional.* ***Authorization token as company is required***.
+*Only are allowed jpeg or png images.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -392,14 +444,18 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 }
 ```
 
+>####Status
+
+*200*
+
 #### Get all company's users
 `GET /companies/me/users`
 
-*Company's Users.* ***Authorization token is required.*** *This endpoint
+*Company's Users.* ***Authorization token as company is required.*** *This endpoint
 retrieve all users related with the company through any card created by the
 company.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -407,7 +463,7 @@ company.*
 }
 ```
 
->#### Response
+>####Response
 
 ```
 [
@@ -430,13 +486,17 @@ company.*
 ]
 ```
 
+>####Status
+
+*200*
+
 #### Find company's users by user's id
 `GET /companies/me/users/:id`
 
-***Authorization token is required.*** *This endpoint allow you to get any user related
+***Authorization token as company is required.*** *This endpoint allow you to get any user related
 to the logged company by its id.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -444,7 +504,7 @@ to the logged company by its id.*
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -452,7 +512,7 @@ to the logged company by its id.*
 }
 ```
 
->#### Response
+>####Response
 
 ```
 {
@@ -465,13 +525,17 @@ to the logged company by its id.*
 }
 ```
 
+>####Status
+
+*200*
+
 #### Create to the user a card
 `POST /users/:userId/user-cards`
 
-***Authorization token is required.*** *This endpoint is responsible to create to the user
+***Authorization token as company is required.*** *This endpoint is responsible to create to the user
 a new card. You must pass the user's id and the current company's card's id.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -479,7 +543,7 @@ a new card. You must pass the user's id and the current company's card's id.*
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -488,27 +552,58 @@ a new card. You must pass the user's id and the current company's card's id.*
 }
 ```
 
->#### Response
+>####Response
 
 ```
 {
-  "id": 28,
-  "userId": 76,
-  "cardId": 1,
-  "companyId": 9,
+  "id": 20,
   "sealedDates": [],
-  "stamps": 7
+  "createdAt": "2016-08-05T04:56:21.453Z",
+  "relationships": {
+    "company": {
+      "id": 2,
+      "name": "The donut place",
+      "email": "fhereduardo90@gmail.com",
+      "identifier": "sytiudzt",
+      "about": "we have the best donuts in the whole world :)",
+      "address": "Galerias, San Salvador",
+      "phone": "22577777",
+      "avatar": null,
+      "createdAt": "2016-08-05T02:13:40.542Z"
+    },
+    "card": {
+      "id": 6,
+      "stamps": 6,
+      "color": 6,
+      "description": "test card description",
+      "title": "test card 3",
+      "createdAt": "2016-08-05T02:14:12.073Z"
+    },
+    "user": {
+      "id": 51,
+      "name": "fernando juarez",
+      "email": "fhereduardo90@gmail.com",
+      "identifier": "sy2xlobk",
+      "birthdate": "1990-10-13T04:00:00.000Z",
+      "avatar": null,
+      "createdAt": "2016-08-05T02:12:52.087Z"
+    }
+  }
 }
 ```
+
+>####Status
+
+*201*
 
 #### Get all cards that belongs to any user related to the logged company
 `GET /users/:userId/user-cards`
 
-***Authorization token is required.*** *This endpoint retrieve all cards that belongs
+***Authorization token as company is required.*** *This endpoint retrieve all cards that belongs
 to any user related to the logged company. You must pass the id of the user that
 you want to get all cards related with him.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -516,7 +611,7 @@ you want to get all cards related with him.*
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -524,45 +619,63 @@ you want to get all cards related with him.*
 }
 ```
 
->#### Response
+>####Response
 
 ```
 [
   {
-    "id": 22,
-    "userId": 76,
-    "cardId": 1,
+    "id": 16,
     "sealedDates": [
-      "2016-07-11T06:17:22.252Z",
-      "2016-07-11T06:17:25.093Z"
+      "2016-08-05T03:59:48.979Z",
+      "2016-08-05T03:59:48.979Z"
     ],
-    "createdAt": "2016-07-11T06:17:25.093Z",
-    "stamps": 7,
-    "title": "test card",
-    "description": "test card description",
-    "color": "#000000"
+    "createdAt": "2016-08-05T03:59:48.979Z",
+    "relationships": {
+      "card": {
+        "id": 6,
+        "stamps": 6,
+        "color": 6,
+        "description": "test card description",
+        "title": "test card 3",
+        "createdAt": "2016-08-05T02:14:12.073Z"
+      },
+      "user": {
+        "id": 51,
+        "name": "fernando juarez",
+        "email": "fhereduardo90@gmail.com",
+        "identifier": "sy2xlobk",
+        "birthdate": "1990-10-13T04:00:00.000Z",
+        "avatar": null,
+        "createdAt": "2016-08-05T02:12:52.087Z"
+      },
+      "company": {
+        "id": 2,
+        "name": "The donut place",
+        "email": "fhereduardo90@gmail.com",
+        "identifier": "sytiudzt",
+        "about": "we have the best donuts in the whole world :)",
+        "address": "Galerias, San Salvador",
+        "phone": "22577777",
+        "avatar": null,
+        "createdAt": "2016-08-05T02:13:40.542Z"
+      }
+    }
   },
-  {
-    "id": 21,
-    "userId": 76,
-    "cardId": 1,
-    "sealedDates": [],
-    "createdAt": "2016-07-11T06:17:25.093Z",
-    "stamps": 7,
-    "title": "test card",
-    "description": "test card description",
-    "color": "#000000"
-  }
+  ...
 ]
 ```
+
+>####Status
+
+*200*
 
 #### Get user's card detail (by company)
 `GET /users/:userId/user-cards/:id`
 
-***Authorization token is required.*** *This endpoint shows the user's card detail.
+***Authorization token as company is required.*** *This endpoint shows the user's card detail.
 You must pass the user's id and the user's card's id.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -570,7 +683,7 @@ You must pass the user's id and the user's card's id.*
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -579,32 +692,60 @@ You must pass the user's id and the user's card's id.*
 }
 ```
 
->#### Response
+>####Response
 
 ```
 {
-  "id": 22,
-  "userId": 76,
-  "cardId": 1,
+  "id": 16,
   "sealedDates": [
-    "2016-07-11T06:17:22.252Z",
-    "2016-07-11T06:17:25.093Z"
+    "2016-08-05T03:59:48.979Z",
+    "2016-08-05T03:59:48.979Z"
   ],
-  "createdAt": "2016-07-11T05:37:49.144Z",
-  "stamps": 7,
-  "title": "test card",
-  "description": "test card description",
-  "color": "#000000"
+  "createdAt": "2016-08-05T03:59:48.979Z",
+  "relationships": {
+    "card": {
+      "id": 6,
+      "stamps": 6,
+      "color": 6,
+      "description": "test card description",
+      "title": "test card 3",
+      "createdAt": "2016-08-05T02:14:12.073Z"
+    },
+    "user": {
+      "id": 51,
+      "name": "fernando juarez",
+      "email": "fhereduardo90@gmail.com",
+      "identifier": "sy2xlobk",
+      "birthdate": "1990-10-13T04:00:00.000Z",
+      "avatar": null,
+      "createdAt": "2016-08-05T02:12:52.087Z"
+    },
+    "company": {
+      "id": 2,
+      "name": "The donut place",
+      "email": "fhereduardo90@gmail.com",
+      "identifier": "sytiudzt",
+      "about": "we have the best donuts in the whole world :)",
+      "address": "Galerias, San Salvador",
+      "phone": "22577777",
+      "avatar": null,
+      "createdAt": "2016-08-05T02:13:40.542Z"
+    }
+  }
 }
 ```
+
+>####Status
+
+*200*
 
 #### Delete user's card (by company)
 `DELETE /users/:userId/user-cards/:id`
 
-***Authorization token is required.*** *This endpoint is responsible to delete the
+***Authorization token as company is required.*** *This endpoint is responsible to delete the
 user's card specified by the card's id. You must pass the user's id and the user's card's id*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -612,7 +753,7 @@ user's card specified by the card's id. You must pass the user's id and the user
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -621,17 +762,17 @@ user's card specified by the card's id. You must pass the user's id and the user
 }
 ```
 
->#### Response
+>####Status
 
-*STATUS 204*
+*204*
 
 #### Add a new stamp to the user's card
 `PUT /users/:userId/user-cards/:id/add-stamp`
 
-***Authorization token is required.*** *This endpoint is responsible to add a new stamp
+***Authorization token as company is required.*** *This endpoint is responsible to add a new stamp
 to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -639,7 +780,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -648,17 +789,17 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->#### Response
+>####Status
 
-*STATUS 204*
+*204*
 
 #### Remove one new stamp to the user's card
 `PUT /users/:userId/user-cards/:id/remove-stamp`
 
-***Authorization token is required.*** *This endpoint is responsible to remove one stamp
+***Authorization token as company is required.*** *This endpoint is responsible to remove one stamp
 to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
 
->#### Headers
+>####Headers
 
 ```
 {
@@ -666,7 +807,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->#### Request
+>####Request
 
 ```
 {
@@ -675,17 +816,18 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->#### Response
+>####Status
 
-*STATUS 204*
+*204*
 
 ###CARDS
 --
 ##### Get All Company's Cards
 `GET /companies/me/cards`
 
-*Company's Cards.* ***Authorization token is required.***
->#### Headers
+*Company's Cards.* ***Authorization token as company is required.***
+
+>####Headers
 
 ```
 {
@@ -708,11 +850,15 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 ]
 ```
 
+>####Status
+
+*200*
+
 ##### Company's Card Detail
 `GET /companies/me/cards/:id`
 
-*Company's Card Detail.* ***Authorization token is required.***
->#### Headers
+*Company's Card Detail.* ***Authorization token as company is required.***
+>####Headers
 
 ```
 {
@@ -740,11 +886,16 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
+>####Status
+
+*200*
+
 ##### Create Card
 `POST /companies/me/cards`
 
-*Create Card.* ***Authorization token is required.***
->#### Headers
+*Create Card.* ***Authorization token as company is required.***
+
+>####Headers
 
 ```
 {
@@ -774,12 +925,17 @@ to the the user's cards specified by the user's card's id. You must pass user's 
   "color": "blue"
 }
 ```
+
+>####Status
+
+*201*
 
 ##### Update Companie's Card
 `PUT /companies/me/cards/:id`
 
-*Update Company's Card. all fields are optional.* ***Authorization token is required***.
->#### Headers
+*Update Company's Card. all fields are optional.* ***Authorization token as company is required***.
+
+>####Headers
 
 ```
 {
@@ -810,13 +966,17 @@ to the the user's cards specified by the user's card's id. You must pass user's 
   "color": "blue"
 }
 ```
+
+>####Status
+
+*200*
 
 ###SESSION
 --
 ##### Sign In Users
 `POST /authenticate`
 
->#### Request
+>####Request
 
 ```
 {
@@ -832,11 +992,15 @@ to the the user's cards specified by the user's card's id. You must pass user's 
   "accessToken": "[access token]"
 }
 ```
+
+>####Status
+
+*200*
 
 ##### Sign In Companies
 `POST /authenticate-company`
 
->#### Request
+>####Request
 
 ```
 {
@@ -853,10 +1017,14 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
+>####Status
+
+*200*
+
 ##### Sign In Users by Facebook
 `POST /authenticate-facebook-user`
 
->#### Request
+>####Request
 
 ```
 {
@@ -872,6 +1040,10 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
+>####Status
+
+*200*
+
 ###PASSWORDS
 --
 ##### Recovery User Password
@@ -879,7 +1051,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 *If the parameters are correct, you will receive a new email with the reset token.*
 
->#### Request
+>####Request
 
 ```
 {
@@ -887,16 +1059,14 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->####Response
+>####Status
 
-```
-{}
-```
+*200*
 
 ##### Reset User Password
 `PUT /passwords/user/reset`
 
->#### Request
+>####Request
 
 ```
 {
@@ -905,18 +1075,16 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->####Response
+>####Status
 
-```
-{}
-```
+*200*
 
 ##### Recovery Company Password
 `POST /passwords/company/reset`
 
 *If the parameters are correct, you will receive a new email with the reset token.*
 
->#### Request
+>####Request
 
 ```
 {
@@ -924,16 +1092,14 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->####Response
+>####Status
 
-```
-{}
-```
+*200*
 
 ##### Reset Company Password
 `PUT /passwords/company/reset`
 
->#### Request
+>####Request
 
 ```
 {
@@ -942,8 +1108,6 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 }
 ```
 
->####Response
+>####Status
 
-```
-{}
-```
+*200*
