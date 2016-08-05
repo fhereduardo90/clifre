@@ -23,7 +23,8 @@ module.exports.call = function(user) {
         include: [
           {model: sequelize.Card, attributes: ['stamps', 'title', 'description', 'color', 'id', 'createdAt']},
           {model: sequelize.Company, attributes: ['id', 'name', 'email', 'identifier', 'about', 'address', 'phone', 'avatar', 'createdAt']}
-        ]
+        ],
+        order: '"createdAt" DESC'
       }).then(function success(userCards) {
         if (userCards.length === 0) return {result: userCards, status: 200};
         return {
