@@ -31,6 +31,10 @@ module.exports = function card(sequelize, DataTypes) {
       validate: {
         notEmpty: { msg: 'color can\'t be blank' }
       }
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
     }
   }, {
     underscored: true,

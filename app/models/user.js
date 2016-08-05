@@ -112,6 +112,10 @@ module.exports = function userModel(sequelize, DataTypes) {
             });
         }
       }
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
     }
   }, {
     underscored: true,

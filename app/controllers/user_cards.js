@@ -7,15 +7,16 @@ var userAuthenticator = require('../middlewares/user_authenticator');
 var ApiResponse = require('../helpers/api_response');
 // Services
 var UserCardsByCompanyService = require('../services/user_cards/user_cards_by_company');
-var CreateUserCardByCompany = require('../services/user_cards/create_user_card_by_company');
+var CreateUserCardByCompanyService = require('../services/user_cards/create_user_card_by_company');
 var AddStampByCompanyService = require('../services/user_cards/add_stamp_by_company');
 var RemoveStampByCompanyService = require('../services/user_cards/remove_stamp_by_company');
-var FindUserCardService = require('../services/user_cards/find_user_card');
+var FindUserCardByCompanyService = require('../services/user_cards/find_user_card_by_company');
 var DeleteUserCardService = require('../services/user_cards/delete_user_card');
-var UserCardsService = require('../services/user_cards/user_cards');
-var FindUserCardByUser = require('../services/user_cards/find_user_card_by_user');
+var UserCardsService = require('../services/user_cards/user_cards_by_user');
+var FindUserCardByUserService = require('../services/user_cards/find_user_card_by_user');
+
 /*******************************************************************************
-**************************** COMPANY ENDPOINTS *********************************
+******************************* USER ENDPOINTS *********************************
 *******************************************************************************/
 
 userCardController.route('/users/me/user-cards')
@@ -31,7 +32,7 @@ userCardController.route('/users/me/user-cards')
 
   userCardController.route('/users/me/user-cards/:id')
     .get(userAuthenticator, function done(req, res) {
-      return FindUserCardByUser.call(req.user, parseInt(req.params.id))
+      return FindUserCardByUserService.call(req.user, parseInt(req.params.id))
         .then(function success(response) {
           return ApiResponse.success(res, response);
         })
@@ -39,6 +40,10 @@ userCardController.route('/users/me/user-cards')
           return ApiResponse.error(res, err);
         });
     });
+
+/*******************************************************************************
+**************************** COMPANY ENDPOINTS *********************************
+*******************************************************************************/
 
 userCardController.route('/users/:userId/user-cards')
   .get(companyAuthenticator, function done(req, res) {
@@ -55,7 +60,7 @@ userCardController.route('/users/:userId/user-cards')
       userId: parseInt(req.params.userId),
       cardId: parseInt(req.body.cardId)
     }
-    return CreateUserCardByCompany.call(req.company, params)
+    return CreateUserCardByCompanyService.call(req.company, params)
       .then(function success(response) {
         return ApiResponse.success(res, response);
       })
@@ -88,7 +93,7 @@ userCardController.route('/users/:userId/user-cards/:id/remove-stamp')
 
 userCardController.route('/users/:userId/user-cards/:id')
   .get(companyAuthenticator, function done(req, res) {
-    return FindUserCardService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
+    return FindUserCardByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
       .then(function success(response) {
         return ApiResponse.success(res, response);
       })
@@ -105,10 +110,5 @@ userCardController.route('/users/:userId/user-cards/:id')
         return ApiResponse.error(res, err);
       });
   })
-
-/*******************************************************************************
-******************************* USER ENDPOINTS *********************************
-*******************************************************************************/
-
 
 module.exports = userCardController;
