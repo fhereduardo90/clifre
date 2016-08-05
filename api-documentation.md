@@ -35,7 +35,7 @@
 
 >####Status
 
-*200*
+`200`
 
 #####Sign Up User
 `POST /users`
@@ -65,7 +65,7 @@ Does not require Authorization Token.*
 
 >####Status
 
-*201*
+`201`
 
 #####Update User
 `PUT /users/me`
@@ -107,7 +107,7 @@ Does not require Authorization Token.*
 
 >####Status
 
-*200*
+`200`
 
 
 #####User Profile
@@ -138,7 +138,7 @@ Does not require Authorization Token.*
 
 >####Status
 
-*200*
+`200`
 
 #####Search User by Identifier
 `GET /users/:identifier`
@@ -168,7 +168,7 @@ Does not require Authorization Token.*
 
 >####Status
 
-*200*
+`200`
 
 #####User Cards
 `GET /users/me/user-cards`
@@ -231,7 +231,7 @@ retrieve all cards related to the logged user.*
 
 >####Status
 
-*200*
+`200`
 
 #####User Card Detail
 `GET /users/me/user-cards/:id`
@@ -299,7 +299,7 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 
 >####Status
 
-*200*
+`200`
 
 ###COMPANIES
 --
@@ -337,7 +337,7 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 
 >####Status
 
-*200*
+`200`
 
 ##### Company Profile
 `GET /companies/me`
@@ -368,7 +368,7 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 
 >####Status
 
-*200*
+`200`
 
 ##### Sign Up Create Company
 `POST /companies`
@@ -400,7 +400,7 @@ Authorization Token.*
 
 >####Status
 
-*201*
+`201`
 
 ##### Update Company
 `PUT /companies/me`
@@ -446,7 +446,7 @@ Authorization Token.*
 
 >####Status
 
-*200*
+`200`
 
 #### Get all company's users
 `GET /companies/me/users`
@@ -488,7 +488,7 @@ company.*
 
 >####Status
 
-*200*
+`200`
 
 #### Find company's users by user's id
 `GET /companies/me/users/:id`
@@ -527,7 +527,7 @@ to the logged company by its id.*
 
 >####Status
 
-*200*
+`200`
 
 #### Create to the user a card
 `POST /users/:userId/user-cards`
@@ -594,7 +594,7 @@ a new card. You must pass the user's id and the current company's card's id.*
 
 >####Status
 
-*201*
+`201`
 
 #### Get all cards that belongs to any user related to the logged company
 `GET /users/:userId/user-cards`
@@ -667,7 +667,7 @@ you want to get all cards related with him.*
 
 >####Status
 
-*200*
+`200`
 
 #### Get user's card detail (by company)
 `GET /users/:userId/user-cards/:id`
@@ -737,7 +737,7 @@ You must pass the user's id and the user's card's id.*
 
 >####Status
 
-*200*
+`200`
 
 #### Delete user's card (by company)
 `DELETE /users/:userId/user-cards/:id`
@@ -764,7 +764,7 @@ user's card specified by the card's id. You must pass the user's id and the user
 
 >####Status
 
-*204*
+`204`
 
 #### Add a new stamp to the user's card
 `PUT /users/:userId/user-cards/:id/add-stamp`
@@ -791,7 +791,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*204*
+`204`
 
 #### Remove one new stamp to the user's card
 `PUT /users/:userId/user-cards/:id/remove-stamp`
@@ -818,7 +818,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*204*
+`204`
 
 ###CARDS
 --
@@ -852,7 +852,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Company's Card Detail
 `GET /companies/me/cards/:id`
@@ -888,7 +888,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Create Card
 `POST /companies/me/cards`
@@ -928,7 +928,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*201*
+`201`
 
 ##### Update Companie's Card
 `PUT /companies/me/cards/:id`
@@ -969,7 +969,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ###SESSION
 --
@@ -995,7 +995,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Sign In Companies
 `POST /authenticate-company`
@@ -1019,7 +1019,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Sign In Users by Facebook
 `POST /authenticate-facebook-user`
@@ -1042,7 +1042,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ###PASSWORDS
 --
@@ -1061,7 +1061,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Reset User Password
 `PUT /passwords/user/reset`
@@ -1077,7 +1077,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Recovery Company Password
 `POST /passwords/company/reset`
@@ -1094,7 +1094,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
 
 ##### Reset Company Password
 `PUT /passwords/company/reset`
@@ -1110,4 +1110,4 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 
 >####Status
 
-*200*
+`200`
