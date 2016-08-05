@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
     if (err) return res.status(403).end();
     return sequelize.Company.findOne(
       {where: {identifier: decoded.identifier},
-        attributes: ['id', 'name', 'email', 'identifier', 'about', 'address', 'phone', 'avatar', 'avatarName']})
+        attributes: ['id', 'name', 'email', 'identifier', 'about', 'address', 'phone', 'avatar', 'avatarName', 'createdAt']})
       .then(function (company) {
         if (!company) return res.status(401).end();
         req.company = company;
