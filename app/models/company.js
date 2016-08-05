@@ -84,6 +84,10 @@ module.exports = function(sequelize, DataTypes) {
     resetPasswordExpires: {
       type: DataTypes.DATE,
       field: 'reset_password_expires'
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
     }
   }, {
     underscored: true,
