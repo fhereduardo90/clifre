@@ -164,32 +164,43 @@ retrieve all cards related to the logged user.*
 ```
 [
   {
-    "id": 22,
-    "userId": 76,
-    "cardId": 1,
-    "companyId", 1,
+    "id": 16,
     "sealedDates": [
-      "2016-07-11T06:17:22.252Z",
-      "2016-07-11T06:17:25.093Z"
+      "2016-08-05T03:59:48.979Z",
+      "2016-08-05T03:59:48.979Z"
     ],
-    "stamps": 7,
-    "createdAt": "2016-07-11T05:37:49.144Z",
-    "title": "test card",
-    "description": "test card description",
-    "color": "#000000"
+    "createdAt": "2016-08-05T03:59:48.979Z",
+    "relationships": {
+      "card": {
+        "id": 6,
+        "stamps": 6,
+        "color": 6,
+        "description": "test card description",
+        "title": "test card 3",
+        "createdAt": "2016-08-05T02:14:12.073Z"
+      },
+      "user": {
+        "id": 51,
+        "name": "fernando juarez",
+        "email": "fhereduardo90@gmail.com",
+        "identifier": "sy2xlobk",
+        "birthdate": "1990-10-13T04:00:00.000Z",
+        "avatar": null
+      },
+      "company": {
+        "id": 2,
+        "name": "The donut place",
+        "email": "fhereduardo90@gmail.com",
+        "identifier": "sytiudzt",
+        "about": "we have the best donuts in the whole world :)",
+        "address": "Galerias, San Salvador",
+        "phone": "22577777",
+        "avatar": null,
+        "createdAt": "2016-08-05T02:13:40.542Z"
+      }
+    }
   },
-  {
-    "id": 21,
-    "userId": 76,
-    "cardId": 1,
-    "companyId": 1,
-    "sealedDates": [],
-    "stamps": 7,
-    "createdAt": "2016-07-11T05:37:49.144Z",
-    "title": "test card",
-    "description": "test card description",
-    "color": "#000000"
-  }
+  ...
 ]
 ```
 
@@ -219,19 +230,41 @@ show the logged user's card's detail. You must pass the logged user's card's id.
 
 ```
 {
-  "id": 22,
-  "userId": 76,
-  "cardId": 1,
-  "companyId": 1,
+  "id": 16,
   "sealedDates": [
-    "2016-07-11T06:17:22.252Z",
-    "2016-07-11T06:17:25.093Z"
+    "2016-08-05T03:59:48.979Z",
+    "2016-08-05T03:59:48.979Z"
   ],
-  "createdAt": "2016-07-11T05:37:49.144Z",
-  "stamps": 7,
-  "title": "test card",
-  "description": "test card description",
-  "color": "#000000"
+  "createdAt": "2016-08-05T03:59:48.979Z",
+  "relationships": {
+    "card": {
+      "id": 6,
+      "stamps": 6,
+      "color": 6,
+      "description": "test card description",
+      "title": "test card 3",
+      "createdAt": "2016-08-05T02:14:12.073Z"
+    },
+    "company": {
+      "id": 2,
+      "name": "The donut place",
+      "email": "fhereduardo90@gmail.com",
+      "identifier": "sytiudzt",
+      "about": "we have the best donuts in the whole world :)",
+      "address": "Galerias, San Salvador",
+      "phone": "22577777",
+      "avatar": null,
+      "createdAt": "2016-08-05T02:13:40.542Z"
+    },
+    "user": {
+      "id": 51,
+      "name": "fernando juarez",
+      "email": "fhereduardo90@gmail.com",
+      "identifier": "sy2xlobk",
+      "birthdate": "1990-10-13T04:00:00.000Z",
+      "avatar": null
+    }
+  }
 }
 ```
 
