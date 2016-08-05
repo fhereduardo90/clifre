@@ -12,19 +12,17 @@ var CompanyDetailSerializer = require('../../serializers/companies/company_detai
 var ApiError = require('../../errors/api_error');
 var sequelize = require('../../models');
 
-module.exports.call = function(company, userId) {
+module.exports.call = function(user) {
   return new Promise.try(function promise() {
     try {
-      if (!_.isObject(company) || !userId) {
-        throw new Error('Parameters are incorrect.');
-      }
+      if (!_.isObject(user)) throw new Error('Parameters are incorrect.');
 
       return sequelize.UserCard.findAll({
-        where: {companyId: company.id, userId: userId},
+        where: {userId: user.id},
         attributes: ['id', 'sealedDates', 'createdAt'],
         include: [
           {model: sequelize.Card, attributes: ['stamps', 'title', 'description', 'color', 'id', 'createdAt']},
-          {model: sequelize.User, attributes: ['id', 'name', 'email', 'identifier', 'birthdate', 'avatar', 'createdAt']}
+          {model: sequelize.Company, attributes: ['id', 'name', 'email', 'identifier', 'about', 'address', 'phone', 'avatar', 'createdAt']}
         ]
       }).then(function success(userCards) {
         if (userCards.length === 0) return {result: userCards, status: 200};
@@ -35,8 +33,8 @@ module.exports.call = function(company, userId) {
               {
                 relationships: {
                   card: CardDetailSerializer.serialize(userCard.Card),
-                  user: UserDetailSerializer.serialize(userCard.User),
-                  company: CompanyDetailSerializer.serialize(company)
+                  user: UserDetailSerializer.serialize(user),
+                  company: CompanyDetailSerializer.serialize(userCard.Company)
                 }
               }
             );
