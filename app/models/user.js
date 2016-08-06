@@ -22,7 +22,6 @@ module.exports = function userModel(sequelize, DataTypes) {
         isEmail: { msg: 'email format is not correct' },
         notEmpty: function notEmpty(value, next) {
           if (this.isNewRecord) {
-            console.dir(this);
             if (this.facebookId && !value) return next();
             if (value) return next();
             else return next('email cannot be blank');
