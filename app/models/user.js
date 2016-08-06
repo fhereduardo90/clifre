@@ -13,21 +13,21 @@ module.exports = function userModel(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: {msg: 'name cannot be blank'}
       }
     },
     email: {
       type: DataTypes.STRING,
       validate: {
-        isEmail: { msg: 'email format is not correct.' },
+        isEmail: { msg: 'email format is not correct' },
         notEmpty: function notEmpty(value, next) {
           if (this.isNewRecord) {
             if (this.facebookId && !value) return next();
             if (value) return next();
-            else return next('email can\'t be blank.');
+            else return next('email cannot be blank');
           } else {
             if (!this.email && !value) return next();
-            if (!value) return next('email can\'t be blank.');
+            if (!value) return next('email cannot be blank');
             else return next();
           }
         },
@@ -35,9 +35,9 @@ module.exports = function userModel(sequelize, DataTypes) {
           if (!value) return next();
           var params = {email: value};
           if (!this.isNewRecord && this.email === value) return next();
-          return User.find({where: params, attributes: ['id']})
+          return User.count({where: params})
             .then(function success(user) {
-              if (user) return next('email has been already taken.');
+              if (user) return next('email has been already taken');
               else next();
             })
             .catch(function error(err) {
@@ -49,15 +49,27 @@ module.exports = function userModel(sequelize, DataTypes) {
     identifier: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
-        notEmpty: true
+        notEmpty: {msg: 'identifier cannot be blank'},
+        isUnique: function isUnique(value, next) {
+          if (!value) return next();
+          var params = {identifier: value};
+          if (!this.isNewRecord && this.identifier === value) return next();
+          return User.count({where: params})
+            .then(function success(user) {
+              if (user) return next('identifier has been already taken');
+              else next();
+            })
+            .catch(function error(err) {
+              return next(err.message);
+            });
+        }
       }
     },
     birthdate: {
       type: DataTypes.DATE,
       validate: {
-        isDate: true
+        isDate: {msg: 'birthdate must be a date'}
       }
     },
     avatar: {
@@ -71,8 +83,8 @@ module.exports = function userModel(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'password can\'t be blank' },
-        len: { args: [8, 25], msg: 'password only accepts min 8 and max 25 characters.' }
+        notEmpty: { msg: 'password cannot be blank' },
+        len: { args: [8, 25], msg: 'password only accepts min 8 and max 25 characters' }
       }
     },
     resetPasswordToken: {
@@ -89,9 +101,9 @@ module.exports = function userModel(sequelize, DataTypes) {
       validate: {
         isUnique: function isUnique(value, next) {
           if (!value) return next();
-          return User.find({where: {facebookId: value}, attributes: ['id']})
+          return User.count({where: {facebookId: value}})
             .then(function success(user) {
-              if (user) return next('facebookId has been already taken.');
+              if (user) return next('facebookId has been already taken');
               else next();
             })
             .catch(function error(err) {

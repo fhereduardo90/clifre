@@ -4,18 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test test/*",
     "start": "node app"
   },
   "engines": {
-    "node": "6.1.0"
+    "node": "6.3.1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^3.5.0",
     "eslint": "^2.9.0",
     "eslint-config-airbnb-base": "^2.0.0",
-    "eslint-plugin-import": "^1.7.0"
+    "eslint-plugin-import": "^1.7.0",
+    "faker": "^3.1.0",
+    "mocha": "^3.0.0"
   },
   "dependencies": {
     "aws-sdk": "^2.3.0",
@@ -34,8 +37,8 @@
     "nid": "^0.3.2",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^3.15.1",
-    "sequelize-cli": "^2.2.1",
+    "sequelize": "3.23.3",
+    "sequelize-cli": "2.3.1",
     "shortid": "^2.2.6"
   }
 }
