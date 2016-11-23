@@ -767,7 +767,7 @@ user's card specified by the card's id. You must pass the user's id and the user
 `204`
 
 #### Add a new stamp to the user's card
-`PUT /users/:userId/user-cards/:id/add-stamp`
+`PUT /users/:userId/user-cards/add-stamp`
 
 ***Authorization token as company is required.*** *This endpoint is responsible to add a new stamp
 to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
@@ -794,7 +794,7 @@ to the the user's cards specified by the user's card's id. You must pass user's 
 `204`
 
 #### Remove one new stamp to the user's card
-`PUT /users/:userId/user-cards/:id/remove-stamp`
+`PUT /users/:userId/user-cards/remove-stamp`
 
 ***Authorization token as company is required.*** *This endpoint is responsible to remove one stamp
 to the the user's cards specified by the user's card's id. You must pass user's id and user card's id.*
