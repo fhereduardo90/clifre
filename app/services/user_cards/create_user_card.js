@@ -33,7 +33,7 @@ module.exports.call = function(company, userId) {
         return sequelize.User.findOne({
           where: { id: userId },
           attributes: ['id', 'name', 'email', 'identifier', 'birthdate', 'avatar', 'createdAt']
-        });
+        }); 
       }).then(function success(user) {
         if (!user) throw new Error('User not found');
         params.userId = user.id;
