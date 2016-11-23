@@ -7,16 +7,23 @@ var errorParse = require('../../helpers/error_parse');
 var ApiError = require('../../errors/api_error');
 var sequelize = require('../../models');
 
-module.exports.call = function(company, userId, id) {
+// module.exports.call = function(company, userId, id) {
+module.exports.call = function(company, userId) {
   return new Promise.try(function promise() {
     try {
-      if (!_.isObject(company) || !userId || !id) {
+      // if (!_.isObject(company) || !userId || !id) {
+      //   throw new Error('Parameters are incorrect.');
+      // }
+
+      if (!_.isObject(company) || !userId) {
         throw new Error('Parameters are incorrect.');
       }
 
       return sequelize.UserCard.findOne({
-        where: {companyId: company.id, userId: userId, id: id},
-        attributes: ['id', 'sealedDates']
+        // where: {companyId: company.id, userId: userId, id: id},
+        where: { companyId: company.id, userId: userId },
+        attributes: ['id', 'sealedDates', 'createdAt'],
+        order: '"createdAt" DESC'
       }).then(function success(userCard) {
         if (!userCard) throw new Error('User Card not found.');
         if (userCard.sealedDates.length === 0) {

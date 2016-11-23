@@ -69,9 +69,11 @@ userCardController.route('/users/:userId/user-cards')
       });
   });
 
-userCardController.route('/users/:userId/user-cards/:id/add-stamp')
+// userCardController.route('/users/:userId/user-cards/:id/add-stamp')
+userCardController.route('/users/:userId/user-cards/add-stamp')
   .put(companyAuthenticator, function done(req, res) {
-    return AddStampByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
+    // return AddStampByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
+    return AddStampByCompanyService.call(req.company, parseInt(req.params.userId))
       .then(function success() {
         return ApiResponse.ok(res);
       })
@@ -80,9 +82,11 @@ userCardController.route('/users/:userId/user-cards/:id/add-stamp')
       });
   });
 
-userCardController.route('/users/:userId/user-cards/:id/remove-stamp')
+// userCardController.route('/users/:userId/user-cards/:id/remove-stamp')
+userCardController.route('/users/:userId/user-cards/remove-stamp')
   .put(companyAuthenticator, function done(req, res) {
-    return RemoveStampByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
+    // return RemoveStampByCompanyService.call(req.company, parseInt(req.params.userId), parseInt(req.params.id))
+    return RemoveStampByCompanyService.call(req.company, parseInt(req.params.userId))
       .then(function success() {
         return ApiResponse.ok(res);
       })
