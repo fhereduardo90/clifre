@@ -42,7 +42,7 @@ function uploadAvatar (avatar, path, user) {
 module.exports.call = function(user, params) {
   return Promise.try(function () {
     try {
-      return user.update(params)
+      return user.update(_.omit(params, ['avatar']))
         .then(function success(u) {
           var path = 'users/' + u.identifier + '/avatar';
           if (params.avatar) return uploadAvatar(params.avatar, path, u);
