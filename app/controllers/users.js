@@ -68,15 +68,15 @@ userController.route('/users/:identifier')
 userController.route('/users/me/device')
 	.post(function done(req, res) {
 		return AddUserDevice.call(req.user, {
-		  registrationId: req.body.registrationId,
+			registrationId: req.body.registrationId,
 			platform: req.body.platform
 		})
-      .then(function success(response) {
+			.then(function success(response) {
 
-		  })
-      .catch(function error(err) {
+			})
+			.catch(function error(err) {
 
-		  });
+			});
 	});
 
 module.exports = userController;
