@@ -173,7 +173,7 @@ Does not require Authorization Token.*
 #####Add User Device
 `POST /users/me/device`
 
-*Register user's device for being able to receive push notification. Authorization token is required.*
+*Register user's device for being able to receive push notifications. Authorization token is required.*
 
 >####Headers
 
