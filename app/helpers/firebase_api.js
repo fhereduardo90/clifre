@@ -1,42 +1,29 @@
 'use strict';
 
 require('dotenv').config({silent: true});
-var Promise = require('bluebird');
-var fcm = require('node-gcm');
+const Promise = require('bluebird');
+const fcm = require('node-gcm');
 
-module.exports = (function () {
-  var instance;
-
-  function FirebaseApi(apiKey) {
-    instance = this;
-    var sender = new fcm.Sender(apiKey);
-
-    function buildMessage(data) {
-      return new fcm.Message({
-        data: data
-      });
-    }
-
-    function sendNotification(data, registrationIds) {
-      var message = buildMessage(data);
-      return new Promise(function send(resolve, reject) {
-        sender.send(message, {registrationTokens: registrationIds}, function done(err, response) {
-          if (err) return reject(err);
-          else return resolve(response);
-        });
-      });
-    }
-
-    return {
-      buildMessage: buildMessage,
-      sendNotification: sendNotification
-    }
+class FirebaseApi {
+  constructor(apiKey) {
+    this.sender = new fcm.Sender(apiKey);
   }
 
-  FirebaseApi.init = function init(apiKey) {
-    if (instance) return instance;
-    else return new FirebaseApi(apiKey);
-  };
+  buildMessage(data) {
+    return new fcm.Message({
+      data: data
+    });
+  }
 
-  return FirebaseApi.init(process.env.FIREBASE_CLOUD_MESSAGING_KEY);
-})();
+  sendNotification(data, registrationIds) {
+    let message = this.buildMessage(data);
+    return new Promise((resolve, reject) => {
+      this.sender.send(message, {registrationTokens: registrationIds}, (err, response) => {
+        if (err) return reject(err);
+        else return resolve(response);
+      });
+    });
+  }
+}
+
+module.exports = Object.freeze(new FirebaseApi(process.env.FIREBASE_CLOUD_MESSAGING_KEY));
