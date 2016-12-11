@@ -1,5 +1,5 @@
 'use strict';
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var Promise = require('bluebird');
 var shortid = require('shortid');
 
@@ -147,6 +147,7 @@ module.exports = function userModel(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         User.hasMany(models.UserCard, {as: 'UserCards'});
+        User.hasMany(models.Device, {as: 'Devices'});
         User.belongsToMany(models.Card, {through: models.UserCard});
         User.belongsToMany(models.User,
           {as: 'Companies', through: 'user_cards', foreignKey: 'user_id'}

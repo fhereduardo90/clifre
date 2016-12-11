@@ -1,5 +1,5 @@
 'use strict';
-var bcrypt     = require('bcrypt');
+var bcrypt     = require('bcryptjs');
 var Promise    = require('bluebird');
 var shortid = require('shortid');
 

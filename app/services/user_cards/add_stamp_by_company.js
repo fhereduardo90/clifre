@@ -6,6 +6,7 @@ var errorParse = require('../../helpers/error_parse');
 // Others
 var ApiError = require('../../errors/api_error');
 var sequelize = require('../../models');
+var FirebaseApi = require('../../helpers/firebase_api');
 
 var CreateUserCard = require('../user_cards/create_user_card');
 
@@ -13,10 +14,6 @@ var CreateUserCard = require('../user_cards/create_user_card');
   module.exports.call = function(company, userId) {
   return new Promise.try(function promise() {
     try {
-      // if (!_.isObject(company) || !userId || !id) {
-      //   throw new Error('Parameters are incorrect.');
-      // }
-
       if (!_.isObject(company) || !userId) {
         throw new Error('Parameters are incorrect.');
       }
@@ -39,6 +36,16 @@ var CreateUserCard = require('../user_cards/create_user_card');
         userCard.sealedDates = userCard.sealedDates.concat([Date.now()]).slice();
         return userCard.save();
       }).then(function success() {
+        sequelize.Device.findAll({ where: { userId: userId }, attributes: ['registrationId'] })
+          .then(function (devices) {
+            FirebaseApi.sendNotification(
+              {title: 'Add Stamp', body: 'Stamp Added'},
+              devices.map(function (d) {
+                return d.registrationId;
+              })
+            );
+          });
+
         return {result: null, status: 204};
       }).catch(function error(err) {
         throw new ApiError('New stamp could not be added.', 422, errorParse(err));

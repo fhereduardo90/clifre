@@ -7,6 +7,7 @@ var CreateUserService = require('../services/users/create_user');
 var UpdateUserService = require('../services/users/update_user');
 var AllUsersService = require('../services/users/all_users');
 var FindUserService = require('../services/users/find_user');
+var AddUserDevice = require('../services/users/add_user_device');
 // Libs
 var _ = require('lodash');
 // Others
@@ -66,17 +67,15 @@ userController.route('/users/:identifier')
   });
 
 userController.route('/users/me/device')
-  .post(function done(req, res) {
+  .post(userAuthenticator, function done(req, res) {
     return AddUserDevice.call(req.user, {
       registrationId: req.body.registrationId,
       platform: req.body.platform
-    })
-      .then(function success(response) {
-
-      })
-      .catch(function error(err) {
-
-      });
+    }).then(function success(response) {
+      return ApiResponse.success(res, response);
+    }).catch(function error(err) {
+      return ApiResponse.error(res, err);
+    });
   });
 
 module.exports = userController;

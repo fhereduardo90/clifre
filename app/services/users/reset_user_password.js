@@ -2,7 +2,7 @@ var sequelize = require('../../models');
 var ApiError = require('../../errors/api_error');
 var errorParse = require('../../helpers/error_parse');
 var Promise = require('bluebird');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 module.exports.call = function (email) {
   return Promise.try(function findUser() {

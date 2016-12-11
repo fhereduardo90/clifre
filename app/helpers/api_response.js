@@ -1,5 +1,5 @@
-var ApiError      = require('../errors/api_error');
-var _             = require('lodash');
+var ApiError = require('../errors/api_error');
+var _ = require('lodash');
 
 module.exports.error = function (res, params) {
   if (!_.isObject(params)) params = {};
