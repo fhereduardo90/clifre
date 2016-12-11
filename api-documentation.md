@@ -170,6 +170,31 @@ Does not require Authorization Token.*
 
 `200`
 
+#####Add User Device
+`POST /users/me/device`
+
+*Register user's device for being able to receive push notification. Authorization token is required.*
+
+>####Headers
+
+```
+{
+  'Authorization': 'Bearer [access token]'
+}
+```
+>####Request
+
+```
+{
+	"registrationId": "[registration id]",
+	"platform": "[android OR ios]"
+}
+```
+
+>####Status
+
+`204`
+
 #####User Cards
 `GET /users/me/user-cards`
 
