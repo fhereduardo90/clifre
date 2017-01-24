@@ -1,0 +1,1208 @@
+# Clifre API
+
+# Group Authentication
+
+## User Sign In [POST /authenticate]
+
++ Request (application/json)
+
+    + Attributes
+        
+        + email (string, required) - User's Email
+        + password (string, required) - User's Password
+
++ Response 200 (application/json)
+
+        {
+          "accessToken": {{accessToken}}
+        }
+
++ Response 400 (application/json)
+
+        {
+          "message": "string",
+          "status": 400,
+          "errors": [
+            "string"
+          ]
+        }
+
+## Facebook Sign In / Sign Up [POST /authenticate-facebook-user]
+
++ Request (application/json)
+
+    + Attributes
+        
+        + accessToken (string, required) - Facebook's Access Token
+
++ Response 200 (application/json)
+
+        {
+          "accessToken": {{accessToken}}
+        }
+
++ Response 400 (application/json)
+
+        {
+          "message": "string",
+          "status": 400,
+          "errors": [
+            "string"
+          ]
+        }
+
+
+## Company Sign In [POST /authenticate-company]
+
++ Request (application/json)
+
+    + Attributes
+        
+        + email (string, required) - Company's Email
+        + password (string, required) - Company's Password
+
++ Response 200 (application/json)
+
+        {
+          "accessToken": {{accessToken}}
+        }
+
++ Response 400 (application/json)
+
+        {
+          "message": "string",
+          "status": 400,
+          "errors": [
+            "string"
+          ]
+        }
+
+# Group Passwords
+
+## User Recovery Password [/passwords/user/reset]
+
+### Send Instructions [POST]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + email (string, required) - User's Email
+
++ Response 204
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+### Update Password [PUT]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + resetToken (string, required) - User's Reset Token
+        + password (string, required) - New User's Password
+
++ Response 204
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+## Company Recovery Password [/passwords/company/reset]
+
+### Send Instructions [POST]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + email (string, required) - Company's Email
+
++ Response 204
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+### Update Password [PUT]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + resetToken (string, required) - Company's Reset Token
+        + password (string, required) - New Company's Password
+
++ Response 204
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+# Group Users
+
+## Users [/users]
+
+### Sign Up [POST]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + name (string, required) - User's Name
+        + email (string, required) - User's Email
+        + birthdate (string, required) - User's Birthdate
+        + avatar (string, required) - User's Avatar (must be a base64)
+        + password (string, required) - User's Password
+
++ Response 201 (application/json)
+
+        {
+          "accessToken": {{accessToken}}
+        }
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+### User List [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 1,
+            "name": "fernando juarez",
+            "email": "fhereduardo90@gmail.com",
+            "identifier": "byemscwwe",
+            "birthdate": "1990-10-13T06:00:00.000Z",
+            "avatar": {{S3URL}},
+            "createdAt": "2017-01-22T02:12:23.615Z"
+          },
+          {
+            "id": 2,
+            "name": "fernando juarez",
+            "email": "fhereduardo91@gmail.com",
+            "identifier": "sytl7aqwg",
+            "birthdate": "1990-10-13T06:00:00.000Z",
+            "avatar": {{S3URL}},
+            "createdAt": "2017-01-23T19:01:08.980Z"
+          }
+        ]
+
+## Profile [/users/me]
+
+### Profile [GET]
+
+***Authentication is required***
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "name",
+          "email": "test@test.com",
+          "identifier": "byemscwwe",
+          "birthdate": "1990-10-13T06:00:00.000Z",
+          "avatar": {{S3URL}}}
+        }
+
++ Response 401
+
+    + Headers
+
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
+### Update Profile [PUT]
+
+***Authentication is required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+        
+    + Attributes
+    
+        + name (string, required) - User's Name
+        + email (string, required) - User's Email
+        + birthdate (string, required) - User's Birthdate
+        + avatar (string, required) - User's Avatar (must be a base64)
+        + password (string, required) - User's Password
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+        
+## Create User Device [POST /users/me/device]
+
+***Authentication is required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+        
+    + Attributes
+        
+          + registrationId (string, required)
+          + platform (enum[string], required)
+        
+            Mobile Platform
+            
+            + Members
+              + `android`
+              + `ios`
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+## Find User by Identifier [GET /users/{identifier}]
+
++ Parameters
+
+    + identifier (string) - User's Identifier
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "name",
+          "email": "test@test.com",
+          "identifier": "byemscwwe",
+          "birthdate": "1990-10-13T06:00:00.000Z",
+          "avatar": {{S3URL}}}
+        }
+
++ Response 404 (application/json)
+
+        {
+          "message": "string",
+          "status": 404,
+          "errors": [
+            "string"
+          ]
+        }
+
+## User's Cards [GET /users/me/cards]
+
+***Authorization Required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 28,
+            "sealedDates": [
+              "2017-01-23T03:22:25.895Z",
+              "2017-01-23T03:22:26.022Z",
+              "2017-01-23T03:22:26.165Z",
+              "2017-01-23T03:22:26.302Z",
+              "2017-01-23T03:22:26.468Z",
+              "2017-01-23T03:22:26.610Z",
+              "2017-01-23T03:22:26.783Z"
+            ],
+            "createdAt": "2017-01-23T02:11:51.716Z",
+            "redeemed": true,
+            "card": {
+              "id": 2,
+              "stamps": 7,
+              "color": "asdasdasd",
+              "description": "test card description",
+              "title": "test card",
+              "createdAt": "2017-01-22T04:51:41.894Z"
+            },
+            "company": {
+              "id": 1,
+              "name": "The donut place",
+              "email": "fhereduardo90@gmail.com",
+              "identifier": "h1vdoj-px",
+              "about": "we have the best donuts in the whole world :)",
+              "address": "Galerias, San Salvador",
+              "phone": "22577777",
+              "avatar": {{S3URL}},
+              "createdAt": "2017-01-22T03:47:58.996Z"
+            }
+          }
+        ]
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
+## User's Card Detail [GET /users/me/cards/{id}]
+
+***Authorization Required***
+
++ Parameters
+
+    + id (integer, required) - Card's ID
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+            
++ Response 200 (application/json)
+
+        {
+            "id": 28,
+            "sealedDates": [
+                "2017-01-23T03:22:25.895Z",
+                "2017-01-23T03:22:26.022Z",
+                "2017-01-23T03:22:26.165Z",
+                "2017-01-23T03:22:26.302Z",
+                "2017-01-23T03:22:26.468Z",
+                "2017-01-23T03:22:26.610Z",
+                "2017-01-23T03:22:26.783Z"
+            ],
+            "createdAt": "2017-01-23T02:11:51.716Z",
+            "redeemed": true,
+            "card": {
+                "id": 2,
+                "stamps": 7,
+                "color": "asdasdasd",
+                "description": "test card description",
+                "title": "test card",
+                "createdAt": "2017-01-22T04:51:41.894Z"
+            },
+            "company": {
+                "id": 1,
+                "name": "The donut place",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "h1vdoj-px",
+                "about": "we have the best donuts in the whole world :)",
+                "address": "Galerias, San Salvador",
+                "phone": "22577777",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T03:47:58.996Z"
+            }
+        }
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+        
+# Group Companies
+
+## Companies [/companies]
+
+### Sign Up [POST]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + name (string, required) - Company's Name
+        + email (string, required) - Company's Email
+        + about (string, required) - Company's Description
+        + address (string, required) - Company's Address
+        + phone (string, required) - Company's Phone
+        + avatar (string, required) - Company's Avatar (must be a base64)
+        + password (string, required) - Company's Password
+
++ Response 201 (application/json)
+
+        {
+            "accessToken": {{accessToken}}
+        }
+
++ Response 422 (application/json)
+
+        {
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
+        }
+
+### Company List [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "The donut place",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "h1vdoj-px",
+                "about": "we have the best donuts in the whole world :)",
+                "address": "Galerias, San Salvador",
+                "phone": "22577777",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T03:47:58.996Z"
+            }
+        ]
+
+## Profile [/companies/me]
+
+### Profile [GET]
+
+***Authentication as Company is required***
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "The donut place",
+            "email": "fhereduardo90@gmail.com",
+            "identifier": "h1vdoj-px",
+            "about": "we have the best donuts in the whole world :)",
+            "address": "Galerias, San Salvador",
+            "phone": "22577777",
+            "avatar": {{S3URL}},
+            "createdAt": "2017-01-22T03:47:58.996Z"
+        }
+
++ Response 401
+
+    + Headers
+
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
+### Update Profile [PUT]
+
+***Authentication as Company is required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+        
+    + Attributes
+    
+        + name (string, required) - Company's Name
+        + email (string, required) - Company's Email
+        + about (string, required) - Company's Description
+        + address (string, required) - Company's Address
+        + phone (string, required) - Company's Phone
+        + avatar (string, required) - Company's Avatar (must be a base64)
+        + password (string, required) - Company's Password
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 422 (application/json)
+
+        {
+          "message": "string",
+          "status": 422,
+          "errors": [
+            "string"
+          ]
+        }
+
+## Company's Users [GET /companies/me/users]
+
+***Authentication as Company is required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "fernando juarez",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "byemscwwe",
+                "birthdate": "1990-10-13T06:00:00.000Z",
+                "avatar": {{S3URL}}
+            }
+        ]
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
+## Find Company by ID [GET /companies/{id}]
+
++ Parameters
+
+    + id (integer, required) - User's ID
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "The donut place",
+            "email": "fhereduardo90@gmail.com",
+            "identifier": "h1vdoj-px",
+            "about": "we have the best donuts in the whole world :)",
+            "address": "Galerias, San Salvador",
+            "phone": "22577777",
+            "avatar": {{S3URL}},
+            "createdAt": "2017-01-22T03:47:58.996Z"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+        
+# Group Cards
+
+## Company's Cards [/companies/me/cards]
+
+### Create Card [POST]
+
+***Authentication as Company is required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+            
+    + Attributes
+        
+        + title (string, required) - Card's Title
+        + stamps (number, required) - Card's Stamps (quantity)
+        + description (string, required) - Card's Description
+        + color (string, required) - Card's Color (must be an hexadecimal)
+        
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 422 (application/json)
+
+        {
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
+        }
+
+### Company's Cards List [GET]
+
+***Authentication as Company is required***
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 3,
+                "stamps": 6,
+                "color": "#ffffff",
+                "description": "test card description",
+                "title": "test card 5",
+                "createdAt": "2017-01-24T02:03:04.579Z"
+            },
+            {
+                "id": 2,
+                "stamps": 7,
+                "color": "asdasdasd",
+                "description": "test card description",
+                "title": "test card",
+                "createdAt": "2017-01-22T04:51:41.894Z"
+            }
+        ]
+        
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+            
+## Company's Card Detail [/companies/me/cards/{id}]
+
+### Card Detail [GET]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + id (integer, required) - Card's ID
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        {
+            "id": 3,
+            "stamps": 6,
+            "color": "#ffffff",
+            "description": "test card description",
+            "title": "test card 5",
+            "createdAt": "2017-01-24T02:03:04.579Z"
+        }
+        
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
+### Update Card [PUT]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + id (integer, required) - Card's ID
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+    
+    + Attributes
+        
+        + title (string, required) - Card's Title
+        + stamps (number, required) - Card's Stamps (quantity)
+        + description (string, required) - Card's Description
+        + color (string, required) - Card's Color (must be an hexadecimal)
+
++ Response 204
+        
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
++ Response 422 (application/json)
+
+        {
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
+        }
+        
+## Users Cards [/users/{identifier}/cards]
+
+### Get User Card List [GET]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 28,
+                "sealedDates": [
+                    "2017-01-23T03:22:25.895Z",
+                    "2017-01-23T03:22:26.022Z",
+                    "2017-01-23T03:22:26.165Z",
+                    "2017-01-23T03:22:26.302Z",
+                    "2017-01-23T03:22:26.468Z",
+                    "2017-01-23T03:22:26.610Z",
+                    "2017-01-23T03:22:26.783Z"
+                ],
+                "createdAt": "2017-01-23T02:11:51.716Z",
+                "redeemed": true,
+                "card": {
+                    "id": 2,
+                    "stamps": 7,
+                    "color": "asdasdasd",
+                    "description": "test card description",
+                    "title": "test card",
+                    "createdAt": "2017-01-22T04:51:41.894Z"
+                },
+                "user": {
+                    "id": 1,
+                    "name": "fernando juarez",
+                    "email": "fhereduardo90@gmail.com",
+                    "identifier": "byemscwwe",
+                    "birthdate": "1990-10-13T06:00:00.000Z",
+                    "avatar": {{S3URL}},
+                    "createdAt": "2017-01-22T02:12:23.615Z"
+                },
+                "company": {
+                    "id": 1,
+                    "name": "The donut place",
+                    "email": "fhereduardo90@gmail.com",
+                    "identifier": "h1vdoj-px",
+                    "about": "we have the best donuts in the whole world :)",
+                    "address": "Galerias, San Salvador",
+                    "phone": "22577777",
+                    "avatar": {{S3URL}},
+                    "createdAt": "2017-01-22T03:47:58.996Z"
+                }
+            }
+        ]
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
+### Create User Card [POST]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+    
+    + Attributes
+    
+        + cardId (number, required) - Card's ID
+
++ Response 201 (application/json)
+
+        {
+            "id": 29,
+            "sealedDates": [],
+            "createdAt": "2017-01-24T03:42:47.176Z",
+            "redeemed": false,
+            "company": {
+                "id": 1,
+                "name": "The donut place",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "h1vdoj-px",
+                "about": "we have the best donuts in the whole world :)",
+                "address": "Galerias, San Salvador",
+                "phone": "22577777",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T03:47:58.996Z"
+            },
+            "card": {
+                "id": 2,
+                "stamps": 7,
+                "color": "asdasdasd",
+                "description": "test card description",
+                "title": "test card",
+                "createdAt": "2017-01-22T04:51:41.894Z"
+            },
+            "user": {
+                "id": 1,
+                "name": "fernando juarez",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "byemscwwe",
+                "birthdate": "1990-10-13T06:00:00.000Z",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T02:12:23.615Z"
+            }
+        }
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
++ Response 422 (application/json)
+
+        {
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
+        }
+
+## User's Card Detail [/users/{identifier}/cards/{id}]
+
+### Card Detail [GET]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+    + id (integer, required) - Card's ID
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 200 (application/json)
+
+        {
+            "id": 28,
+            "sealedDates": [
+                "2017-01-23T03:22:25.895Z",
+                "2017-01-23T03:22:26.022Z",
+                "2017-01-23T03:22:26.165Z",
+                "2017-01-23T03:22:26.302Z",
+                "2017-01-23T03:22:26.468Z",
+                "2017-01-23T03:22:26.610Z",
+                "2017-01-23T03:22:26.783Z"
+            ],
+            "createdAt": "2017-01-23T02:11:51.716Z",
+            "redeemed": true,
+            "company": {
+                "id": 1,
+                "name": "The donut place",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "h1vdoj-px",
+                "about": "we have the best donuts in the whole world :)",
+                "address": "Galerias, San Salvador",
+                "phone": "22577777",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T03:47:58.996Z"
+            },
+            "card": {
+                "id": 2,
+                "stamps": 7,
+                "color": "asdasdasd",
+                "description": "test card description",
+                "title": "test card",
+                "createdAt": "2017-01-22T04:51:41.894Z"
+            },
+            "user": {
+                "id": 1,
+                "name": "fernando juarez",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "byemscwwe",
+                "birthdate": "1990-10-13T06:00:00.000Z",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T02:12:23.615Z"
+            }
+        }
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
+### Delete Card [DELETE]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+    + id (integer, required) - Card's ID
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
+## Add Stamp to User Card [PATCH /users/{identifier}/cards/add-stamp]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
+## Remove Stamp to User Card [PATCH /users/{identifier}/cards/remove-stamp]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
+## Redeem User Card [PATCH /users/{identifier}/cards/redeem]
+
+***Authentication as Company is required***
+
++ Parameters
+
+    + identifier (string, required) - User's Identifier
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer {{accessToken}}
+
++ Response 204
+
++ Response 401
+
+    + Headers
+    
+            WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
+
++ Response 404 (application/json)
+
+        {
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
+        }
+
++ Response 422 (application/json)
+
+        {
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
+        }
