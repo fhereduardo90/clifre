@@ -20,11 +20,11 @@
 + Response 400 (application/json)
 
         {
-          "message": "string",
-          "status": 400,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 400,
+            "errors": [
+                "string"
+            ]
         }
 
 ## Facebook Sign In / Sign Up [POST /authenticate-facebook-user]
@@ -38,17 +38,17 @@
 + Response 200 (application/json)
 
         {
-          "accessToken": {{accessToken}}
+            "accessToken": {{accessToken}}
         }
 
 + Response 400 (application/json)
 
         {
-          "message": "string",
-          "status": 400,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 400,
+            "errors": [
+                "string"
+            ]
         }
 
 
@@ -64,17 +64,17 @@
 + Response 200 (application/json)
 
         {
-          "accessToken": {{accessToken}}
+            "accessToken": {{accessToken}}
         }
 
 + Response 400 (application/json)
 
         {
-          "message": "string",
-          "status": 400,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 400,
+            "errors": [
+                "string"
+            ]
         }
 
 # Group Passwords
@@ -94,11 +94,11 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
 
 ### Update Password [PUT]
@@ -115,11 +115,11 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
 
 ## Company Recovery Password [/passwords/company/reset]
@@ -137,11 +137,11 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
 
 ### Update Password [PUT]
@@ -158,11 +158,11 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
 
 # Group Users
@@ -184,17 +184,17 @@
 + Response 201 (application/json)
 
         {
-          "accessToken": {{accessToken}}
+            "accessToken": {{accessToken}}
         }
 
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
 
 ### User List [GET]
@@ -204,58 +204,58 @@
 + Response 200 (application/json)
 
         [
-          {
-            "id": 1,
-            "name": "fernando juarez",
-            "email": "fhereduardo90@gmail.com",
-            "identifier": "byemscwwe",
-            "birthdate": "1990-10-13T06:00:00.000Z",
-            "avatar": {{S3URL}},
-            "createdAt": "2017-01-22T02:12:23.615Z"
-          },
-          {
-            "id": 2,
-            "name": "fernando juarez",
-            "email": "fhereduardo91@gmail.com",
-            "identifier": "sytl7aqwg",
-            "birthdate": "1990-10-13T06:00:00.000Z",
-            "avatar": {{S3URL}},
-            "createdAt": "2017-01-23T19:01:08.980Z"
-          }
+            {
+                "id": 1,
+                "name": "fernando juarez",
+                "email": "fhereduardo90@gmail.com",
+                "identifier": "byemscwwe",
+                "birthdate": "1990-10-13T06:00:00.000Z",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-22T02:12:23.615Z"
+            },
+            {
+                "id": 2,
+                "name": "fernando juarez",
+                "email": "fhereduardo91@gmail.com",
+                "identifier": "sytl7aqwg",
+                "birthdate": "1990-10-13T06:00:00.000Z",
+                "avatar": {{S3URL}},
+                "createdAt": "2017-01-23T19:01:08.980Z"
+            }
         ]
 
 ## Profile [/users/me]
 
 ### Profile [GET]
 
-***Authentication is required***
+***Authentication as User is required***
 
 + Request
 
     + Headers
-
+    
             Authorization: Bearer {{accessToken}}
 
 + Response 200 (application/json)
 
         {
-          "id": 1,
-          "name": "name",
-          "email": "test@test.com",
-          "identifier": "byemscwwe",
-          "birthdate": "1990-10-13T06:00:00.000Z",
-          "avatar": {{S3URL}}}
+            "id": 1,
+            "name": "name",
+            "email": "test@test.com",
+            "identifier": "byemscwwe",
+            "birthdate": "1990-10-13T06:00:00.000Z",
+            "avatar": {{S3URL}}}
         }
 
 + Response 401
 
     + Headers
-
+    
             WWW-Authenticate: Bearer realm="Doorkeeper", error="invalid_token", error_description="The access token is invalid"
 
 ### Update Profile [PUT]
 
-***Authentication is required***
+***Authentication as User is required***
 
 + Request (application/json)
 
@@ -282,16 +282,16 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
         
 ## Create User Device [POST /users/me/device]
 
-***Authentication is required***
+***Authentication as User is required***
 
 + Request (application/json)
 
@@ -321,11 +321,11 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 422,
+            "errors": [
+                "string"
+            ]
         }
 
 ## Find User by Identifier [GET /users/{identifier}]
@@ -339,27 +339,27 @@
 + Response 200 (application/json)
 
         {
-          "id": 1,
-          "name": "name",
-          "email": "test@test.com",
-          "identifier": "byemscwwe",
-          "birthdate": "1990-10-13T06:00:00.000Z",
-          "avatar": {{S3URL}}}
+            "id": 1,
+            "name": "name",
+            "email": "test@test.com",
+            "identifier": "byemscwwe",
+            "birthdate": "1990-10-13T06:00:00.000Z",
+            "avatar": {{S3URL}}}
         }
 
 + Response 404 (application/json)
 
         {
-          "message": "string",
-          "status": 404,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 404,
+            "errors": [
+                "string"
+            ]
         }
 
 ## User's Cards [GET /users/me/cards]
 
-***Authorization Required***
+***Authentication as User is required***
 
 + Request (application/json)
 
@@ -370,39 +370,39 @@
 + Response 200 (application/json)
 
         [
-          {
-            "id": 28,
-            "sealedDates": [
-              "2017-01-23T03:22:25.895Z",
-              "2017-01-23T03:22:26.022Z",
-              "2017-01-23T03:22:26.165Z",
-              "2017-01-23T03:22:26.302Z",
-              "2017-01-23T03:22:26.468Z",
-              "2017-01-23T03:22:26.610Z",
-              "2017-01-23T03:22:26.783Z"
-            ],
-            "createdAt": "2017-01-23T02:11:51.716Z",
-            "redeemed": true,
-            "card": {
-              "id": 2,
-              "stamps": 7,
-              "color": "asdasdasd",
-              "description": "test card description",
-              "title": "test card",
-              "createdAt": "2017-01-22T04:51:41.894Z"
-            },
-            "company": {
-              "id": 1,
-              "name": "The donut place",
-              "email": "fhereduardo90@gmail.com",
-              "identifier": "h1vdoj-px",
-              "about": "we have the best donuts in the whole world :)",
-              "address": "Galerias, San Salvador",
-              "phone": "22577777",
-              "avatar": {{S3URL}},
-              "createdAt": "2017-01-22T03:47:58.996Z"
+            {
+                "id": 28,
+                "sealedDates": [
+                    "2017-01-23T03:22:25.895Z",
+                    "2017-01-23T03:22:26.022Z",
+                    "2017-01-23T03:22:26.165Z",
+                    "2017-01-23T03:22:26.302Z",
+                    "2017-01-23T03:22:26.468Z",
+                    "2017-01-23T03:22:26.610Z",
+                    "2017-01-23T03:22:26.783Z"
+                ],
+                "createdAt": "2017-01-23T02:11:51.716Z",
+                "redeemed": true,
+                "card": {
+                    "id": 2,
+                    "stamps": 7,
+                    "color": "asdasdasd",
+                    "description": "test card description",
+                    "title": "test card",
+                    "createdAt": "2017-01-22T04:51:41.894Z"
+                },
+                "company": {
+                    "id": 1,
+                    "name": "The donut place",
+                    "email": "fhereduardo90@gmail.com",
+                    "identifier": "h1vdoj-px",
+                    "about": "we have the best donuts in the whole world :)",
+                    "address": "Galerias, San Salvador",
+                    "phone": "22577777",
+                    "avatar": {{S3URL}},
+                    "createdAt": "2017-01-22T03:47:58.996Z"
+                }
             }
-          }
         ]
 
 + Response 401
@@ -413,7 +413,7 @@
 
 ## User's Card Detail [GET /users/me/cards/{id}]
 
-***Authorization Required***
+***Authentication as User is required***
 
 + Parameters
 
@@ -471,7 +471,7 @@
 
         {
             "message": "string",
-            "status": 404,
+            "status": 400,
             "errors": [
                 "string"
             ]
@@ -594,11 +594,11 @@
 + Response 422 (application/json)
 
         {
-          "message": "string",
-          "status": 422,
-          "errors": [
-            "string"
-          ]
+            "message": "string",
+            "status": 400,
+            "errors": [
+                "string"
+            ]
         }
 
 ## Company's Users [GET /companies/me/users]
