@@ -22,6 +22,6 @@ module.exports.call = function(email, password) {
     })
     .catch(function(err) {
       throw new ApiError('Authentication failed. Wrong email or password.',
-        422, errorParse(err));
+        400, errorParse(err));
     })
 };

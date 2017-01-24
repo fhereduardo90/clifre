@@ -8,10 +8,10 @@ var errorParse = require('../../helpers/error_parse');
 var ApiError = require('../../errors/api_error');
 var sequelize = require('../../models');
 
-module.exports.call = function(company, userId) {
+module.exports.call = function(company, identifier) {
   return new Promise.try(function promise() {
     try {
-      if (!_.isObject(company) || !userId) {
+      if (!_.isObject(company) || !identifier) {
         throw new Error('Parameters are incorrect.');
       }
 
@@ -31,7 +31,7 @@ module.exports.call = function(company, userId) {
         cardFound = card;
         params.cardId = card.id;
         return sequelize.User.findOne({
-          where: { id: userId },
+          where: { identifier: identifier },
           attributes: ['id', 'name', 'email', 'identifier', 'birthdate', 'avatar', 'createdAt']
         }); 
       }).then(function success(user) {

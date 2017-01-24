@@ -1,25 +1,24 @@
 // Libs
-var _ = require('lodash');
-var Promise = require('bluebird');
+const _ = require('lodash');
+const Promise = require('bluebird');
 // Helpers
-var errorParse = require('../../helpers/error_parse');
+const errorParse = require('../../helpers/error_parse');
 // Others
-var ApiError = require('../../errors/api_error');
-var sequelize = require('../../models');
+const ApiError = require('../../errors/api_error');
 
-module.exports.call = function(company, params) {
-  return new Promise.try(function () {
+/* eslint arrow-body-style: "off" */
+module.exports.call = (company, id, params) => {
+  return Promise.try(() => {
     try {
-      var attrs = ['id', 'title', 'stamps', 'description', 'color'];
-      return company.getCards({where: {id: params.id}, attributes: attrs})
-        .then(function success(cards) {
+      if (!id || !Number.isInteger(id)) throw new Error('Parameters are incorrect.');
+      return company.getCards({ where: { id } })
+        .then((cards) => {
+          console.log(params);
           if (_.isEmpty(cards)) throw new Error('Card not found.');
-          return cards[0].update(_.omit(params, ['id']))
+          return cards[0].update(params);
         })
-        .then(function success(card) {
-          return {result: card, status: 200};
-        })
-        .catch(function error(err) {
+        .then(() => ({ result: null, status: 204 }))
+        .catch((err) => {
           throw new ApiError('Card could not be updated.', 422, errorParse(err));
         });
     } catch (err) {

@@ -1,11 +1,8 @@
-module.exports = (function () {
-  return {
-    serialize: function serialize(userCard) {
-      return {
-        id: userCard.id,
-        sealedDates: userCard.sealedDates,
-        createdAt: userCard.createdAt
-      };
-    }
-  };
-})();
+module.exports = (() => ({
+  serialize: userCard => ({
+    id: userCard.id,
+    sealedDates: userCard.sealedDates,
+    createdAt: userCard.createdAt,
+    redeemed: userCard.redeemed,
+  }),
+}))();

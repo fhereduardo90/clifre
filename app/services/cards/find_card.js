@@ -1,27 +1,31 @@
 // Libs
-var _             = require('lodash');
-var Promise       = require('bluebird');
+const _ = require('lodash');
+const Promise = require('bluebird');
 // Helpers
-var errorParse    = require('../../helpers/error_parse');
+const errorParse = require('../../helpers/error_parse');
+// Serializer
+const CardDetailSerializer = require('../../serializers/cards/card_detail');
 // Others
-var ApiError      = require('../../errors/api_error');
-var sequelize     = require('../../models');
+const ApiError = require('../../errors/api_error');
 
-module.exports.call = function(company, params) {
-  return new Promise.try(function () {
+/* eslint arrow-body-style: "off" */
+module.exports.call = (company, id) => {
+  return Promise.try(() => {
     try {
-      var attrs = ['id', 'title', 'stamps', 'description', 'color'];
-      return company.getCards({where: {id: params.id}, attributes: attrs})
-        .then(function (cards) {
+      if (!id || !Number.isInteger(id)) throw new Error('Parameters are incorrect.');
+      return company.getCards({ where: { id } })
+        .then((cards) => {
           if (_.isEmpty(cards)) throw new Error('Card not found.');
-          return {result: cards[0], status: 200, success: true,
-            message: '', errors: []};
+          return {
+            result: CardDetailSerializer.serialize(cards[0]),
+            status: 200,
+          };
         })
-        .catch(function (err) {
-          throw new ApiError('Card not found.', 422, errorParse(err));
+        .catch((err) => {
+          throw new ApiError('Card not found.', 404, errorParse(err));
         });
     } catch (err) {
-      throw new ApiError('Card not found.', 422, errorParse(err));
+      throw new ApiError('Card not found.', 404, errorParse(err));
     }
   });
 };

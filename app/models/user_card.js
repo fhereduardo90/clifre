@@ -16,6 +16,11 @@ module.exports = function card(sequelize, DataTypes) {
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at'
+    },
+    redeemed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     underscored: true,

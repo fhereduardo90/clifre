@@ -1,20 +1,25 @@
-var sequelize     = require('../../models');
-var ApiError      = require('../../errors/api_error');
-var errorParse    = require('../../helpers/error_parse');
+const sequelize = require('../../models');
+const ApiError = require('../../errors/api_error');
+const errorParse = require('../../helpers/error_parse');
+const Promise = require('bluebird');
+// Serializers
+const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
 
-module.exports.call = function (id) {
-  var attrs = ['id', 'name', 'email', 'identifier', 'about', 'address',
-    'phone', 'avatar'];
-  return sequelize.Company.findById(id, {attributes: attrs})
-    .then(function (company) {
-      if (company) {
-        return {result: company, status: 200, success: true,
-          message: '', errors: []};
-      } else {
-        throw new Error('Company not found.');
-      }
-    })
-    .catch(function (err) {
-       throw ApiError('Company not found.', 404, errorParse(err));
-    });
+/* eslint arrow-body-style: "off" */
+module.exports.call = (id) => {
+  return Promise.try(() => {
+    try {
+      if (!id || !Number.isInteger(id)) throw new Error('Params are not correct.');
+      return sequelize.Company.findById(id)
+        .then((company) => {
+          if (!company) throw new Error('Company not found.');
+          return { result: CompanyDetailSerializer.serialize(company), status: 200 };
+        })
+        .catch((err) => {
+          throw new ApiError('Company not found.', 404, errorParse(err));
+        });
+    } catch (e) {
+      throw new ApiError('User not found.', 404, errorParse(e));
+    }
+  });
 };

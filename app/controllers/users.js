@@ -1,81 +1,81 @@
 // Middlewares
-var userAuthenticator = require('../middlewares/user_authenticator');
+const UserAuthenticator = require('../middlewares/user_authenticator');
 // Helpers
-var ApiResponse = require('../helpers/api_response');
+const ApiResponse = require('../helpers/api_response');
 // User Services
-var CreateUserService = require('../services/users/create_user');
-var UpdateUserService = require('../services/users/update_user');
-var AllUsersService = require('../services/users/all_users');
-var FindUserService = require('../services/users/find_user');
-var AddUserDevice = require('../services/users/add_user_device');
+const CreateUserService = require('../services/users/create_user');
+const UpdateUserService = require('../services/users/update_user');
+const AllUsersService = require('../services/users/all_users');
+const FindUserService = require('../services/users/find_user');
+const AddUserDevice = require('../services/users/add_user_device');
+const UserCardsService = require('../services/users/user_cards');
+const FindUserCardService = require('../services/users/find_user_card');
 // Libs
-var _ = require('lodash');
+const _ = require('lodash');
+// Serializers
+const UserDetailSerializer = require('../serializers/users/user_detail');
 // Others
-var express = require('express');
-var userController = new express.Router();
+const userController = require('express').Router();
 
 userController.route('/users')
-  .get(function getUsers(req, res) {
-    return AllUsersService.call()
-      .then(function getUsersResponse(response) {
-        return ApiResponse.success(res, response);
-      })
-      .catch(function getUsersError(err) {
-        return ApiResponse.error(res, err);
-      });
+  .get((req, res) => {
+    AllUsersService.call()
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
   })
 
-  .post(function postUser(req, res) {
-    var userParams = _.pick(req.body, ['name', 'email', 'birthdate',
+  .post((req, res) => {
+    const userParams = _.pick(req.body, ['name', 'email', 'birthdate',
       'password', 'avatar']);
     return CreateUserService.call(userParams)
-      .then(function postUserResponse(response) {
-        return ApiResponse.success(res, response);
-      })
-      .catch(function postUserError(err) {
-        return ApiResponse.error(res, err);
-      });
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
   });
 
 userController.route('/users/me')
-  .get(userAuthenticator, function getUserProfile(req, res) {
-    var attrs = ['id', 'name', 'identifier', 'email', 'birthdate', 'avatar'];
-    return res.json(_.pick(req.user, attrs));
+  .get(UserAuthenticator, (req, res) => {
+    res.json(UserDetailSerializer.serialize(req.user));
   })
 
-  .put(userAuthenticator, function putUser(req, res) {
-    var userParams = _.pick(req.body, ['name', 'email', 'birthdate',
+  .put(UserAuthenticator, (req, res) => {
+    const userParams = _.pick(req.body, ['name', 'email', 'birthdate',
       'password', 'avatar']);
     return UpdateUserService.call(req.user, userParams)
-      .then(function putUserResponse() {
-        return ApiResponse.ok(res);
-      })
-      .catch(function putUserError(err) {
-        return ApiResponse.error(res, err);
-      });
+      .then(() => ApiResponse.ok(res))
+      .catch(err => ApiResponse.error(res, err));
   });
 
 userController.route('/users/:identifier')
-  .get(function done(req, res) {
-    return FindUserService.call({identifier: req.params.identifier})
-      .then(function success(response) {
-        return ApiResponse.success(res, response);
-      })
-      .catch(function error(err) {
-        return ApiResponse.error(res, err);
-      });
+  .get((req, res) => {
+    FindUserService.call({ identifier: req.params.identifier })
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
   });
 
 userController.route('/users/me/device')
-  .post(userAuthenticator, function done(req, res) {
-    return AddUserDevice.call(req.user, {
+  .post(UserAuthenticator, (req, res) => {
+    AddUserDevice.call(req.user, {
       registrationId: req.body.registrationId,
-      platform: req.body.platform
-    }).then(function success(response) {
-      return ApiResponse.success(res, response);
-    }).catch(function error(err) {
-      return ApiResponse.error(res, err);
-    });
+      platform: req.body.platform,
+    })
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
+  });
+
+/* **************** CARDS ENDPOINTS **************** */
+
+userController.route('/users/me/cards')
+  .get(UserAuthenticator, (req, res) => {
+    UserCardsService.call(req.user)
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
+  });
+
+userController.route('/users/me/cards/:id')
+  .get(UserAuthenticator, (req, res) => {
+    FindUserCardService.call(req.user, parseInt(req.params.id, 10))
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
   });
 
 module.exports = userController;

@@ -1,13 +1,14 @@
-var sequelize     = require('../../models');
-var errorParse    = require('../../helpers/error_parse');
-var ApiError      = require('../../errors/api_error');
+const sequelize = require('../../models');
+const errorParse = require('../../helpers/error_parse');
+const ApiError = require('../../errors/api_error');
+const UserDetailSerializer = require('../../serializers/users/user_detail');
 
-module.exports.call = function () {
-  return sequelize.User.findAll(
-    {attributes: ['id', 'name', 'email', 'identifier', 'birthdate', 'avatar']}
-  ).then(function (users) {
-    return {result: users, status: 200, message: '', success: true, errors: []};
-  }).catch(function (err) {
-    throw new ApiError('Users not found.', 404, errorParse(err));
-  });
-}
+/* eslint arrow-body-style: "off" */
+module.exports.call = () => {
+  return sequelize.User.findAll()
+    .then((users) => {
+      const result = users.map(user => UserDetailSerializer.serialize(user));
+      return { result, status: 200 };
+    })
+    .catch(err => ApiError('Users not found.', 404, errorParse(err)));
+};

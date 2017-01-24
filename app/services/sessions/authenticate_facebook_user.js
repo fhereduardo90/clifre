@@ -16,6 +16,6 @@ module.exports.call = function(facebookId) {
         message: 'User has been logged in.', errors: []};
     })
     .catch(function error(err) {
-      throw new ApiError('Authentication facebook failed.', 422, errorParse(err));
+      throw new ApiError('Authentication facebook failed.', 400, errorParse(err));
     })
 };

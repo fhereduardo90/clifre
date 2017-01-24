@@ -1,24 +1,23 @@
 // Libs
-var _ = require('lodash');
+const _ = require('lodash');
 // Helpers
-var errorParse = require('../../helpers/error_parse');
+const errorParse = require('../../helpers/error_parse');
 // Others
-var ApiError = require('../../errors/api_error');
-var sequelize = require('../../models');
-var Promise = require('bluebird');
+const ApiError = require('../../errors/api_error');
+const Promise = require('bluebird');
 
-module.exports.call = function(company, params) {
-  return new Promise.try(function promise() {
+/* eslint arrow-body-style: "off" */
+module.exports.call = (company, params) => {
+  return Promise.try(() => {
     try {
+      /* eslint-disable no-param-reassign */
       params.companyId = company.id;
+      /* eslint-disable no-param-reassign */
       return company.createCard(params)
-        .then(function success(card) {
-          var response = _.pick(card, ['id', 'title', 'stamps', 'description', 'color']);
-          return {result: response, status: 201};
-        })
-        .catch(function error(err) {
+        .then(() => ({ result: null, status: 204 }))
+        .catch((err) => {
           throw new ApiError('Card could not be created.', 422, errorParse(err));
-        })
+        });
     } catch (err) {
       throw new ApiError('Card could not be created.', 422, errorParse(err));
     }

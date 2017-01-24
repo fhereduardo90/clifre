@@ -1,24 +1,21 @@
-var sequelize = require('../../models');
-var _ = require('lodash');
-var ApiError = require('../../errors/api_error');
-var errorParse = require('../../helpers/error_parse');
-var Promise = require('bluebird');
+const sequelize = require('../../models');
+const _ = require('lodash');
+const ApiError = require('../../errors/api_error');
+const errorParse = require('../../helpers/error_parse');
+const Promise = require('bluebird');
+const UserDetailSerializer = require('../../serializers/users/user_detail');
 
-module.exports.call = function (params) {
-  return Promise.try(function findUser() {
+/* eslint arrow-body-style: "off" */
+module.exports.call = (params) => {
+  return Promise.try(() => {
     try {
-      if (!params || !_.isObject(params)) throw new Error('Params are not correct.');
-      return sequelize.User.findOne(
-        {where: params, attributes: ['id', 'name', 'email', 'identifier',
-          'birthdate', 'avatar']}
-      )
-        .then(function (user) {
-          if (!user) throw new Error('User not found.')
-          var params = ['id', 'name', 'email', 'identifier',
-            'birthdate', 'avatar'];
-          return {result: _.pick(user, params), status: 200};
+      if (!params || !_.isObject(params)) throw new Error('Params are incorrect.');
+      return sequelize.User.findOne({ where: params })
+        .then((user) => {
+          if (!user) throw new Error('User not found.');
+          return { result: UserDetailSerializer.serialize(user), status: 200 };
         })
-        .catch(function error(err) {
+        .catch((err) => {
           throw new ApiError('User not found.', 422, errorParse(err));
         });
     } catch (e) {
