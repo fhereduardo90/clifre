@@ -16,7 +16,6 @@ module.exports.call = (company, identifier) => {
       if (!company || !identifier) throw new Error('Parameters are incorrect.');
 
       let userFound;
-      let currentUserCard;
 
       return sequelize.User.findOne({ where: { identifier } })
         .then((user) => {
@@ -41,14 +40,16 @@ module.exports.call = (company, identifier) => {
           }
 
           userCard.sealedDates = userCard.sealedDates.concat([Date.now()]).slice();
-          currentUserCard = userCard;
           return userCard.save();
         })
-        .then(() => {
+        .then((userCard) => {
+          console.dir(userCard);
+          console.log('------------------------');
+          console.log(userCard.id);
           sequelize.Device.findAll({ where: { userId: userFound.id }, attributes: ['registrationId'] })
             .then((devices) => {
               FirebaseApi.sendNotification(
-                { title: 'Tienes un nuevo sello', body: company.name + " te ha asignado un nuevo sello.", cardId: currentUserCard.id },
+                { title: 'Tienes un nuevo sello', body: company.name + " te ha asignado un nuevo sello.", cardId: userCard.id },
                 devices.map(d => d.registrationId)
               );
             });
