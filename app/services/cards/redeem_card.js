@@ -14,6 +14,7 @@ module.exports.call = (company, identifier) => {
       if (!company || !identifier) throw new Error('Parameters are incorrect.');
 
       let userFound;
+      let currentUserCard;
 
       return sequelize.User.findOne({ where: { identifier } })
         .then((user) => {
@@ -36,13 +37,14 @@ module.exports.call = (company, identifier) => {
           }
 
           userCard.redeemed = true;
+          currentUserCard = userCard;
           return userCard.save();
         })
         .then(() => {
           sequelize.Device.findAll({ where: { userId: userFound.id }, attributes: ['registrationId'] })
             .then((devices) => {
               FirebaseApi.sendNotification(
-                { title: 'Redeem Card', body: 'Card has been redeemed' },
+                { title: 'Tarjeta canjeada', body: 'Tu tarjeta de ' + company.name + ' ha sido canjeada!', cardId: currentUserCard.id},
                 devices.map(d => d.registrationId)
               );
             });
