@@ -4,6 +4,13 @@
         "ecmaVersion": 6
     },
     "rules": {
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "comma-dangle": ["error", {
+            "arrays": "always-multiline",
+            "objects": "always-multiline",
+            "imports": "always-multiline",
+            "exports": "always-multiline",
+            "functions": "ignore"
+        }]
     }
 }
