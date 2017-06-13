@@ -22,7 +22,7 @@ module.exports.call = (company, identifier) => {
 
           userFound = user;
           return sequelize.UserCard.findOne({
-            where: { companyId: company.id, userId: user.id },
+            where: { companyId: company.id, userId: user.id, redeemed: false },
             order: '"createdAt" DESC',
             include: [{ model: sequelize.Card }],
           });
@@ -36,15 +36,22 @@ module.exports.call = (company, identifier) => {
             throw new Error('Card had already been redeemed.');
           }
 
-          userCard.redeemed = true;
           currentUserCard = userCard;
-          return userCard.save();
+          return sequelize.UserCard.update({ redeemed: true }, { where: { id: userCard.id } });
         })
+        .then(() => (
+          sequelize.UserCard.create({
+            cardId: currentUserCard.Card.id,
+            userId: userFound.id,
+            sealedDates: [],
+            companyId: company.id,
+          })
+        ))
         .then(() => {
           sequelize.Device.findAll({ where: { userId: userFound.id }, attributes: ['registrationId'] })
             .then((devices) => {
               FirebaseApi.sendNotification(
-                { title: 'Tarjeta canjeada', body: 'Tu tarjeta de ' + company.name + ' ha sido canjeada!', cardId: currentUserCard.id},
+                { title: 'Tarjeta canjeada', body: `Tu tarjeta de ${company.name} ha sido canjeada!`, cardId: currentUserCard.id },
                 devices.map(d => d.registrationId)
               );
             });

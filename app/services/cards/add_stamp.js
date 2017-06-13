@@ -43,13 +43,10 @@ module.exports.call = (company, identifier) => {
           return userCard.save();
         })
         .then((userCard) => {
-          console.dir(userCard);
-          console.log('------------------------');
-          console.log(userCard.id);
           sequelize.Device.findAll({ where: { userId: userFound.id }, attributes: ['registrationId'] })
             .then((devices) => {
               FirebaseApi.sendNotification(
-                { title: 'Tienes un nuevo sello', body: company.name + " te ha asignado un nuevo sello.", cardId: userCard.id },
+                { title: 'Tienes un nuevo sello', body: `${company.name} te ha asignado un nuevo sello.`, cardId: userCard.id },
                 devices.map(d => d.registrationId)
               );
             });
