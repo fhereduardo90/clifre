@@ -1,21 +1,22 @@
-var sequelize = require('../../models');
-var jwtTokenGenerator = require('./jwt_token_generator');
-var app = require('../../../app');
-var errorParse = require('../../helpers/error_parse');
-var ApiError = require('../../errors/api_error');
+const sequelize = require('../../models');
+const jwtTokenGenerator = require('./jwt_token_generator');
+const app = require('../../../app');
+const errorParse = require('../../helpers/error_parse');
+const ApiError = require('../../errors/api_error');
 
-module.exports.call = function(facebookId) {
+/* eslint arrow-body-style: "off" */
+module.exports.call = (facebookId) => {
   // Check if an user with the same facebookId already exists.
-  return sequelize.User.findOne({where: {facebookId: facebookId}})
-    .then(function success(user) {
-      if (!user) throw new Error('Authentication facebook Failed.');
+  return sequelize.User.findOne({ where: { facebookId } })
+    .then((user) => {
+      if (!user) throw new Error('Authentication facebook has failed.');
       // Generate jwt token.
-      var token = jwtTokenGenerator.call({identifier: user.identifier},
+      const accessToken = jwtTokenGenerator.call({ identifier: user.identifier },
         app.get('jwtKey'), '100d');
-      return {result: {accessToken: token}, status: 200, success: true,
-        message: 'User has been logged in.', errors: []};
+
+      return { result: { accessToken }, status: 200 };
     })
-    .catch(function error(err) {
-      throw new ApiError('Authentication facebook failed.', 400, errorParse(err));
-    })
+    .catch((err) => {
+      throw new ApiError('Authentication facebook has failed.', 400, errorParse(err));
+    });
 };

@@ -1,65 +1,66 @@
-var express = require('express');
-var sessionController = new express.Router();
+const sessionController = require('express').Router();
 // Services
-var Authenticate = require('../services/sessions/authenticate');
-var AuthenticateCompany = require('../services/sessions/authenticate_company');
-var AuthenticateFacebookUser = require('../services/sessions/authenticate_facebook_user');
-var CreateUserService = require('../services/users/create_user');
+const Authenticate = require('../services/sessions/authenticate');
+const AuthenticateCompany = require('../services/sessions/authenticate_company');
+const AuthenticateFacebookUser = require('../services/sessions/authenticate_facebook_user');
+const CreateUserFromFacebookService = require('../services/users/create_user_from_facebook');
+const UpdateAvatarFromFacebookService = require('../services/users/update_avatar_from_facebook');
 // Helpers
-var ApiResponse = require('../helpers/api_response');
-var FacebookApi = require('../helpers/facebook_api');
-// Libs
-var _ = require('lodash');
+const ApiResponse = require('../helpers/api_response');
+const FacebookApi = require('../helpers/facebook_api');
 
 sessionController.route('/authenticate')
-  .post(function authenticate(req, res) {
-    return Authenticate.call(req.body.email, req.body.password)
-      .then(function authenticateResponse(response) {
-        return ApiResponse.success(res, response);
-      })
-      .catch(function authenticateError(err) {
-        return ApiResponse.error(res, err);
-      });
-  });
+  .post((req, res) => (
+    Authenticate.call(req.body.email, req.body.password)
+      .then(response => (
+        ApiResponse.success(res, response)
+      ))
+      .catch(err => (
+        ApiResponse.error(res, err)
+      ))
+  ));
 
 sessionController.route('/authenticate-company')
-  .post(function authenticateCompany(req, res) {
-    return AuthenticateCompany.call(req.body.email, req.body.password)
-      .then(function authenticateCompanyResponse(response) {
-        return ApiResponse.success(res, response);
-      })
-      .catch(function authenticateCompanyError(err) {
-        return ApiResponse.error(res, err);
-      });
-  });
+  .post((req, res) => (
+    AuthenticateCompany.call(req.body.email, req.body.password)
+      .then(response => (
+        ApiResponse.success(res, response)
+      ))
+      .catch(err => (
+        ApiResponse.error(res, err)
+      ))
+  ));
 
 sessionController.route('/authenticate-facebook-user')
-  .post(function authenticateFacebookUser(req, res) {
+  .post((req, res) => {
     // Initialize FacebookApi instance.
-    var fb = new FacebookApi(req.body.accessToken);
+    const fb = new FacebookApi(req.body.accessToken);
 
     return fb.me()
-      .then(function success(response) {
-        var userParams = {
+      .then((response) => {
+        const userParams = {
           facebookId: response.id,
           name: response.name,
-          email: response.email
+          email: response.email,
+          avatar: response.avatar,
         };
 
         return AuthenticateFacebookUser.call(userParams.facebookId)
-          .then(function success(response) {
-            return ApiResponse.success(res, response);
+          .then((result) => {
+            // Update user's avatar from facebook
+            UpdateAvatarFromFacebookService.call(userParams);
+            return ApiResponse.success(res, result);
           })
-          .catch(function error(err) {
-            return CreateUserService.call(userParams);
-          });
+          .catch(() => (
+            CreateUserFromFacebookService.call(userParams)
+          ));
       })
-      .then(function success(response) {
-        return ApiResponse.success(res, response);
-      })
-      .catch(function error(err) {
-        return ApiResponse.error(res, err);
-      });
-  })
+      .then(response => (
+        ApiResponse.success(res, response)
+      ))
+      .catch(err => (
+        ApiResponse.error(res, err)
+      ));
+  });
 
 module.exports = sessionController;
