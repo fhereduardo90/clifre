@@ -115,6 +115,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Company.hasMany(models.Card, {as: 'Cards'});
+        Company.hasMany(models.FeaturedCompany, {as: 'FeaturedCompanies'});
         Company.hasMany(models.UserCard, {as: 'UserCards'});
         Company.belongsToMany(models.User,
           {as: 'Users', through: 'user_cards', foreignKey: 'company_id'}

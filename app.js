@@ -14,6 +14,7 @@ const CompanyController = require('./app/controllers/companies');
 const CardController = require('./app/controllers/cards');
 const SessionController = require('./app/controllers/sessions');
 const PasswordController = require('./app/controllers/passwords');
+const FeaturedCompanyController = require('./app/controllers/featured_companies');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -31,5 +32,6 @@ app.use(CompanyController);
 app.use(CardController);
 app.use(SessionController);
 app.use(PasswordController);
+app.use(FeaturedCompanyController);
 
 app.listen(port);
