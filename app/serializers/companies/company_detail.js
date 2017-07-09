@@ -8,6 +8,9 @@ module.exports = (() => ({
     address: company.address,
     phone: company.phone,
     avatar: company.avatar,
+    facebookPage: company.facebookPage,
+    instagram: company.instagram,
+    web: company.web,
     createdAt: company.createdAt,
   }),
 }))();

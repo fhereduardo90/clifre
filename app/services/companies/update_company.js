@@ -4,6 +4,8 @@ var errorParse = require('../../helpers/error_parse');
 var ApiError = require('../../errors/api_error');
 var UploaderAvatar = require('../../helpers/uploader_avatar');
 var Promise = require('bluebird');
+// Serializers
+const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
 
 /**
 * Upload company avatar to S3 and saving it in a specefic path.
@@ -46,9 +48,7 @@ module.exports.call = function(company, params) {
           return c;
         })
         .then(function success(c) {
-          var response = _.pick(c, ['id', 'name', 'email', 'identifier', 'about',
-            'address', 'phone', 'avatar']);
-          return {result: response, status: 200, success: true};
+          return {result: CompanyDetailSerializer.serialize(c), status: 200, success: true};
         })
         .catch(function error(err) {
           throw new ApiError('Company could not be updated.', 422, errorParse(err));

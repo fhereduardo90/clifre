@@ -14,8 +14,7 @@ module.exports = function (req, res, next) {
   return jwt.verify(token, app.get('jwtKey'), function(err, decoded) {
     if (err) return res.status(403).end();
     return sequelize.Company.findOne(
-      {where: {identifier: decoded.identifier},
-        attributes: ['id', 'name', 'email', 'identifier', 'about', 'address', 'phone', 'avatar', 'avatarName', 'createdAt']})
+      { where: { identifier: decoded.identifier } })
       .then(function (company) {
         if (!company) return res.status(401).end();
         req.company = company;

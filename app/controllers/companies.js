@@ -25,7 +25,7 @@ companyController.route('/companies')
 
   .post((req, res) => {
     const companyParams = _.pick(req.body, ['name', 'email', 'about', 'address',
-      'phone', 'password', 'avatar']);
+      'phone', 'password', 'avatar', 'facebookPage', 'instagram', 'web']);
     return CreateCompanyService.call(companyParams)
       .then(response => ApiResponse.success(res, response))
       .catch(err => ApiResponse.error(res, err));
@@ -38,7 +38,7 @@ companyController.route('/companies/me')
 
   .put(CompanyAuthenticator, (req, res) => {
     const companyParams = _.pick(req.body, ['name', 'email', 'about', 'address',
-      'phone', 'password', 'avatar']);
+      'phone', 'password', 'avatar', 'facebookPage', 'instagram', 'web']);
     return UpdateCompanyService.call(req.company, companyParams)
       .then(() => ApiResponse.ok(res))
       .catch(err => ApiResponse.error(res, err));
