@@ -61,6 +61,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       field: 'avatar_name'
     },
+    facebookPage: {
+      type: DataTypes.STRING,
+      field: 'facebook_page',
+    },
+    web: {
+      type: DataTypes.STRING,
+      field: 'web',
+    },
+    instagram: {
+      type: DataTypes.STRING,
+      field: 'instagram',
+    },
     identifier: {
       type: DataTypes.STRING,
       allowNull: false,
