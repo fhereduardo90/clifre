@@ -1,9 +1,8 @@
-var sequelize = require('../../models');
-var _ = require('lodash');
-var errorParse = require('../../helpers/error_parse');
-var ApiError = require('../../errors/api_error');
-var UploaderAvatar = require('../../helpers/uploader_avatar');
-var Promise = require('bluebird');
+const errorParse = require('../../helpers/error_parse');
+const ApiError = require('../../errors/api_error');
+const UploaderAvatar = require('../../helpers/uploader_avatar');
+const Promise = require('bluebird');
+const _ = require('lodash');
 // Serializers
 const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
 
@@ -15,46 +14,46 @@ const CompanyDetailSerializer = require('../../serializers/companies/company_det
 * @param {Object} company, the instance of the current company.
 * @returns {Promise} Returns an UploaderAvatar promise.
 */
-function uploadAvatar (avatar, path, company) {
+function uploadAvatar(avatar, path, company) {
   // Initializer UploaderAvatar instance and upload company avatar
-  var UploaderCompanyAvatar = new UploaderAvatar(path);
+  const UploaderCompanyAvatar = new UploaderAvatar(path);
   // deprecated avatarName
-  var oldAvatarName = company.avatarName;
+  const oldAvatarName = company.avatarName;
   return UploaderCompanyAvatar.putImage(avatar, company.identifier)
-    .then(function (data) {
-      // update the current company with two new fields avatar and avatarName
-      company.avatar = data.url;
-      company.avatarName = data.name;
-      return company.save();
-    })
-    .then(function (c) {
+    .then(data => (
+      company.update({ avatar: data.url, avatarName: data.name })
+    ))
+    .then((c) => {
       UploaderCompanyAvatar.deleteImage(oldAvatarName);
       return c;
     })
-    .catch(function (err) {
+    .catch((err) => {
       company.destroy();
       UploaderCompanyAvatar.deleteImage(company.avatarName);
       throw err;
     });
 }
 
-module.exports.call = function(company, params) {
-  return new Promise.try(function () {
+module.exports.call = (company, params) => (
+  Promise.try(() => {
     try {
-      return company.update(params)
-        .then(function success(c) {
-          var path = 'companies/' + company.identifier + '/avatar';
-          if (params.avatar) return uploadAvatar(params.avatar, path, company);
+      return company.update(_.omit(params, ['avatar']))
+        .then((c) => {
+          const path = `companies/${company.identifier}/avatar`;
+          if (params.avatar) {
+            return uploadAvatar(params.avatar, path, company);
+          }
+
           return c;
         })
-        .then(function success(c) {
-          return {result: CompanyDetailSerializer.serialize(c), status: 200, success: true};
-        })
-        .catch(function error(err) {
+        .then(c => (
+          { result: CompanyDetailSerializer.serialize(c), status: 200, success: true }
+        ))
+        .catch((err) => {
           throw new ApiError('Company could not be updated.', 422, errorParse(err));
         });
     } catch (e) {
       throw new ApiError('Company could not be updated.', 422, errorParse(e));
     }
-  });
-};
+  })
+);
