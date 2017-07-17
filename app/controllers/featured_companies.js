@@ -8,7 +8,7 @@ const AllFeaturedCompanies = require('../services/featured_companies/all_feature
 const CreateFeaturedCompany = require('../services/featured_companies/create_featured_company');
 
 featuredCompanyController.route('/featured-companies')
-  .get(CompanyAuthenticator, (req, res) => (
+  .get((req, res) => (
     AllFeaturedCompanies.call()
       .then(response => ApiResponse.success(res, response))
       .catch(err => ApiResponse.error(res, err))
