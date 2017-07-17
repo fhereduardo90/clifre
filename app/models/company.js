@@ -97,6 +97,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       field: 'reset_password_expires'
     },
+    isPasswordEncrypted: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        this.getDataValue('_isPasswordEncrypted') || false;
+      },
+      set(value) {
+        this.setDataValue('_isPasswordEncrypted', value);
+      }
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at'
@@ -104,16 +113,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     underscored: true,
     tableName: 'companies',
-    setterMethods: {
-      isPasswordEncrypted: function temporalPassword(value) {
-        this.setDataValue('_isPasswordEncrypted', value);
-      }
-    },
-    getterMethods: {
-      isPasswordEncrypted: function temporalPassword() {
-        return this.getDataValue('_isPasswordEncrypted') || false;
-      }
-    },
     hooks: {
       afterValidate: function beforeUpdate(company) {
         /* eslint-disable no-param-reassign */

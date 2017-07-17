@@ -90,6 +90,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       field: 'reset_password_expires',
     },
+    isPasswordEncrypted: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        this.getDataValue('_isPasswordEncrypted') || false;
+      },
+      set(value) {
+        this.setDataValue('_isPasswordEncrypted', value);
+      }
+    },
     facebookId: {
       type: DataTypes.STRING,
       field: 'facebook_id',
@@ -112,16 +121,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     underscored: true,
     tableName: 'users',
-    setterMethods: {
-      isPasswordEncrypted: (value) => {
-        this.setDataValue('_isPasswordEncrypted', value);
-      },
-    },
-    getterMethods: {
-      isPasswordEncrypted: () => (
-        this.getDataValue('_isPasswordEncrypted') || false
-      ),
-    },
     hooks: {
       beforeValidate: (user) => {
         /* eslint-disable no-param-reassign */
