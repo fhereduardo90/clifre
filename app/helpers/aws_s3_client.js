@@ -7,7 +7,9 @@ function S3Client () {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
   });
-  return new AWS.S3();
+  return new AWS.S3({
+    signatureVersion: 'v2'
+  });
 }
 
 module.exports = S3Client();
