@@ -7,7 +7,6 @@ const CreateCompanyService = require('../services/companies/create_company');
 const UpdateCompanyService = require('../services/companies/update_company');
 const AllCompaniesService = require('../services/companies/all_companies');
 const CompanyUsersService = require('../services/companies/company_users');
-const FindUserService = require('../services/companies/find_user');
 const FindCompanyService = require('../services/companies/find_company');
 // Libs
 const _ = require('lodash');
@@ -16,6 +15,21 @@ const CompanyDetailSerializer = require('../serializers/companies/company_detail
 // Others
 const companyController = require('express').Router();
 
+const getCompanyParams = params => (
+  _.pick(params, [
+    'name',
+    'email',
+    'about',
+    'address',
+    'phone',
+    'password',
+    'avatar',
+    'facebookPage',
+    'instagram',
+    'web',
+  ])
+);
+
 companyController.route('/companies')
   .get((req, res) => {
     AllCompaniesService.call()
@@ -23,26 +37,22 @@ companyController.route('/companies')
       .catch(err => ApiResponse.error(res, err));
   })
 
-  .post((req, res) => {
-    const companyParams = _.pick(req.body, ['name', 'email', 'about', 'address',
-      'phone', 'password', 'avatar', 'facebookPage', 'instagram', 'web']);
-    return CreateCompanyService.call(companyParams)
+  .post((req, res) => (
+    CreateCompanyService.call(getCompanyParams(req.body))
       .then(response => ApiResponse.success(res, response))
-      .catch(err => ApiResponse.error(res, err));
-  });
+      .catch(err => ApiResponse.error(res, err))
+  ));
 
 companyController.route('/companies/me')
   .get(CompanyAuthenticator, (req, res) => {
     res.json(CompanyDetailSerializer.serialize(req.company));
   })
 
-  .put(CompanyAuthenticator, (req, res) => {
-    const companyParams = _.pick(req.body, ['name', 'email', 'about', 'address',
-      'phone', 'password', 'avatar', 'facebookPage', 'instagram', 'web']);
-    return UpdateCompanyService.call(req.company, companyParams)
-      .then(() => ApiResponse.ok(res))
-      .catch(err => ApiResponse.error(res, err));
-  });
+  .put(CompanyAuthenticator, (req, res) => (
+    UpdateCompanyService.call(req.company, getCompanyParams(req.body))
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err))
+  ));
 
 companyController.route('/companies/me/users')
   .get(CompanyAuthenticator, (req, res) => {
@@ -50,13 +60,6 @@ companyController.route('/companies/me/users')
       .then(response => ApiResponse.success(res, response))
       .catch(err => ApiResponse.error(res, err));
   });
-
-// companyController.route('/companies/me/users/:id')
-//   .get(CompanyAuthenticator, (req, res) => {
-//     FindUserService.call(req.company, req.params.id)
-//       .then(response => ApiResponse.success(res, response))
-//       .catch(err => ApiResponse.error(res, err));
-//   });
 
 companyController.route('/companies/:id')
   .get((req, res) => {
