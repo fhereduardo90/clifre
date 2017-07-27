@@ -40,6 +40,7 @@ module.exports.call = (company, params) => (
       return company.update(_.omit(params, ['avatar']))
         .then((c) => {
           const path = `companies/${company.identifier}/avatar`;
+
           if (params.avatar) {
             return uploadAvatar(params.avatar, path, company);
           }
