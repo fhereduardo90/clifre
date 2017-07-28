@@ -13,7 +13,14 @@ module.exports.call = (params) => {
   let token = null;
 
   // Create User without avatar
-  return sequelize.User.create(userParams)
+  return sequelize.User.findOne({ where: { email: userParams.email } })
+    .then((user) => {
+      if (user) {
+        return user.update({ facebookId: userParams.facebookId });
+      }
+
+      return sequelize.User.create(userParams);
+    })
     .then((user) => {
       try {
         token = JwtTokenGenerator.call({ identifier: user.identifier }, app.get('jwtKey'), '100d');
