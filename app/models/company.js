@@ -106,6 +106,9 @@ module.exports = function(sequelize, DataTypes) {
         this.setDataValue('_isPasswordEncrypted', value);
       }
     },
+    visible: {
+      type: DataTypes.BOOLEAN,
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at'

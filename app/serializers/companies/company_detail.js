@@ -11,6 +11,7 @@ module.exports = (() => ({
     facebookPage: company.facebookPage,
     instagram: company.instagram,
     web: company.web,
+    visible: company.visible,
     createdAt: company.createdAt,
   }),
 }))();

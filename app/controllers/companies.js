@@ -27,6 +27,7 @@ const getCompanyParams = params => (
     'facebookPage',
     'instagram',
     'web',
+    'visible',
   ])
 );
 
