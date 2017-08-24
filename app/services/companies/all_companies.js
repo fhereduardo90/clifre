@@ -6,7 +6,7 @@ const CompanyDetailSerializer = require('../../serializers/companies/company_det
 
 /* eslint arrow-body-style: "off" */
 module.exports.call = () => {
-  return sequelize.Company.findAll()
+  return sequelize.Company.findAll({ where: { visible: true } })
     .then(companies => ({
       result: companies.map((company) => {
         return CompanyDetailSerializer.serialize(company);
