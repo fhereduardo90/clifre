@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test test/*",
-    "start": "node app"
+    "start": "node app",
+    "migrate": "./node_modules/.bin/sequelize db:migrate"
   },
   "engines": {
     "node": "8.2.1"
@@ -21,8 +22,7 @@
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
     "faker": "^3.1.0",
-    "mocha": "^3.0.0",
-    "sequelize-cli": "^2.7.0"
+    "mocha": "^3.0.0"
   },
   "dependencies": {
     "aws-sdk": "^2.3.0",
@@ -43,6 +43,7 @@
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.25.0",
+    "sequelize-cli": "^2.8.0",
     "shortid": "^2.2.6"
   }
 }
