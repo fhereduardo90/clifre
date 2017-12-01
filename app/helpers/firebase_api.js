@@ -11,7 +11,7 @@ class FirebaseApi {
 
   buildMessage(data) {
     return new fcm.Message({
-      data: data
+      notification: data
     });
   }
 
