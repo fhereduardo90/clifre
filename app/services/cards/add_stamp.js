@@ -17,15 +17,15 @@ module.exports.call = (company, identifier) => {
 
       let userFound;
 
-      return sequelize.User.findOne({ where: { identifier } })
+      return sequelize.User.findOne({where: {identifier}})
         .then((user) => {
           if (!user) throw new Error('User not found.');
 
           userFound = user;
           return sequelize.UserCard.findOne({
-            where: { companyId: company.id, userId: user.id, redeemed: false },
+            where: {companyId: company.id, userId: user.id, redeemed: false},
             order: '"createdAt" DESC',
-            include: [{ model: sequelize.Card }],
+            include: [{model: sequelize.Card}],
           });
         })
         .then((userCard) => {
@@ -39,19 +39,27 @@ module.exports.call = (company, identifier) => {
             throw new Error('The card has reached its stamps limit.');
           }
 
-          userCard.sealedDates = userCard.sealedDates.concat([Date.now()]).slice();
+          userCard.sealedDates = userCard.sealedDates
+            .concat([Date.now()])
+            .slice();
           return userCard.save();
         })
         .then((userCard) => {
-          sequelize.Device.findAll({ where: { userId: userFound.id }, attributes: ['registrationId'] })
-            .then((devices) => {
-              FirebaseApi.sendNotification(
-                { title: 'Tienes un nuevo sello', body: `${company.name} te ha asignado un nuevo sello.`, cardId: userCard.id },
-                devices.map(d => d.registrationId)
-              );
-            });
+          sequelize.Device.findAll({
+            where: {userId: userFound.id},
+            attributes: ['registrationId'],
+          }).then((devices) => {
+            FirebaseApi.sendNotification(
+              {
+                title: 'Tienes un nuevo sello',
+                body: `${company.name} te ha asignado un nuevo sello.`,
+              },
+              {cardId: userCard.id},
+              devices.map((d) => d.registrationId)
+            );
+          });
 
-          return { result: null, status: 204 };
+          return {result: null, status: 204};
         })
         .catch((err) => {
           throw new ApiError('Card Error.', 404, errorParse(err));
