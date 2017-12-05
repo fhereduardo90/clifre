@@ -120,8 +120,8 @@ module.exports = function(sequelize, DataTypes) {
       afterValidate: function beforeUpdate(company) {
         /* eslint-disable no-param-reassign */
         if (company.password && !company.isPasswordEncrypted) {
-          // company.password = generateEncryptPassword(company.password);
-          // company.isPasswordEncrypted = true;
+          company.password = generateEncryptPassword(company.password);
+          company.isPasswordEncrypted = true;
         }
         /* eslint-enable no-param-reassign */
       }
