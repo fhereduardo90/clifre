@@ -7,7 +7,7 @@ const _ = require('lodash');
 const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
 
 /**
-* Upload company avatar to S3 and saving it in a specefic path.
+* Upload company avatar to S3 and saving it in a specific path.
 *
 * @param {string} avatar, the base64 that will be uploaded to S3.
 * @param {string} path, the place where the avatar will be located.
