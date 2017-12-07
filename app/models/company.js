@@ -124,7 +124,6 @@ module.exports = function(sequelize, DataTypes) {
       tableName: 'companies',
       hooks: {
         beforeValidate: function beforeUpdate(company) {
-          console.log('afterValidate');
           if (company.password) {
             company.password_hash = generateEncryptPassword(company.password);
           }
