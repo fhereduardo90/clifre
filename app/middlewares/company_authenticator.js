@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
       return res.status(403).end();
     }
 
-    return sequelize.Company.findOne({ where: { identifier: decoded.identifier } })
+    return sequelize.Company.findOne({where: {identifier: decoded.identifier}})
       .then((company) => {
         if (!company) {
           return res.status(401).end();
