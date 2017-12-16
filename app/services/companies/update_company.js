@@ -42,7 +42,18 @@ module.exports.call = (company, params) =>
     try {
       return company
         .update(_.omit(params, ['avatar']), {
-          fields: ['name', 'about', 'address', 'phone', 'password_hash'],
+          fields: [
+            'name',
+            'email',
+            'facebookPage',
+            'instagram',
+            'web',
+            'visible',
+            'about',
+            'address',
+            'phone',
+            'password_hash',
+          ],
         })
         .then((c) => {
           const path = `companies/${company.identifier}/avatar`;
