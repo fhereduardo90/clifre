@@ -9,15 +9,16 @@
     "migrate": "./node_modules/.bin/sequelize db:migrate"
   },
   "engines": {
-    "node": "8.9.1"
+    "node": "8.9.3"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^8.2.1",
     "chai": "^3.5.0",
-    "eslint": "^3.19.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-plugin-import": "^2.2.0",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "faker": "^3.1.0",
     "mocha": "^3.0.0"
   },

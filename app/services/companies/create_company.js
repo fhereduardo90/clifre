@@ -1,12 +1,11 @@
-let sequelize = require('../../models');
-let _ = require('lodash');
-let UploaderAvatar = require('../../helpers/uploader_avatar');
-let errorParse = require('../../helpers/error_parse');
-let ApiError = require('../../errors/api_error');
-let JwtTokenGenerator = require('../sessions/jwt_token_generator');
-let shortid = require('shortid');
-let app = require('../../../app');
-let CompanyMailer = require('../../mailers/company_mailer');
+const sequelize = require('../../models');
+const UploaderAvatar = require('../../helpers/uploader_avatar');
+const errorParse = require('../../helpers/error_parse');
+const ApiError = require('../../errors/api_error');
+const JwtTokenGenerator = require('../sessions/jwt_token_generator');
+const shortid = require('shortid');
+const app = require('../../../app');
+const CompanyMailer = require('../../mailers/company_mailer');
 
 /**
  * Upload company avatar to S3 and saving it in a specefic path.
@@ -16,53 +15,50 @@ let CompanyMailer = require('../../mailers/company_mailer');
  * @param {Object} company, the instance of the current company.
  * @returns {Promise} Returns an UploaderAvatar promise.
  */
-function uploadAvatar(avatar, path, company) {
+async function uploadAvatar(avatar, path, company) {
   // Initializer UploaderAvatar instance and upload company avatar
-  let UploaderCompanyAvatar = new UploaderAvatar(path);
-  return UploaderCompanyAvatar.putImage(avatar, company.identifier)
-    .then(function(data) {
-      // Update the current company with two new fields avatar and avatarName
-      company.avatar = data.url;
-      company.avatarName = data.name;
-      return company.save();
-    })
-    .catch(function(err) {
-      company.destroy();
-      UploaderCompanyAvatar.deleteImage(company.avatarName);
-      throw err;
-    });
+  const UploaderCompanyAvatar = new UploaderAvatar(path);
+
+  try {
+    const data = await UploaderCompanyAvatar.putImage(avatar, company.identifier);
+    company.avatar = data.url;
+    company.avatarName = data.name;
+    await company.save();
+    return company;
+  } catch (error) {
+    await company.destroy();
+    throw error;
+  }
 }
 
-module.exports.call = function(params) {
-  // Generate a random identifier.
-  params.identifier = shortid.generate().toLowerCase();
-  let token = null;
-  let companyInstance = sequelize.Company.build(_.omit(params, ['avatar']));
+module.exports.call = async ({ categoryId, avatar, ...params } = {}) => {
+  Object.assign(params, { identifier: shortid.generate().toLowerCase() });
 
-  // Create Company without avatar
-  return companyInstance
-    .save()
-    .then(function(company) {
-      try {
-        token = JwtTokenGenerator.call(
-          {identifier: company.identifier},
-          app.get('jwtKey'),
-          '100d'
-        );
-      } catch (err) {
-        company.destroy();
-        throw err;
-      }
-      let path = 'companies/' + company.identifier + '/avatar';
-      if (params.avatar) return uploadAvatar(params.avatar, path, company);
-      return company;
-    })
-    .then(function(company) {
-      // Send welcome email to new company.
-      CompanyMailer.welcomeMail(company.id);
-      return {result: {accessToken: token}, status: 201};
-    })
-    .catch(function(err) {
-      throw new ApiError('Company could not be created.', 422, errorParse(err));
-    });
+  try {
+    const category = await sequelize.Category.findOne({ where: { id: categoryId } });
+
+    if (!category) {
+      throw new Error('Category not found.');
+    }
+
+    const companyInstance = sequelize.Company.build({ ...params, categoryId });
+    const company = await companyInstance.save();
+    const token = JwtTokenGenerator.call(
+      { identifier: company.identifier },
+      app.get('jwtKey'),
+      '100d'
+    );
+
+    const path = `companies/${company.identifier}/avatar`;
+
+    if (avatar) {
+      await uploadAvatar(avatar, path, company);
+    }
+
+    CompanyMailer.welcomeMail(company.id);
+
+    return { result: { accessToken: token }, status: 201 };
+  } catch (err) {
+    throw new ApiError('Company could not be created.', 422, errorParse(err));
+  }
 };
