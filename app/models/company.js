@@ -139,6 +139,13 @@ module.exports = function(sequelize, DataTypes) {
             through: 'user_cards',
             foreignKey: 'company_id',
           });
+          Company.belongsTo(models.Category, {
+            foreignKey: {
+              allowNull: true,
+              name: 'categoryId',
+              field: 'category_id',
+            },
+          });
         },
         authenticate: function authenticate(password, passwordHash) {
           return new Promise(function promise(resolve, reject) {
