@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const port = process.env.PORT;
-const app = module.exports = express();
+const app = (module.exports = express());
 const router = express.Router();
 
 // Controllers
@@ -15,6 +15,7 @@ const CardController = require('./app/controllers/cards');
 const SessionController = require('./app/controllers/sessions');
 const PasswordController = require('./app/controllers/passwords');
 const FeaturedCompanyController = require('./app/controllers/featured_companies');
+const CategoryController = require('./app/controllers/categories');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -33,5 +34,6 @@ app.use(CardController);
 app.use(SessionController);
 app.use(PasswordController);
 app.use(FeaturedCompanyController);
+app.use(CategoryController);
 
 app.listen(port);

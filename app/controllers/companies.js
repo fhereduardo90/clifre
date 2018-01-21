@@ -15,7 +15,7 @@ const CompanyDetailSerializer = require('../serializers/companies/company_detail
 // Others
 const companyController = require('express').Router();
 
-const getCompanyParams = (params) =>
+const getCompanyParams = params =>
   _.pick(params, [
     'name',
     'email',
@@ -35,15 +35,14 @@ companyController
   .route('/companies')
   .get((req, res) => {
     AllCompaniesService.call()
-      .then((response) => ApiResponse.success(res, response))
-      .catch((err) => ApiResponse.error(res, err));
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err));
   })
 
   .post((req, res) =>
     CreateCompanyService.call(getCompanyParams(req.body))
-      .then((response) => ApiResponse.success(res, response))
-      .catch((err) => ApiResponse.error(res, err))
-  );
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err)));
 
 companyController
   .route('/companies/me')
@@ -53,22 +52,19 @@ companyController
 
   .put(CompanyAuthenticator, (req, res) =>
     UpdateCompanyService.call(req.company, getCompanyParams(req.body))
-      .then((response) => ApiResponse.success(res, response))
-      .catch((err) => ApiResponse.error(res, err))
-  );
+      .then(response => ApiResponse.success(res, response))
+      .catch(err => ApiResponse.error(res, err)));
 
-companyController
-  .route('/companies/me/users')
-  .get(CompanyAuthenticator, (req, res) => {
-    CompanyUsersService.call(req.company)
-      .then((response) => ApiResponse.success(res, response))
-      .catch((err) => ApiResponse.error(res, err));
-  });
+companyController.route('/companies/me/users').get(CompanyAuthenticator, (req, res) => {
+  CompanyUsersService.call(req.company)
+    .then(response => ApiResponse.success(res, response))
+    .catch(err => ApiResponse.error(res, err));
+});
 
 companyController.route('/companies/:id').get((req, res) => {
   FindCompanyService.call(parseInt(req.params.id, 10))
-    .then((response) => ApiResponse.success(res, response))
-    .catch((err) => ApiResponse.error(res, err));
+    .then(response => ApiResponse.success(res, response))
+    .catch(err => ApiResponse.error(res, err));
 });
 
 module.exports = companyController;
