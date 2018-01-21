@@ -17,12 +17,11 @@ const PasswordController = require('./app/controllers/passwords');
 const FeaturedCompanyController = require('./app/controllers/featured_companies');
 const CategoryController = require('./app/controllers/categories');
 
-//disable cache
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
   res.header('Pragma', 'no-cache');
-  next()
+  next();
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
