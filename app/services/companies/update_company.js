@@ -18,10 +18,13 @@ async function uploadAvatar(avatar, path, company) {
   const UploaderCompanyAvatar = new UploaderAvatar(path);
 
   try {
-    const data = await UploaderCompanyAvatar.putImage(avatar, company.identifier);
+    const data = await UploaderCompanyAvatar.putImage(
+      avatar,
+      company.identifier,
+    );
     await company.update(
       { avatar: data.url, avatarName: data.name },
-      { fields: ['avatar', 'avatarName'] }
+      { fields: ['avatar', 'avatarName'] },
     );
     return company;
   } catch (err) {
@@ -29,15 +32,26 @@ async function uploadAvatar(avatar, path, company) {
   }
 }
 
-module.exports.call = async (company, { categoryId, avatar, ...params } = {}) => {
+module.exports.call = async (
+  company,
+  { categoryId, avatar, ...params } = {},
+) => {
   try {
-    const category = await sequelize.Category.findOne({ where: { id: categoryId } });
+    const categoryParams = { ...params };
 
-    if (!category) {
-      throw new Error('Category not found.');
+    if (categoryId) {
+      const category = await sequelize.Category.findOne({
+        where: { id: categoryId },
+      });
+
+      if (!category) {
+        throw new Error('Category not found.');
+      }
+
+      categoryParams.categoryId = categoryId;
     }
 
-    await company.update(params);
+    await company.update(categoryParams);
 
     if (avatar) {
       const path = `companies/${company.identifier}/avatar`;
