@@ -38,9 +38,10 @@ module.exports.call = async (
 ) => {
   try {
     const categoryParams = { ...params };
+    let category;
 
     if (categoryId) {
-      const category = await sequelize.Category.findOne({
+      category = await sequelize.Category.findOne({
         where: { id: categoryId },
       });
 
@@ -53,6 +54,12 @@ module.exports.call = async (
 
     await company.update(categoryParams);
 
+    if (!category) {
+      category = await sequelize.Category.findOne({
+        where: { id: company.categoryId },
+      });
+    }
+
     if (avatar) {
       const path = `companies/${company.identifier}/avatar`;
       await uploadAvatar(avatar, path, company);
@@ -61,9 +68,11 @@ module.exports.call = async (
     return {
       result: {
         ...CompanyDetailSerializer.serialize(company),
-        category: {
-          ...CategoryDetailSerializer.serialize(category),
-        },
+        ...(category
+          ? {
+              category: CategoryDetailSerializer.serialize(category),
+            }
+          : {}),
       },
       status: 200,
       success: true,

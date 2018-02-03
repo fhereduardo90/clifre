@@ -40,7 +40,7 @@ module.exports.call = async ({ categoryId, avatar, ...params } = {}) => {
   try {
     const categoryParams = { ...params };
 
-    if (category) {
+    if (categoryId) {
       const category = await sequelize.Category.findOne({
         where: { id: categoryId },
       });
