@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     'Category',
@@ -20,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       tableName: 'categories',
       classMethods: {
-        associate: function(models) {
-          Category.hasMany(models.Company, {as: 'Companies'});
+        associate(models) {
+          Category.hasMany(models.Company, { as: 'Companies' });
         },
       },
     }
