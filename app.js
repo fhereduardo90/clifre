@@ -16,6 +16,7 @@ const SessionController = require('./app/controllers/sessions');
 const PasswordController = require('./app/controllers/passwords');
 const FeaturedCompanyController = require('./app/controllers/featured_companies');
 const CategoryController = require('./app/controllers/categories');
+const CountryController = require('./app/controllers/countries');
 
 app.use((req, res, next) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -42,5 +43,6 @@ app.use(SessionController);
 app.use(PasswordController);
 app.use(FeaturedCompanyController);
 app.use(CategoryController);
+app.use(CountryController);
 
 app.listen(port);
