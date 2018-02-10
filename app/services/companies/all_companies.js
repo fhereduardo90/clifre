@@ -1,20 +1,30 @@
 const sequelize = require('../../models');
 const errorParse = require('../../helpers/error_parse');
 const ApiError = require('../../errors/api_error');
-// Serializers
 const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
+const CategoryDetailSerializer = require('../../serializers/categories/category_detail');
+const CountryDetailSerializer = require('../../serializers/countries/country_detail');
 
-/* eslint arrow-body-style: "off" */
-module.exports.call = () => {
-  return sequelize.Company.findAll({ where: { visible: true } })
-    .then(companies => ({
-      result: companies.map((company) => {
-        return CompanyDetailSerializer.serialize(company);
-      }),
-      status: 200,
-    }))
-    .catch((err) => {
-      throw new ApiError('Companies not found.', 404, errorParse(err));
+module.exports.call = async () => {
+  try {
+    const companies = await sequelize.Company.findAll({
+      where: { visible: true },
+      include: [{ model: sequelize.Category }, { model: sequelize.Country }],
     });
-};
 
+    return {
+      result: companies.map(c => ({
+        ...CompanyDetailSerializer.serialize(c),
+        ...(c.Category
+          ? { category: CategoryDetailSerializer.serialize(c.Category) }
+          : {}),
+        ...(c.Country
+          ? { country: CountryDetailSerializer.serialize(c.Country) }
+          : {}),
+      })),
+      status: 200,
+    };
+  } catch (error) {
+    throw new ApiError('Companies not found.', 422, errorParse(error));
+  }
+};
