@@ -1,22 +1,18 @@
-// Middlewares
-const CompanyAuthenticator = require('../middlewares/company_authenticator');
-// Helpers
+const pick = require('lodash/pick');
+const companyController = require('express').Router();
 const ApiResponse = require('../helpers/api_response');
-// Services
+const CompanyAuthenticator = require('../middlewares/company_authenticator');
 const CreateCompanyService = require('../services/companies/create_company');
 const UpdateCompanyService = require('../services/companies/update_company');
 const AllCompaniesService = require('../services/companies/all_companies');
 const CompanyUsersService = require('../services/companies/company_users');
 const FindCompanyService = require('../services/companies/find_company');
-// Libs
-const _ = require('lodash');
-// Serializers
 const CompanyDetailSerializer = require('../serializers/companies/company_detail');
-// Others
-const companyController = require('express').Router();
+const CategoryDetailSerializer = require('../serializers/categories/category_detail');
+const CountryDetailSerializer = require('../serializers/countries/country_detail');
 
 const getCompanyParams = params =>
-  _.pick(params, [
+  pick(params, [
     'name',
     'email',
     'about',
@@ -29,6 +25,7 @@ const getCompanyParams = params =>
     'web',
     'visible',
     'categoryId',
+    'countryId',
   ]);
 
 companyController
@@ -38,7 +35,6 @@ companyController
       .then(response => ApiResponse.success(res, response))
       .catch(err => ApiResponse.error(res, err));
   })
-
   .post((req, res) =>
     CreateCompanyService.call(getCompanyParams(req.body))
       .then(response => ApiResponse.success(res, response))
@@ -47,7 +43,18 @@ companyController
 companyController
   .route('/companies/me')
   .get(CompanyAuthenticator, (req, res) => {
-    res.json(CompanyDetailSerializer.serialize(req.company));
+    res.json({
+      ...CompanyDetailSerializer.serialize(req.company),
+      ...(req.company.Category
+        ? { category: CategoryDetailSerializer.serialize(req.company.Category) }
+        : {}),
+      ...(req.company.Category
+        ? { category: CategoryDetailSerializer.serialize(req.company.Category) }
+        : {}),
+      ...(req.company.Country
+        ? { country: CountryDetailSerializer.serialize(req.company.Country) }
+        : {}),
+    });
   })
 
   .put(CompanyAuthenticator, (req, res) =>
