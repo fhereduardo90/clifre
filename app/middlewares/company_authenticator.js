@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
   try {
     const company = await sequelize.Company.findOne({
       where: { identifier: decoded.identifier },
-      include: [{ model: sequelize.Category }],
+      include: [{ model: sequelize.Category }, { model: sequelize.Country }],
     });
 
     if (!company) {
