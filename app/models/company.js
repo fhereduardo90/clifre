@@ -1,12 +1,11 @@
-'use strict';
-let bcrypt = require('bcryptjs');
-let Promise = require('bluebird');
+const bcrypt = require('bcryptjs');
+const Promise = require('bluebird');
 
 function generateEncryptPassword(password) {
   return bcrypt.hashSync(password, 10);
 }
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   const Company = sequelize.define(
     'Company',
     {
@@ -14,35 +13,32 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: {msg: 'name can\'t be blank'},
+          notEmpty: { msg: "name can't be blank" },
         },
       },
       email: {
         type: DataTypes.STRING,
         validate: {
-          isEmail: {msg: 'email format is not correct.'},
-          notEmpty: function notEmpty(value, next) {
+          isEmail: { msg: 'email format is not correct.' },
+          notEmpty(value, next) {
             if (this.isNewRecord) {
               if (value) return next();
-              else return next('email can\'t be blank.');
-            } else {
-              if (!this.email && !value) return next();
-              if (!value) return next('email can\'t be blank.');
-              else return next();
+              return next("email can't be blank.");
             }
+            if (!this.email && !value) return next();
+            if (!value) return next("email can't be blank.");
+            return next();
           },
           isUnique: function isUnique(value, next) {
             if (!value) return next();
-            let params = {email: value};
+            const params = { email: value };
             if (!this.isNewRecord && this.email === value) return next();
-            return Company.find({where: params, attributes: ['id']})
-              .then(function success(company) {
+            return Company.find({ where: params, attributes: ['id'] })
+              .then((company) => {
                 if (company) return next('email has been already taken.');
-                else next();
+                next();
               })
-              .catch(function error(err) {
-                return next(err.message);
-              });
+              .catch(err => next(err.message));
           },
         },
       },
@@ -79,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false,
         unique: true,
         validate: {
-          notEmpty: {msg: 'identifier can\'t be blank.'},
+          notEmpty: { msg: "identifier can't be blank." },
         },
       },
       password_hash: {
@@ -104,7 +100,7 @@ module.exports = function(sequelize, DataTypes) {
           this.setDataValue('password', value);
         },
         validate: {
-          notEmpty: {msg: 'password can\'t be blank'},
+          notEmpty: { msg: "password can't be blank" },
           len: {
             args: [8, 25],
             msg: 'password only accepts min 8 and max 25 characters.',
@@ -113,6 +109,62 @@ module.exports = function(sequelize, DataTypes) {
       },
       visible: {
         type: DataTypes.BOOLEAN,
+      },
+      categoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: 'category_id',
+        validate: {
+          presence: async (value, next) => {
+            try {
+              if (!value) {
+                return next();
+              }
+
+              if (!this.isNewRecord && this.companyId === value) {
+                return next();
+              }
+
+              const company = await sequelize.models.Company.findOne({ where: { id: value } });
+
+              if (!company) {
+                return next('Company not found');
+              }
+
+              return next();
+            } catch (error) {
+              return next(error.message);
+            }
+          },
+        },
+      },
+      countryId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: 'country_id',
+        validate: {
+          presence: async (value, next) => {
+            try {
+              if (!value) {
+                return next();
+              }
+
+              if (!this.isNewRecord && this.countryId === value) {
+                return next();
+              }
+
+              const country = await sequelize.models.Country.findOne({ where: { id: value } });
+
+              if (!country) {
+                return next('Country not found');
+              }
+
+              return next();
+            } catch (error) {
+              return next(error.message);
+            }
+          },
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -130,10 +182,10 @@ module.exports = function(sequelize, DataTypes) {
         },
       },
       classMethods: {
-        associate: function(models) {
-          Company.hasMany(models.Card, {as: 'Cards'});
-          Company.hasMany(models.FeaturedCompany, {as: 'FeaturedCompanies'});
-          Company.hasMany(models.UserCard, {as: 'UserCards'});
+        associate(models) {
+          Company.hasMany(models.Card, { as: 'Cards' });
+          Company.hasMany(models.FeaturedCompany, { as: 'FeaturedCompanies' });
+          Company.hasMany(models.UserCard, { as: 'UserCards' });
           Company.belongsToMany(models.User, {
             as: 'Users',
             through: 'user_cards',
@@ -146,15 +198,20 @@ module.exports = function(sequelize, DataTypes) {
               field: 'category_id',
             },
           });
+          Company.belongsTo(models.Country, {
+            foreignKey: {
+              allowNull: true,
+              name: 'countryId',
+              field: 'country_id',
+            },
+          });
         },
         authenticate: function authenticate(password, passwordHash) {
-          return new Promise(function promise(resolve, reject) {
-            bcrypt.compare(password, passwordHash, function compare(err, res) {
+          return new Promise((resolve, reject) => {
+            bcrypt.compare(password, passwordHash, (err, res) => {
               if (err) return reject(err);
               if (!res) {
-                return reject(
-                  new Error('Authentication failed. Wrong email or password.')
-                );
+                return reject(new Error('Authentication failed. Wrong email or password.'));
               }
               return resolve(true);
             });

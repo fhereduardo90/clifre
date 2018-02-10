@@ -1,25 +1,30 @@
 const sequelize = require('../../models');
 const ApiError = require('../../errors/api_error');
 const errorParse = require('../../helpers/error_parse');
-const Promise = require('bluebird');
-// Serializers
 const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
+const CategoryDetailSerializer = require('../../serializers/categories/category_detail');
+const CountryDetailSerializer = require('../../serializers/countries/country_detail');
 
-/* eslint arrow-body-style: "off" */
-module.exports.call = (id) => {
-  return Promise.try(() => {
-    try {
-      if (!id || !Number.isInteger(id)) throw new Error('Params are not correct.');
-      return sequelize.Company.findById(id)
-        .then((company) => {
-          if (!company) throw new Error('Company not found.');
-          return { result: CompanyDetailSerializer.serialize(company), status: 200 };
-        })
-        .catch((err) => {
-          throw new ApiError('Company not found.', 404, errorParse(err));
-        });
-    } catch (e) {
-      throw new ApiError('User not found.', 404, errorParse(e));
-    }
-  });
+module.exports.call = async (id) => {
+  try {
+    const company = await sequelize.Company.findOne({
+      where: { id },
+      include: [{ model: sequelize.Category }, { model: sequelize.Country }],
+    });
+
+    return {
+      result: {
+        ...CompanyDetailSerializer.serialize(company),
+        ...(company.Category
+          ? { category: CategoryDetailSerializer.serialize(company.Category) }
+          : {}),
+        ...(company.Country
+          ? { country: CountryDetailSerializer.serialize(company.Country) }
+          : {}),
+      },
+      status: 200,
+    };
+  } catch (error) {
+    throw new ApiError('Company not found.', 404, errorParse(e));
+  }
 };

@@ -1,10 +1,9 @@
-const sequelize = require('../../models');
 const errorParse = require('../../helpers/error_parse');
 const ApiError = require('../../errors/api_error');
 const UploaderAvatar = require('../../helpers/uploader_avatar');
-// Serializers
 const CompanyDetailSerializer = require('../../serializers/companies/company_detail');
 const CategoryDetailSerializer = require('../../serializers/categories/category_detail');
+const CountryDetailSerializer = require('../../serializers/countries/country_detail');
 
 /**
  * Upload company avatar to S3 and saving it in a specefic path.
@@ -18,13 +17,10 @@ async function uploadAvatar(avatar, path, company) {
   const UploaderCompanyAvatar = new UploaderAvatar(path);
 
   try {
-    const data = await UploaderCompanyAvatar.putImage(
-      avatar,
-      company.identifier,
-    );
+    const data = await UploaderCompanyAvatar.putImage(avatar, company.identifier);
     await company.update(
       { avatar: data.url, avatarName: data.name },
-      { fields: ['avatar', 'avatarName'] },
+      { fields: ['avatar', 'avatarName'] }
     );
     return company;
   } catch (err) {
@@ -32,33 +28,11 @@ async function uploadAvatar(avatar, path, company) {
   }
 }
 
-module.exports.call = async (
-  company,
-  { categoryId, avatar, ...params } = {},
-) => {
+module.exports.call = async (company, { avatar, ...params } = {}) => {
   try {
-    const categoryParams = { ...params };
-    let category;
-
-    if (categoryId) {
-      category = await sequelize.Category.findOne({
-        where: { id: categoryId },
-      });
-
-      if (!category) {
-        throw new Error('Category not found.');
-      }
-
-      categoryParams.categoryId = categoryId;
-    }
-
-    await company.update(categoryParams);
-
-    if (!category) {
-      category = await sequelize.Category.findOne({
-        where: { id: company.categoryId },
-      });
-    }
+    await company.update(params);
+    const category = await company.getCategory();
+    const country = await company.getCountry();
 
     if (avatar) {
       const path = `companies/${company.identifier}/avatar`;
@@ -70,8 +44,13 @@ module.exports.call = async (
         ...CompanyDetailSerializer.serialize(company),
         ...(category
           ? {
-              category: CategoryDetailSerializer.serialize(category),
-            }
+            category: CategoryDetailSerializer.serialize(category),
+          }
+          : {}),
+        ...(country
+          ? {
+            country: CountryDetailSerializer.serialize(country),
+          }
           : {}),
       },
       status: 200,

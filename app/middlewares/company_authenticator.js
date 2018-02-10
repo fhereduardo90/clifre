@@ -3,7 +3,7 @@ const app = require('../../app');
 const jwt = require('jsonwebtoken');
 const ApiError = require('../errors/api_error');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   if (!req.headers.authorization) {
     return res.status(401).json(new ApiError('Token not provided.', 401));
   }
@@ -14,22 +14,28 @@ module.exports = (req, res, next) => {
     return res.status(401).json(new ApiError('Token not provided.', 401));
   }
 
-  return jwt.verify(token, app.get('jwtKey'), (err, decoded) => {
-    if (err) {
-      return res.status(403).end();
+  let decoded;
+
+  try {
+    decoded = jwt.verify(token, app.get('jwtKey'));
+  } catch (error) {
+    return res.status(403).end();
+  }
+
+  try {
+    const company = await sequelize.Company.findOne({
+      where: { identifier: decoded.identifier },
+      include: [{ model: sequelize.Category }, { model: sequelize.Country }],
+    });
+
+    if (!company) {
+      throw new Error('Company not found');
     }
 
-    return sequelize.Company.findOne({where: {identifier: decoded.identifier}})
-      .then((company) => {
-        if (!company) {
-          return res.status(401).end();
-        }
+    req.company = company;
 
-        req.company = company;
-        next();
-
-        return null;
-      })
-      .catch(() => res.status(401).end());
-  });
+    return next();
+  } catch (error) {
+    return res.status(401).end();
+  }
 };

@@ -20,10 +20,7 @@ async function uploadAvatar(avatar, path, company) {
   const UploaderCompanyAvatar = new UploaderAvatar(path);
 
   try {
-    const data = await UploaderCompanyAvatar.putImage(
-      avatar,
-      company.identifier,
-    );
+    const data = await UploaderCompanyAvatar.putImage(avatar, company.identifier);
     company.avatar = data.url;
     company.avatarName = data.name;
     await company.save();
@@ -34,30 +31,15 @@ async function uploadAvatar(avatar, path, company) {
   }
 }
 
-module.exports.call = async ({ categoryId, avatar, ...params } = {}) => {
+module.exports.call = async ({ avatar, ...params } = {}) => {
   Object.assign(params, { identifier: shortid.generate().toLowerCase() });
 
   try {
-    const categoryParams = { ...params };
-
-    if (categoryId) {
-      const category = await sequelize.Category.findOne({
-        where: { id: categoryId },
-      });
-
-      if (!category) {
-        throw new Error('Category not found.');
-      }
-
-      categoryParams.categoryId = categoryId;
-    }
-
-    const companyInstance = sequelize.Company.build(categoryParams);
-    const company = await companyInstance.save();
+    const company = await sequelize.Company.create(params);
     const token = JwtTokenGenerator.call(
       { identifier: company.identifier },
       app.get('jwtKey'),
-      '100d',
+      '100d'
     );
 
     const path = `companies/${company.identifier}/avatar`;

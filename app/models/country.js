@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define(
-    'Category',
+  const Country = sequelize.define(
+    'Country',
     {
       name: DataTypes.STRING,
       createdAt: {
@@ -17,13 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       timestamps: true,
       underscored: true,
-      tableName: 'categories',
+      tableName: 'countries',
       classMethods: {
         associate(models) {
-          Category.hasMany(models.Company, { as: 'Companies' });
+          Country.hasMany(models.Company, { as: 'Companies' });
         },
       },
     }
   );
-  return Category;
+  return Country;
 };
