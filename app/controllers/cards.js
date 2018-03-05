@@ -101,7 +101,7 @@ cardController.route('/users/:identifier/cards/add-stamp')
   //This is for new version. Assign stamp to a specific card.
 cardController.route("/users/:identifier/cards/:companycardid/add-stamp")
   .patch(CompanyAuthenticator, (req, res) => {
-    AddStamService.call(req.company, req.params.identifier, req.params.companycardid)
+    AddStampService.call(req.company, req.params.identifier, req.params.companycardid)
       .then(() => ApiResponse.ok(res))
       .catch(err => ApiResponse.error(res, err));
   });
