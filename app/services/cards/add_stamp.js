@@ -8,6 +8,7 @@ const sequelize = require('../../models');
 const FirebaseApi = require('../../helpers/firebase_api');
 // Services
 const CreateUserCardService = require('../user_cards/create_user_card');
+const CreateUserCardByIdService = require('../user_cards/create_user_card_by_id');
 
 /* eslint arrow-body-style: "off" */
 module.exports.call = (company, identifier, companyCardId) => {
@@ -44,7 +45,14 @@ module.exports.call = (company, identifier, companyCardId) => {
         })
         .then((userCard) => {
           if (userCard) return Promise.resolve(userCard);
-          return CreateUserCardService.call(company, identifier);
+
+          if(companyCardId == null){
+            return CreateUserCardService.call(company, identifier);
+          }else{
+            return CreateUserCardByIdService.call(company, identifier, companyCardId)
+          }
+
+          
         })
         .then((userCard) => {
           if (!userCard) throw new Error('User Card not found.');
