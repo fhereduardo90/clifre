@@ -60,11 +60,18 @@ module.exports.call = (company, identifier, userCardId) => {
           })
         ))
         .then(() => {
-          sequelize.Device.findAll({ where: { userId: userFound.id }, attributes: ['registrationId'] })
+          sequelize.Device.findAll({ 
+            where: { userId: userFound.id }, 
+            attributes: ['registrationId'],
+          })
             .then((devices) => {
               FirebaseApi.sendNotification(
-                { title: 'Tarjeta canjeada', body: `Tu tarjeta de ${company.name} ha sido canjeada!`, cardId: currentUserCard.id },
-                devices.map(d => d.registrationId)
+                { 
+                  title: 'Tarjeta canjeada', 
+                  body: `Tu tarjeta de ${company.name} ha sido canjeada!`,
+                },
+                {cardId: currentUserCard.id},
+                devices.map((d) => d.registrationId)
               );
             });
 

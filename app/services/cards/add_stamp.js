@@ -68,16 +68,17 @@ module.exports.call = (company, identifier, companyCardId) => {
         })
         .then((userCard) => {
           sequelize.Device.findAll({
-            where: {userId: userFound.id},
+            where: { userId: userFound.id },
             attributes: ['registrationId'],
-          }).then((devices) => {
-            FirebaseApi.sendNotification(
-              {
-                title: 'Tienes un nuevo sello',
-                body: `${company.name} te ha asignado un nuevo sello.`,
-              },
-              {cardId: userCard.id},
-              devices.map((d) => d.registrationId)
+          })
+            .then((devices) => {
+              FirebaseApi.sendNotification(
+                {
+                  title: 'Tienes un nuevo sello',
+                  body: `${company.name} te ha asignado un nuevo sello.`,
+                },
+                {cardId: userCard.id},
+                devices.map((d) => d.registrationId)
             );
           });
 
