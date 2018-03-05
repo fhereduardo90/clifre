@@ -90,7 +90,7 @@ cardController.route('/users/:identifier/cards/:id')
       .catch(err => ApiResponse.error(res, err));
   });
 
-  //This will be deleted in the future.
+//This will be deleted in the future.
 cardController.route('/users/:identifier/cards/add-stamp')
   .patch(CompanyAuthenticator, (req, res) => {
     AddStampService.call(req.company, req.params.identifier, null)
@@ -98,8 +98,8 @@ cardController.route('/users/:identifier/cards/add-stamp')
       .catch(err => ApiResponse.error(res, err));
   });
 
-  //This is for new version. Assign stamp to a specific card.
-cardController.route("/users/:identifier/cards/:companycardid/add-stamp")
+//This is for new version. Assign stamp to a specific card.
+cardController.route('/users/:identifier/cards/:companycardid/add-stamp')
   .patch(CompanyAuthenticator, (req, res) => {
     AddStampService.call(req.company, req.params.identifier, parseInt(req.params.companycardid, 10))
       .then(() => ApiResponse.ok(res))
@@ -113,9 +113,18 @@ cardController.route('/users/:identifier/cards/remove-stamp')
       .catch(err => ApiResponse.error(res, err));
   });
 
+//This will be deleted in the future.
 cardController.route('/users/:identifier/cards/redeem')
   .patch(CompanyAuthenticator, (req, res) => {
-    RedeemCardService.call(req.company, req.params.identifier)
+    RedeemCardService.call(req.company, req.params.identifier, null)
+      .then(() => ApiResponse.ok(res))
+      .catch(err => ApiResponse.error(res, err));
+  });
+
+//This is for new version. Assign stamp to a specific card.
+cardController.route('/users/:identifier/cards/:clientcardid/redeem')
+  .patch(CompanyAuthenticator, (req, res) => {
+    RedeemCardService.call(req.company, req.params.identifier, parseInt(req.params.clientcardid))
       .then(() => ApiResponse.ok(res))
       .catch(err => ApiResponse.error(res, err));
   });

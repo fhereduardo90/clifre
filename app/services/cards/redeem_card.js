@@ -8,7 +8,7 @@ const sequelize = require('../../models');
 const FirebaseApi = require('../../helpers/firebase_api');
 
 /* eslint arrow-body-style: "off" */
-module.exports.call = (company, identifier) => {
+module.exports.call = (company, identifier, userCardId) => {
   return Promise.try(() => {
     try {
       if (!company || !identifier) throw new Error('Parameters are incorrect.');
@@ -21,11 +21,23 @@ module.exports.call = (company, identifier) => {
           if (!user) throw new Error('User not found.');
 
           userFound = user;
-          return sequelize.UserCard.findOne({
-            where: { companyId: company.id, userId: user.id, redeemed: false },
-            order: '"createdAt" DESC',
-            include: [{ model: sequelize.Card }],
-          });
+
+          if (userCardId == null) {
+            //for old endpoint
+            return sequelize.UserCard.findOne({
+              where: { companyId: company.id, userId: user.id, redeemed: false },
+              order: '"createdAt" DESC',
+              include: [{ model: sequelize.Card }],
+            });
+          } else {
+            //for new endpoint, this support redeem card with specific userCardId
+            return sequelize.UserCard.findOne({
+              where: { id: userCardId, redeemed: false },
+              include: [{ model: sequelize.Card }],
+            });
+          }
+
+          
         })
         .then((userCard) => {
           if (!userCard) {
