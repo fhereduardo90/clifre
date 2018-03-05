@@ -10,7 +10,7 @@ const FirebaseApi = require('../../helpers/firebase_api');
 const CreateUserCardService = require('../user_cards/create_user_card');
 
 /* eslint arrow-body-style: "off" */
-module.exports.call = (company, identifier) => {
+module.exports.call = (company, identifier, companyCardId) => {
   return Promise.try(() => {
     try {
       if (!company || !identifier) throw new Error('Parameters are incorrect.');
@@ -22,11 +22,25 @@ module.exports.call = (company, identifier) => {
           if (!user) throw new Error('User not found.');
 
           userFound = user;
-          return sequelize.UserCard.findOne({
-            where: {companyId: company.id, userId: user.id, redeemed: false},
-            order: '"createdAt" DESC',
-            include: [{model: sequelize.Card}],
-          });
+          
+          /**
+           * User same function for old assign stamp and the new one.
+           * If companyCardId is null this means clients is using old endpoint 
+           * and we need to handle that.
+           */
+          if (companyCardId == null) {
+            return sequelize.UserCard.findOne({
+              where: {companyId: company.id, userId: user.id, redeemed: false},
+              order: '"createdAt" DESC',
+              include: [{model: sequelize.Card}],
+            });
+          } else {
+            return sequelize.UserCard.findOne({
+              where: {companyId: company.id, userId: user.id, cardId: companyCardId, redeemed: false},
+              order: '"createdAt" DESC',
+              include: [{model: sequelize.Card}],
+            });
+          }
         })
         .then((userCard) => {
           if (userCard) return Promise.resolve(userCard);
