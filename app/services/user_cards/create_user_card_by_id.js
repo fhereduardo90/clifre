@@ -23,7 +23,7 @@ module.exports.call = function(company, identifier, companyCardId) {
       var cardFound;
 
       return sequelize.Card.findOne({
-        where: { companyId: company.id, cardId: companyCardId },
+        where: { companyId: company.id, id: companyCardId },
         attributes: ['id', 'stamps', 'color', 'description', 'title', 'createdAt'],
         order: '"createdAt" DESC'
       }).then(function success(card) {
