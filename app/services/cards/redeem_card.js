@@ -70,7 +70,10 @@ module.exports.call = (company, identifier, userCardId) => {
                   title: 'Tarjeta canjeada', 
                   body: `Tu tarjeta de ${company.name} ha sido canjeada!`,
                 },
-                {cardId: currentUserCard.id},
+                {
+                  cardId: currentUserCard.id,
+                  action: "redeem"
+                },
                 devices.map((d) => d.registrationId)
               );
             });

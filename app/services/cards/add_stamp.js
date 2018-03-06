@@ -77,7 +77,10 @@ module.exports.call = (company, identifier, companyCardId) => {
                   title: 'Tienes un nuevo sello',
                   body: `${company.name} te ha asignado un nuevo sello.`,
                 },
-                {cardId: userCard.id},
+                {
+                  cardId: userCard.id, 
+                  action: "new-stamp"
+                },
                 devices.map((d) => d.registrationId)
             );
           });
