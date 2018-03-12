@@ -9,7 +9,7 @@ module.exports.call = async () => {
   try {
     const companies = await sequelize.Company.findAll({
       where: { visible: true },
-      order: ['created_at', 'DESC'],
+      order: [['created_at', 'DESC']],
       include: [{ model: sequelize.Category }, { model: sequelize.Country }],
     });
 
