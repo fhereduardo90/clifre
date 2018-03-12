@@ -9,7 +9,7 @@ const ApiError = require('../../errors/api_error');
 module.exports.call = async () => {
   try {
     const featuredCompanies = await sequelize.FeaturedCompany.findAll({
-      order: '"createdAt" DESC',
+      order: sequelize.random(),
       include: [
         {
           model: sequelize.Company,
