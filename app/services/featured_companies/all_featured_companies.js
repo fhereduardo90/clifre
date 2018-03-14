@@ -12,8 +12,9 @@ module.exports.call = async () => {
       order: '"createdAt" DESC',
       include: [
         {
-          model: sequelize.Company,
+          model: sequelize.FeaturedCompany,
           include: [
+            { model: sequelize.Company },
             { model: sequelize.Category },
             { model: sequelize.Country },
           ],
