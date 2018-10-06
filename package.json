@@ -9,42 +9,42 @@
     "migrate": "./node_modules/.bin/sequelize db:migrate"
   },
   "engines": {
-    "node": "8.9.3"
+    "node": "8.12.0"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-eslint": "^8.2.1",
     "chai": "^3.5.0",
-    "eslint": "^4.16.0",
+    "eslint": "^5.6.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.6.1",
     "faker": "^3.1.0",
-    "mocha": "^3.0.0"
+    "mocha": "^5.2.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.3.0",
+    "aws-sdk": "^2.329.0",
     "bcryptjs": "^2.4.0",
     "bluebird": "^3.3.5",
-    "body-parser": "^1.14.2",
+    "body-parser": "^1.18.3",
     "cors": "^2.7.1",
     "dotenv": "^1.2.0",
-    "express": "^4.13.3",
+    "express": "^4.16.3",
     "express-jwt": "^3.3.0",
-    "fb": "^1.1.0",
+    "fb": "^2.0.0",
     "i18n-iso-countries": "^3.4.0",
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.17.5",
-    "mailgun-js": "^0.7.11",
+    "mailgun-js": "^0.21.0",
     "mkdirp": "^0.5.1",
     "nid": "^0.3.2",
-    "node-gcm": "^0.14.4",
-    "pg": "^4.4.3",
+    "node-gcm": "^1.0.2",
+    "pg": "^7.5.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^3.25.0",
-    "sequelize-cli": "^2.8.0",
+    "sequelize": "^4.39.0",
+    "sequelize-cli": "^4.1.1",
     "shortid": "^2.2.6"
   }
 }
